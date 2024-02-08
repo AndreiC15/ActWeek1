@@ -1,0 +1,7 @@
+h1{
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: red;
+}
+body{
+    background-color: rgb(255, 170, 0);
+}

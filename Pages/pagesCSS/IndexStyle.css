@@ -1,0 +1,84 @@
+
+  
+  body {
+    /* The image used */
+    background-image: url("../testImages/wp2.jpg");
+  
+  
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .LogForm{
+    width: 300px;
+    background-color: rgba(255, 255, 255, 0.637);
+   border-color: black;
+    border-style:solid;
+    border-width: 2px;
+    border-radius: 10px;
+    margin-top: 200px;
+}
+.RegForm{
+    width: 800px;
+    background-color: rgba(255, 255, 255, 0.637);
+   border-color: black;
+    border-style:solid;
+    border-width: 2px;
+    border-radius: 10px;
+    margin-top: 100px;
+}
+.dividerTop{
+    position: absolute;
+    height:2px;
+    width:52.2%;
+    margin-left:0%;
+    margin-top:.5%;
+    background-color: black;
+    z-index:3;
+}
+.userInfoAddress{
+    margin-top:-2%;
+    align-content: center;
+    display: flex;
+    justify-content: space-evenly;
+}
+.LogInText{
+    height:30px;
+    width:250px;
+    border-radius: 10px;
+    margin-top: 20px;
+    font-weight: bold;
+    font-family: rockwell;
+}
+.PasswordText{
+    height:30px;
+    width:250px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-family: rockwell;
+    margin-top: 20px;
+}
+::placeholder {
+    text-align: center; 
+ }
+ ::option {
+    text-align: center; 
+ }
+ input { 
+    text-align: center; 
+}
+.ShowPass{
+    cursor: pointer;
+}
+.SubmitButton{
+    margin-top: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.divider{
+    background-color: black;
+    width:90%;
+    height:0.3%;
+    opacity:50%;
+}
