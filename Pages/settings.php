@@ -52,7 +52,7 @@ if ($databaseConnection->getConnection()) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings</title>
+    <title>Account Settings</title>
     <link rel="stylesheet" href="pagesCSS/Settings.css">
     <link rel="stylesheet" href="pagesCSS/UserProfileSettings.css">
 </head>
@@ -60,7 +60,15 @@ if ($databaseConnection->getConnection()) {
 <body>
     <center>  
     <div class="area"></div><nav class="main-menu">
-            
+    <ul>
+                <li>
+                       <i class="fa fa-info fa-2x"><img class="navSideIconLogo" src="testImages/icon.png"></i>
+                        <span class="nav-text">
+                            WallpaperStation
+                        </span>
+                    </a>
+                </li>
+            </ul>
             <ul>
                 <li>
                     <a href="homepage.php">
@@ -86,7 +94,7 @@ if ($databaseConnection->getConnection()) {
                     <a href="settings.php">
                        <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/setting.png"></i>
                         <span class="nav-text">
-                            Settings
+                            Account Settings
                         </span>
                     </a>
                 </li>
@@ -110,7 +118,7 @@ if ($databaseConnection->getConnection()) {
         </center>
 
     <div class="navBarTop">
-        <h1>>> Settings</h1>   
+        <h1>Account Settings</h1>   
     </div>
 
     
@@ -118,13 +126,14 @@ if ($databaseConnection->getConnection()) {
     <h2>User Profile</h2>
         <div class="profileContainerInside">
             <div class="profilePic">
-                <img class="userImage" src="testImages/image1.jpg"></br>
-                <input  type="file" value="Change Photo">
+                <form enctype="multipart/form-data" method="post" action="./accountProcess/process.php">
+                <img class="userImage" src="./testImages/user.png" title="user icons"></br>
+</br>
+                <input type="file" id="profile_pic" name="profile_pic">
             </div>
             <div class="dividerTop"></div>
             <div class="dividerProfile"></div>
         <table class="userProfile">
-        <form  method="POST" action="./accountProcess/process.php">
             <tr>
                 <td>First Name:</td>
                 <td><input type="text" id="first_name" name="first_name" placeholder="<?php echo $userData['FirstName']; ?>"></td>
@@ -137,7 +146,7 @@ if ($databaseConnection->getConnection()) {
                 <td>Email:</td>
                 <td><input type="text" id="email" name="email" placeholder="<?php echo $userData['Email']; ?>"></td>
                 <td>Password:</td>
-                <td><input type="text" id="password" name="password"></td>
+                <td><input type="password" id="password" name="password"></td>
                 <td>Phone Number:</td>
                 <td><input type="number" id="phone_number" name="phone_number" placeholder="<?php echo $userData['PhoneNumber']; ?>"></td> 
             </tr>

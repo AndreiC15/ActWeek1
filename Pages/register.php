@@ -14,11 +14,18 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
     </head>
     <body>
        <center>
+       <div class="webIcon">
+        <p class="webtitle">Wallpaper</p>
+        <div class="hub">
+            <p class="webtitle" style="padding: 0 10px 0 10px;">Station</p>
+        </div>
+    </div>
         <div class="RegForm">
-            <form  method="POST" action="./accountProcess/process.php">
+            
                 <h1>Registration</h1>
                     <div class="divider"></div>
                             <table class="userInfo">
+                                <form  method="POST" action="./accountProcess/process.php">
                                 <tr>
                                     <input class="LogInText" type="text" id="first_name" name="first_name" placeholder="First Name" required>
                                 </tr>

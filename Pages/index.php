@@ -13,8 +13,14 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
     <head>
         <link rel="stylesheet" href="pagesCSS/IndexStyle.css">
     </head>
-    <body>
+    <body> 
        <center>
+       <div class="webIcon">
+        <p class="webtitle">Wallpaper</p>
+        <div class="hub">
+            <p class="webtitle" style="padding: 0 10px 0 10px;">Station</p>
+        </div>
+    </div>
         <div class="LogForm">
         <form  method="POST" action="./accountProcess/process.php">
             <h1>Login</h1>

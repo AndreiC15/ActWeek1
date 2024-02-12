@@ -14,18 +14,20 @@ class DatabaseConnection {
         $this->database = $database;
     }
 
-    public function prepare($sql) {
-        return $this->getConnection()->prepare($sql);
-    }
-
     public function connect() {
         $this->con = new mysqli($this->host, $this->username, $this->password, $this->database);
 
         if ($this->con->connect_error) {
-            die("Connection failed: " . $this->con->connect_error);
+            throw new Exception("Connection failed: " . $this->con->connect_error);
         }
 
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+    }
+
+    public function prepare($sql) {
+        return $this->con->prepare($sql);
     }
 
     public function getConnection() {
@@ -38,6 +40,8 @@ class DatabaseConnection {
         }
     }
 }
+
+// Instantiate the DatabaseConnection class and connect to the database
 $databaseConnection = new DatabaseConnection("localhost", "root", "", "logintest");
 $databaseConnection->connect();
 ?>
