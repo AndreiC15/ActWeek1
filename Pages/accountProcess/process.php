@@ -114,23 +114,23 @@ class UserAuth {
     
     public function addWallpaper($WallpaperID, $Title, $WallpaperLocation) {
         $con = $this->db->getConnection();
-    
+
         $wallpaper = $_FILES['new_wallpaper'];
         $wallpaper_temp = $wallpaper['tmp_name'];
         $WallpaperLocation = "upload/" . $wallpaper['name'];
         move_uploaded_file($wallpaper_temp, $WallpaperLocation);
-    
+
         $sql = "INSERT INTO wallpaper (WallpaperID, Title, WallpaperLocation) VALUES ('', ?, ?)";
         $query = $this->db->prepare($sql);
-    
+
         $insertParams = [&$Title, &$WallpaperLocation]; // Removed &$WallpaperID
-    
+
         // Bind parameters using foreach loop
         $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
         $query->bind_param($paramTypes, ...$insertParams);
-    
+
         $result = $query->execute();
-    
+
         if ($result) {
             echo "<script>alert('Wallpaper Added!'); window.location = '../dashboard.php';</script>";
         } else {

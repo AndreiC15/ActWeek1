@@ -1,12 +1,12 @@
 body{
-    background-image: url('../testImages/wallpaper.jpg');
+background-image: url('../testImages/wallpaper.jpg');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
 }
 .navBarTop{
-    display: flex;
-    align-items: center; /* Align items vertically in the center */
+display: flex;
+align-items: center; /* Align items vertically in the center */
 background-color: black;
 color:white;
 text-transform: uppercase;
@@ -18,44 +18,45 @@ width:101.05%;
 height:50px;
 }
 h1{
-    position: relative;
-    margin-left: 6%;
-    }
-    .image-container,
-.image-container1 {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap; /* Ensure images wrap to the next line on smaller screens */
+position: relative;
+margin-left: 6%;
+}
+.image-container{
+position: relative;
+display: flex;
+justify-content: center;
+margin-top:10px;
+flex-wrap: wrap; /* Ensure images wrap to the next line on smaller screens */
+margin-bottom: -10px;
 }
 
 .zoom {
-    transition: transform .2s; /* Animation */
-    margin: 0 10px; /* Adjust spacing between images */
-    position: relative;
-    z-index: 1; /* Default z-index */
-    flex: 1; /* Equal width for all images within the container */
+transition: transform .2s; /* Animation */
+margin: 0 10px; /* Adjust spacing between images */
+position: relative;
+z-index: 1; /* Default z-index */
+flex: 1; /* Equal width for all images within the container */
 }
 
 .zoom:hover {
-    -ms-transform: scale(1.2); /* IE 9 */
-    -webkit-transform: scale(1.2); /* Safari 3-8 */
-    transform: scale(1.2);
-    z-index: 2; /* Higher z-index on hover */
+-ms-transform: scale(1.2); /* IE 9 */
+-webkit-transform: scale(1.2); /* Safari 3-8 */
+transform: scale(1.2);
+z-index: 2; /* Higher z-index on hover */
 }
 /* Adjust image width for smaller screens */
 .zoom a img {
-    border-style: solid;
-    border-color: white;
-    width: 100%;
-    max-width: 450px; /* Set maximum width for larger screens */
-    height: auto;
+border-style: solid;
+border-color: white;
+width: 100%;
+max-width: 450px; /* Set maximum width for larger screens */
+height: auto;
 }
 
 /* Adjust LogoutButton style for smaller screens */
 .LogoutButton {
-    
-    vertical-align: middle;
+
+vertical-align: middle;
 }
 
 .fa-2x {
@@ -89,8 +90,24 @@ width:60px;
 overflow:hidden;
 -webkit-transition:width .05s linear;
 transition:width .05s linear;
--webkit-transform:translateZ(0) scale(1,1);
+-webkit-transform: translateZ(0) scale(1, 1);
+transform: translateZ(0) scale(1, 1); /* Standard transform property */
 z-index:1000;
+}
+.main-menu li>a {
+position:relative;
+display:table;
+border-collapse:collapse;
+border-spacing:0;
+color:#999;
+font-family: arial;
+font-size: 14px;
+text-decoration:none;
+-webkit-transform: translateZ(0) scale(1, 1);
+transform: translateZ(0) scale(1, 1); /* Standard transform property */
+-webkit-transition:all .1s linear;
+transition:all .1s linear;
+
 }
 
 .main-menu>ul {
@@ -103,20 +120,7 @@ display:block;
 width:250px;
 }
 
-.main-menu li>a {
-position:relative;
-display:table;
-border-collapse:collapse;
-border-spacing:0;
-color:#999;
-font-family: arial;
-font-size: 14px;
-text-decoration:none;
--webkit-transform:translateZ(0) scale(1,1);
--webkit-transition:all .1s linear;
-transition:all .1s linear;
 
-}
 
 .main-menu .nav-icon {
 position:relative;
@@ -184,56 +188,56 @@ width:20px;
 height: 20px;
 }
 .navSideIconLogo{
-    width:40px;
-    height: 40px;
-    }
+width:40px;
+height: 40px;
+}
 .webIcon {
-    background-color: blue;
-    width: 400px;
-    height: 80px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center; /* Align items vertically in the center */
-    justify-content: center; /* Center content horizontally */
+background-color: blue;
+width: 400px;
+height: 80px;
+border-radius: 10px;
+display: flex;
+align-items: center; /* Align items vertically in the center */
+justify-content: center; /* Center content horizontally */
 }
 
 .webIcon p {
-    color: white;
-    font-size: 50px;
-    margin: 0; /* Remove default margin */
+color: white;
+font-size: 50px;
+margin: 0; /* Remove default margin */
 }
 
 .webIcon .hub {
-    background-color: red;
-    border-radius: 10px;
-    color: white;
-    margin-left: 5px; /* Add some space between "Wallpaper" and "Hub" */
+background-color: red;
+border-radius: 10px;
+color: white;
+margin-left: 5px; /* Add some space between "Wallpaper" and "Hub" */
 }
 .uploadContainer{
-    background-color: green;
-    padding: 1px;
-    width: 10%;
-    height: 35px;
-    border-radius:100px;
-    border-style: solid;
-    border-color: white;
-    margin-top:2%;
-    margin-bottom:3%;
-    cursor: pointer;
-    color: white;
+background-color: green;
+padding: 1px;
+width: 10%;
+height: 35px;
+border-radius:100px;
+border-style: solid;
+border-color: white;
+margin-top:2%;
+margin-bottom:3%;
+cursor: pointer;
+color: white;
 }
 a{
-    text-decoration: none;
+text-decoration: none;
 }
 fieldset {
-    color: white;
-    background-color: rgba(0, 0, 0, 0.608);
-    border-style: solid;
-    border-radius: 25px;
-    width: 94%;
-    margin: 0 auto; /* Center the fieldset */
-    box-sizing: border-box;
-    margin-left: 5%;
-    text-transform: uppercase;
-    
+color: white;
+background-color: rgba(0, 0, 0, 0.608);
+border-style: solid;
+border-radius: 25px;
+width: 94%;
+margin: 0 auto; /* Center the fieldset */
+box-sizing: border-box;
+margin-left: 5%;
+text-transform: uppercase;
+
 } 

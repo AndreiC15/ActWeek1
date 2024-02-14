@@ -54,6 +54,32 @@ if ($databaseConnection->getConnection()) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="pagesCSS/Dashboard.css">
+
+    <style>
+        .image-list {
+            list-style: none;
+            padding: 5;
+            margin: 5;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-top: 20px; /* Adjust the margin as needed */
+        }
+
+        .image-item {
+            flex: 0 0 30%; /* Adjust the width of each item as needed */
+            margin-bottom: 20px; /* Adjust the margin for space between images */
+        }
+
+        .image-container {
+            width: 100%;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 
 <body>
@@ -126,10 +152,10 @@ if ($databaseConnection->getConnection()) {
         <center>
         <a href="uploadWallpaper.php">
             <input style="font-size:15px" class="uploadContainer" type="button" value="Upload Wallpaper">
+            <img src="./accountProcess/upload/">
         </a>
         <fieldset>
         <h2 style="margin-left:-2.5%;">My Uploaded Wallpapers</h2>
-        <img src="../Pages/accountProcess/upload/">
         <?php
             $sql = "SELECT WallpaperID, Title, WallpaperLocation FROM wallpaper";
             $result = $databaseConnection->getConnection()->query($sql);
@@ -140,18 +166,26 @@ if ($databaseConnection->getConnection()) {
                 echo '<p style="font-size: 18px; color: #333;margin-left:-1%">You haven\'t uploaded any wallpaper yet.</p>';
                 echo '</div>';
             } else {
+                echo '<ul class="image-list">';
                 while ($row = $result->fetch_assoc()) {
-                    $imagePath = 'upload/' . $row['WallpaperLocation'];
+                    $imagePath = './accountProcess/upload/' . $row['WallpaperLocation'];
                     if (file_exists($imagePath)) {
-                        echo '<img src="' . $imagePath . '" alt="' . $row['Title'] . '" style="width: 200px; height: 150px; margin: 10px;">';
-                        echo '</br>';
+                        echo '<li class="image-item">';
+                        echo '<div class="image-container">';
+                        echo '<img src="' . $imagePath . '" alt="' . htmlspecialchars($row['Title']) . '">';
+                        echo '</div>';
+                        echo '</li>';
                     } else {
+                        echo '<li class="image-item">';
+                        echo '<div class="image-container">';
                         echo '<p style="color: red;">Image not found: ' . $row['Title'] . '</p>';
+                        echo '</div>';
+                        echo '</li>';
                     }
-                }    
+                }
+                echo '</ul>';
             }
             ?>
-    </br>
         </fieldset>
         </center>
 </body>

@@ -133,34 +133,38 @@ if ($databaseConnection->getConnection()) {
                 <tr>
                 </br>
                     <td>Title:</td>
-                    <td><input class="titleText" type="text" name="title" id="title"></td>
+                    <td><input class="titleText" type="text" name="title" id="title" required ></td>
                 </tr>
                 <tr>
                     <td>Upload image:</td>
-                    <td><input class="titleText" id="uploadImage" type="file" name="myPhoto" onchange="PreviewImage();" /></td>
+                    <td><input class="titleText" id="new_wallpaper" type="file" name="new_wallpaper"  onchange="PreviewImage();" required/></td>
                 </tr>
             </center>
         </table>
-            </form>
-            Image Preview:</br>
-</br>
-            <img id="uploadPreview" style="width:550px;"></br></br>
+            
+            <div id="imagePreviewContainer" style="display: none;">
+                Image Preview:</br></br>
+                <img id="uploadPreview" style="width: 550px;"></br></br>
+            </div>
+
             <input type="submit" name="add_wallpaper" id="add_wallpaper">
             </center>
+            </form>
         </fieldset>
 
 
 <script type="text/javascript">
+        function PreviewImage() {
+            var oFReader = new FileReader();
+            var previewContainer = document.getElementById("imagePreviewContainer");
 
-    function PreviewImage() {
-        var oFReader = new FileReader();
-        oFReader.readAsDataURL(document.getElementById("uploadImage").files[0]);
+            oFReader.readAsDataURL(document.getElementById("new_wallpaper").files[0]);
 
-        oFReader.onload = function (oFREvent) {
-            document.getElementById("uploadPreview").src = oFREvent.target.result;
+            oFReader.onload = function (oFREvent) {
+                document.getElementById("uploadPreview").src = oFREvent.target.result;
+                previewContainer.style.display = "block"; // Show the preview container
+            };
         };
-    };
-
 </script>
 
 </body>
