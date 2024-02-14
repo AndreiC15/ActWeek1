@@ -49,16 +49,16 @@ if ($databaseConnection->getConnection()) {
 }
 ?>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload</title>
-    <link rel="stylesheet" href="pagesCSS/uploadWallpaper.css">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Upload</title>
+        <link rel="stylesheet" href="pagesCSS/uploadWallpaper.css">
+    </head>
 
 <body>
 
-<div class="navBarTop">
+    <div class="navBarTop">
         <h1>UPLOAD</h1>   
     </div>
 
@@ -103,9 +103,7 @@ if ($databaseConnection->getConnection()) {
                     </a>
                 </li>
             </ul>
-            </center>
-
-            
+            </center>  
             <ul class="logout">
                 <li>
                    <a href="#">
@@ -128,28 +126,42 @@ if ($databaseConnection->getConnection()) {
             <center>
             <div class="divider">
                 <h2 style="margin-left:-2.5%;color:black;">Upload Wallpaper</h2>
-            </div>
-            
-
+        </div>
         <table>
-        <form method="POST" action="./accountProcess/process.php" enctype="multipart/form-data">
-            <center>
-            <tr>
-</br>
-                <td>Title:</td>
-                <td><input class="titleText" type="text" name="title" id="title"></td>
-            </tr>
-            <tr>
-                <td>Upload image:</td>
-                <td><input class="titleText" type="file" name="new_wallpaper" id="new_wallpaper"></td>
-            </tr>
+            <form method="POST" action="./accountProcess/process.php" enctype="multipart/form-data">
+                <center>
+                <tr>
+                </br>
+                    <td>Title:</td>
+                    <td><input class="titleText" type="text" name="title" id="title"></td>
+                </tr>
+                <tr>
+                    <td>Upload image:</td>
+                    <td><input class="titleText" id="uploadImage" type="file" name="myPhoto" onchange="PreviewImage();" /></td>
+                </tr>
             </center>
         </table>
-        <img style="width:650px;"src="./testImages/wp5.jpg"></br></br>
-        <input type="submit" name="add_wallpaper" id="add_wallpaper">
-        </form>
-        </center>
+            </form>
+            Image Preview:</br>
+</br>
+            <img id="uploadPreview" style="width:550px;"></br></br>
+            <input type="submit" name="add_wallpaper" id="add_wallpaper">
+            </center>
         </fieldset>
+
+
+<script type="text/javascript">
+
+    function PreviewImage() {
+        var oFReader = new FileReader();
+        oFReader.readAsDataURL(document.getElementById("uploadImage").files[0]);
+
+        oFReader.onload = function (oFREvent) {
+            document.getElementById("uploadPreview").src = oFREvent.target.result;
+        };
+    };
+
+</script>
 
 </body>
 </html>
