@@ -71,7 +71,6 @@ class UserAuth {
         $query->close();
     }
 
-    // ORIG ==========================
      public function editInformation($id, $FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode) {
         $db = $this->db->getConnection();
         $fields = ['FirstName', 'MiddleName', 'LastName', 'Email', 'Password', 'PhoneNumber', 'Country', 'Province', 'CityCity', 'District', 'HouseNoStreet', 'ZipCode'];
@@ -111,62 +110,36 @@ class UserAuth {
             echo "<script>alert('Failed to update user information'); window.location = '../settings.php';</script>";
         }
         $stmt->close();
-    }  
-
+    }
+    
+    public function addWallpaper($WallpaperID, $Title, $WallpaperLocation) {
+        $con = $this->db->getConnection();
+    
+        $wallpaper = $_FILES['new_wallpaper'];
+        $wallpaper_temp = $wallpaper['tmp_name'];
+        $WallpaperLocation = "upload/" . $wallpaper['name'];
+        move_uploaded_file($wallpaper_temp, $WallpaperLocation);
+    
+        $sql = "INSERT INTO wallpaper (WallpaperID, Title, WallpaperLocation) VALUES ('', ?, ?)";
+        $query = $this->db->prepare($sql);
+    
+        $insertParams = [&$Title, &$WallpaperLocation]; // Removed &$WallpaperID
+    
+        // Bind parameters using foreach loop
+        $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
+        $query->bind_param($paramTypes, ...$insertParams);
+    
+        $result = $query->execute();
+    
+        if ($result) {
+            echo "<script>alert('Wallpaper Added!'); window.location = '../dashboard.php';</script>";
+        } else {
+            echo "<script>alert('Upload Error'); window.location = '../register.php';</script>";
+        }
+        $query->close();
+    }
     
     
-    // public function editInformation($id, $FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode) {
-    //     // Retrieve the mysqli object from the DatabaseConnection
-    //     $db = $this->db->getConnection();
-    
-    //     // Sanitize user inputs to prevent SQL injection
-    //     $id = $db->real_escape_string($id);
-    //     $FirstName = $db->real_escape_string($FirstName);
-    //     $MiddleName = $db->real_escape_string($MiddleName);
-    //     $LastName = $db->real_escape_string($LastName);
-    //     $Email = $db->real_escape_string($Email);
-    //     $Password = $db->real_escape_string($Password);
-    //     $PhoneNumber = $db->real_escape_string($PhoneNumber);
-    //     $Country = $db->real_escape_string($Country);
-    //     $Province = $db->real_escape_string($Province);
-    //     $CityCity = $db->real_escape_string($CityCity);
-    //     $District = $db->real_escape_string($District);
-    //     $HouseNoStreet = $db->real_escape_string($HouseNoStreet);
-    //     $ZipCode = $db->real_escape_string($ZipCode);
-    
-    //     // Construct the SQL query
-    //     $sql = "UPDATE user_acct SET ";
-    //     $updateFields = [];
-    
-    //     // Check each field if it is provided and not empty
-    //     if (!empty($FirstName)) $updateFields[] = "FirstName = '$FirstName'";
-    //     if (!empty($MiddleName)) $updateFields[] = "MiddleName = '$MiddleName'";
-    //     if (!empty($LastName)) $updateFields[] = "LastName = '$LastName'";
-    //     if (!empty($Email)) $updateFields[] = "Email = '$Email'";
-    //     if (!empty($Password)) $updateFields[] = "Password = '$Password'";
-    //     if (!empty($PhoneNumber)) $updateFields[] = "PhoneNumber = '$PhoneNumber'";
-    //     if (!empty($Country)) $updateFields[] = "Country = '$Country'";
-    //     if (!empty($Province)) $updateFields[] = "Province = '$Province'";
-    //     if (!empty($CityCity)) $updateFields[] = "CityCity = '$CityCity'";
-    //     if (!empty($District)) $updateFields[] = "District = '$District'";
-    //     if (!empty($HouseNoStreet)) $updateFields[] = "HouseNoStreet = '$HouseNoStreet'";
-    //     if (!empty($ZipCode)) $updateFields[] = "ZipCode = '$ZipCode'";
-    
-    //     // Join the update fields into the SQL query
-    //     $sql .= implode(", ", $updateFields);
-    
-    //     // Add the WHERE clause
-    //     $sql .= " WHERE ID = '$id'";
-    
-    //     $result = $db->query($sql);
-    
-    //     if ($result) {
-    //         echo "<script>alert('User info updated!'); window.location = '../settings.php';</script>";
-    //         exit;
-    //     } else {
-    //         echo "<script>alert('Failed to update user information'); window.location = '../settings.php';</script>";
-    //     }
-    // }
     
     
 
@@ -211,6 +184,16 @@ if ($databaseConnection->getConnection()) {
             $_POST['profile_pic']
         );
     }
+    
+    if (isset($_POST['add_wallpaper'])) {
+        $id = $_SESSION['id'];
+        $userAuth->addWallpaper(
+            $id,
+            $_POST['title'],
+            $_FILES['new_wallpaper']  // Use $_FILES instead of $_POST for file uploads
+        );
+    }
+    
 
 } else {
     echo "Error: Database connection not established.";

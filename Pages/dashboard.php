@@ -129,6 +129,32 @@ if ($databaseConnection->getConnection()) {
         </a>
         <fieldset>
         <h2 style="margin-left:-2.5%;">My Uploaded Wallpapers</h2>
+        <img src="../Pages/accountProcess/upload/">
+        <?php
+$sql = "SELECT WallpaperID, Title, WallpaperLocation FROM wallpaper";
+$result = $databaseConnection->getConnection()->query($sql);
+
+// Check if there are no wallpapers
+if ($result->num_rows === 0) {
+    echo '<div style="text-align: center; padding: 5px; background-color: #f0f0f0; border: 1px solid #ccc; width:50%">';
+    echo '<p style="font-size: 18px; color: #333;margin-left:-1%">You haven\'t uploaded any wallpaper yet.</p>';
+    echo '</div>';
+} else {
+    while ($row = $result->fetch_assoc()) {
+        $imagePath = 'upload/' . $row['WallpaperLocation'];
+        if (file_exists($imagePath)) {
+            echo '<img src="' . $imagePath . '" alt="' . $row['WallpaperLocation'] . '" style="width: 200px; height: 150px; margin: 10px;">';
+            echo '</br>';
+        } else {
+            echo '<p style="color: red;">Image not found: ' . $row['WallpaperLocation'] . '</p>';
+        }
+    }
+    
+}
+?>
+
+
+
     </br>
         </fieldset>
         </center>

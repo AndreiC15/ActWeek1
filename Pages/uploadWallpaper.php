@@ -123,19 +123,31 @@ if ($databaseConnection->getConnection()) {
                 </li>  
             </ul>
         </nav>
-</br>
-</br>
+</br></br>
         <fieldset>
             <center>
-            <h2 style="margin-left:-2.5%;">Upload Wallpaper</h2>
+            <div class="divider">
+                <h2 style="margin-left:-2.5%;color:black;">Upload Wallpaper</h2>
+            </div>
+            
+
         <table>
+        <form method="POST" action="./accountProcess/process.php" enctype="multipart/form-data">
             <center>
             <tr>
+</br>
                 <td>Title:</td>
-                <td><input class="titleText" type="text"></td>
+                <td><input class="titleText" type="text" name="title" id="title"></td>
+            </tr>
+            <tr>
+                <td>Upload image:</td>
+                <td><input class="titleText" type="file" name="new_wallpaper" id="new_wallpaper"></td>
             </tr>
             </center>
         </table>
+        <img style="width:650px;"src="./testImages/wp5.jpg"></br></br>
+        <input type="submit" name="add_wallpaper" id="add_wallpaper">
+        </form>
         </center>
         </fieldset>
 
