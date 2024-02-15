@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <?php
 require_once 'accountProcess/connect.php';
 
@@ -18,7 +19,6 @@ class UserProfile {
             $result = $stmt->get_result();
 
             $userData = $result->fetch_assoc();
-
 
             if (!$userData) {
                 echo "<script>alert('No login session'); window.location = 'index.php';</script>";
@@ -79,33 +79,50 @@ if ($databaseConnection->getConnection()) {
             width: 100%;
             height: auto;
         }
+
+        .dl_Btn {
+            width:fit-content;
+            height: 20px;
+            padding:5px;
+            background-color: red;
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        a {
+            color: white;
+    text-decoration: none;
+}
+
     </style>
 </head>
+
 <body>
     <center>
-    <div class="webIcon">
-        <p class="webtitle">Wallpaper</p>
-        <div class="hub">
-            <p class="webtitle" style="padding: 0 10px 0 10px;">Station</p>
+        <div class="webIcon">
+            <p class="webtitle">Wallpaper</p>
+            <div class="hub">
+                <p class="webtitle" style="padding: 0 10px 0 10px;">Station</p>
+            </div>
         </div>
-    </div>
-        <p style="font-family: rockwell;color:white;">Hello <b style="font-size:20px;"><u><?php echo $userData['FirstName']; ?></u></b>&nbsp;!, this is my sample website. Contact me in my <a style="color:white;"href="https://www.facebook.com/atc11502" target="_blank">Facebook account</a> if you have any inquiries</p>
+        <p style="font-family: rockwell;color:white;">Hello <b style="font-size:20px;"><u><?php echo $userData['FirstName']; ?></u></b>&nbsp;!, this is my sample website. Contact me in my <a style="color:white;" href="https://www.facebook.com/atc11502" target="_blank">Facebook account</a> if you have any inquiries</p>
         <h2>Popular HD Wallpaper</h2>
-        <div class="area"></div><nav class="main-menu">
-            
+        <div class="area"></div>
+        <nav class="main-menu">
+
             <ul>
                 <li>
-                       <i class="fa fa-info fa-2x"><img class="navSideIconLogo" src="testImages/icon.png"></i>
-                        <span class="nav-text">
-                            WallpaperStation
-                        </span>
-                    </a>
+                    <i class="fa fa-info fa-2x"><img class="navSideIconLogo" src="testImages/icon.png"></i>
+                    <span class="nav-text">
+                        WallpaperStation
+                    </span>
                 </li>
             </ul>
             <ul>
                 <li>
                     <a href="homepage.php">
-                       <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/home.png"></i>
+                        <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/home.png"></i>
                         <span class="nav-text">
                             Home
                         </span>
@@ -115,7 +132,7 @@ if ($databaseConnection->getConnection()) {
             <ul>
                 <li>
                     <a href="dashboard.php">
-                       <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/dashboard.png"></i>
+                        <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/dashboard.png"></i>
                         <span class="nav-text">
                             Dashboard
                         </span>
@@ -125,30 +142,30 @@ if ($databaseConnection->getConnection()) {
             <ul>
                 <li>
                     <a href="settings.php">
-                       <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/setting.png"></i>
+                        <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/setting.png"></i>
                         <span class="nav-text">
                             Account Settings
                         </span>
                     </a>
                 </li>
-    </ul>
+            </ul>
             <ul class="logout">
                 <li>
-                   <a href="#">
-                   <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/shutdown.png"></i>
-                   <span class="nav-text">
-                        <div class="LogoutButton">
-                        <form method="POST" action="./accountProcess/process.php">
-                <input style="width: 100%; max-width: 100px; height: 30px; background-color: red; border-radius: 50px; color: white;cursor: pointer;" type="submit" id="logout" name="logout" value="Logout">
-            </form>  
-        </div>
-                   </span>
+                    <a href="#">
+                        <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/shutdown.png"></i>
+                        <span class="nav-text">
+                            <div class="LogoutButton">
+                                <form method="POST" action="./accountProcess/process.php">
+                                    <input style="width: 100%; max-width: 100px; height: 30px; background-color: red; border-radius: 50px; color: white;cursor: pointer;" type="submit" id="logout" name="logout" value="Logout">
+                                </form>
+                            </div>
+                        </span>
                     </a>
-                </li>  
+                </li>
             </ul>
         </nav>
         <fieldset>
-        <?php
+            <?php
             $sql = "SELECT WallpaperID, Title, WallpaperLocation FROM wallpaper";
             $result = $databaseConnection->getConnection()->query($sql);
 
@@ -163,6 +180,9 @@ if ($databaseConnection->getConnection()) {
                         echo '<div class="image-container">';
                         echo '<img style="width:400px;height:230px; " src="' . $imagePath . '" alt="' . htmlspecialchars($row['Title']) . '">';
                         echo '<p style="color: white;text-transform:uppercase">' . $row['Title'] . '</p>';
+                        echo '</div>';
+                        echo '<div class="dl_Btn">';
+                        echo '<a href="' . $imagePath . '" download="' . htmlspecialchars($row['Title']) . '">Download</a>';
                         echo '</div>';
                         echo '</li>';
                     } else {
@@ -180,7 +200,8 @@ if ($databaseConnection->getConnection()) {
                 echo '</div>';
             }
             ?>
-        </fieldset>   
-        </center>
+        </fieldset>
+    </center>
 </body>
+
 </html>

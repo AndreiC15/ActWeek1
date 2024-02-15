@@ -173,10 +173,9 @@ if ($databaseConnection->getConnection()) {
                         echo '<li class="image-item">';
                         echo '<div class="image-container">';
                         echo '<img style="width:400px;height:230px; " src="' . $imagePath . '" alt="' . htmlspecialchars($row['Title']) . '">';
-
                         echo '<form method="post" action="./accountProcess/process.php">';
                         echo '<input type="hidden" name="WallpaperID" value="' . $row['WallpaperID'] . '">';
-                        echo '<input class="deleteBtn" type="submit" name="delete_wallpaper" value="Delete">';
+                        echo '</br><input class="deleteBtn" type="submit" name="delete_wallpaper" value="Delete">';
                         echo '</form>';
                         echo '</div>';
                         echo '</li>';
