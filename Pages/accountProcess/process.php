@@ -139,7 +139,32 @@ class UserAuth {
         $query->close();
     }
     
+    public function deleteWallpaper($WallpaperId) {
+        $WallpaperId = filter_var($WallpaperId, FILTER_VALIDATE_INT);
     
+        if ($WallpaperId === false || $WallpaperId <= 0) {
+            echo "invalid wallpaper";
+            exit;
+        }
+    
+        $deleteSql = "DELETE FROM wallpaper WHERE WallpaperID = ?";
+        $deleteStmt = $this->db->getConnection()->prepare($deleteSql);
+        $deleteStmt->bind_param("i", $WallpaperId);
+        $deleteResult = $deleteStmt->execute();
+        $deleteStmt->close();
+    
+        if ($deleteResult) {
+            $imagePath = './accountProcess/upload/' . $WallpaperId;
+            if (file_exists($imagePath)) {
+                unlink($imagePath); // Delete the file
+                echo "deleted";
+            } else {
+                echo "file not found";
+                exit;
+            }
+        }
+    }
+
     
     
 
@@ -152,6 +177,7 @@ class UserAuth {
 
 if ($databaseConnection->getConnection()) {
     $userAuth = new UserAuth($databaseConnection);
+
 
     if (isset($_POST['login'])) {
         $userAuth->login($_POST['email'], $_POST['password']);
@@ -190,11 +216,14 @@ if ($databaseConnection->getConnection()) {
         $userAuth->addWallpaper(
             $id,
             $_POST['title'],
-            $_FILES['new_wallpaper']  // Use $_FILES instead of $_POST for file uploads
+            $_FILES['new_wallpaper']
         );
     }
-    
 
+    if (isset($_POST['delete_wallpaper'])) {
+        $WallpaperIdToDelete = $_POST['WallpaperID'];
+        $userAuth->deleteWallpaper($WallpaperIdToDelete);
+    }
 } else {
     echo "Error: Database connection not established.";
 }

@@ -73,11 +73,15 @@ if ($databaseConnection->getConnection()) {
 
         .image-container {
             width: 100%;
+            margin-left:-15.5%;
         }
 
         .image-container img {
             width: 100%;
             height: auto;
+        }
+        .deleteBtn{
+            margin-left:-15.5%;
         }
     </style>
 </head>
@@ -152,7 +156,6 @@ if ($databaseConnection->getConnection()) {
         <center>
         <a href="uploadWallpaper.php">
             <input style="font-size:15px" class="uploadContainer" type="button" value="Upload Wallpaper">
-            <img src="./accountProcess/upload/">
         </a>
         <fieldset>
         <h2 style="margin-left:-2.5%;">My Uploaded Wallpapers</h2>
@@ -161,18 +164,20 @@ if ($databaseConnection->getConnection()) {
             $result = $databaseConnection->getConnection()->query($sql);
 
             // Check if there are no wallpapers
-            if ($result->num_rows === 0) {
-                echo '<div style="text-align: center; padding: 5px; background-color: #f0f0f0; border: 1px solid #ccc; width:50%">';
-                echo '<p style="font-size: 18px; color: #333;margin-left:-1%">You haven\'t uploaded any wallpaper yet.</p>';
-                echo '</div>';
-            } else {
+            if ($result->num_rows >= 1) {
                 echo '<ul class="image-list">';
                 while ($row = $result->fetch_assoc()) {
-                    $imagePath = './accountProcess/upload/' . $row['WallpaperLocation'];
+                    $imagePath = 'accountProcess/' . $row['WallpaperLocation'];
+
                     if (file_exists($imagePath)) {
                         echo '<li class="image-item">';
                         echo '<div class="image-container">';
-                        echo '<img src="' . $imagePath . '" alt="' . htmlspecialchars($row['Title']) . '">';
+                        echo '<img style="width:400px;height:230px; " src="' . $imagePath . '" alt="' . htmlspecialchars($row['Title']) . '">';
+
+                        echo '<form method="post" action="./accountProcess/process.php">';
+                        echo '<input type="hidden" name="WallpaperID" value="' . $row['WallpaperID'] . '">';
+                        echo '<input class="deleteBtn" type="submit" name="delete_wallpaper" value="Delete">';
+                        echo '</form>';
                         echo '</div>';
                         echo '</li>';
                     } else {
@@ -184,6 +189,10 @@ if ($databaseConnection->getConnection()) {
                     }
                 }
                 echo '</ul>';
+            } else {
+                echo '<div style="text-align: center; padding: 5px; background-color: #f0f0f0; border: 1px solid #ccc; width:50%">';
+                echo '<p style="font-size: 18px; color: #333;margin-left:-1%">You haven\'t uploaded any wallpaper yet.</p>';
+                echo '</div>';
             }
             ?>
         </fieldset>

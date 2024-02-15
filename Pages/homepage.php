@@ -56,9 +56,29 @@ if ($databaseConnection->getConnection()) {
     <title>Home</title>
     <link rel="stylesheet" href="pagesCSS/HomepageStyle.css">
     <style>
-        
-        
+        .image-list {
+            list-style: none;
+            padding: 5;
+            margin: 5;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-top: 20px; /* Adjust the margin as needed */
+        }
 
+        .image-item {
+            flex: 0 0 30%; /* Adjust the width of each item as needed */
+            margin-bottom: 10px; /* Adjust the margin for space between images */
+        }
+
+        .image-container {
+            width: 100%;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+        }
     </style>
 </head>
 <body>
@@ -128,65 +148,39 @@ if ($databaseConnection->getConnection()) {
             </ul>
         </nav>
         <fieldset>
-            <!-- <div class="image-container">
-                <div class="zoom">
-                    <a href="#" target="_blank">
-                        <img src="testImages/wp3.jpg">
-                    </a>
-                    <p class="title">Valorant</p>
-                </div>
+        <?php
+            $sql = "SELECT WallpaperID, Title, WallpaperLocation FROM wallpaper";
+            $result = $databaseConnection->getConnection()->query($sql);
 
-                <div class="zoom">
-                    <a href="#" target="_blank">
-                        <img src="testImages/wp4.jpg">
-                    </a>
-                    <p class="title">Grand Theft Auto VI</p>
-                </div>
+            // Check if there are no wallpapers
+            if ($result->num_rows >= 1) {
+                echo '<ul class="image-list">';
+                while ($row = $result->fetch_assoc()) {
+                    $imagePath = 'accountProcess/' . $row['WallpaperLocation'];
 
-                <div class="zoom">
-                    <a href="#" target="_blank">
-                        <img src="testImages/wp6.jpg">
-                    </a>
-                    <p class="title">Resident Evil 2</p>
-                </div> 
-                </div>  
-            </div> -->
-
-            <?php
-// Assuming you have an array of image sources and titles
-$imageSources = [
-    "testImages/wp3.jpg",
-    "testImages/wp4.jpg",
-    "testImages/wp6.jpg",
-    // Add more image sources as needed
-];
-
-$titles = [
-    "Valorant",
-    "Grand Theft Auto VI",
-    "Resident Evil 2",
-    // Add more titles as needed
-];
-
-// Loop through the array and generate the HTML
-for ($k = 0; $k < 3; $k++) { // Loop vertically 3 times
-    echo '<div class="image-container">';
-    
-    // Loop through the images and titles
-    for ($i = 0; $i < count($imageSources); $i++) {
-        echo '<div class="zoom">';
-        echo '<a href="#" target="_blank">';
-        echo '<img src="' . $imageSources[$i] . '">';
-        echo '</a>';
-        echo '<p class="title">' . $titles[$i] . '</p>';
-        echo '</div>';
-    }
-    
-    echo '</div>';
-}
-?>
-
+                    if (file_exists($imagePath)) {
+                        echo '<li class="image-item">';
+                        echo '<div class="image-container">';
+                        echo '<img style="width:400px;height:230px; " src="' . $imagePath . '" alt="' . htmlspecialchars($row['Title']) . '">';
+                        echo '<p style="color: white;text-transform:uppercase">' . $row['Title'] . '</p>';
+                        echo '</div>';
+                        echo '</li>';
+                    } else {
+                        echo '<li class="image-item">';
+                        echo '<div class="image-container">';
+                        echo '<p style="color: red;">Image not found: ' . $row['Title'] . '</p>';
+                        echo '</div>';
+                        echo '</li>';
+                    }
+                }
+                echo '</ul>';
+            } else {
+                echo '<div style="text-align: center; padding: 5px; background-color: #f0f0f0; border: 1px solid #ccc; width:50%">';
+                echo '<p style="font-size: 18px; color: #333;margin-left:-1%">You haven\'t uploaded any wallpaper yet.</p>';
+                echo '</div>';
+            }
+            ?>
         </fieldset>   
-    </center>
+        </center>
 </body>
 </html>
