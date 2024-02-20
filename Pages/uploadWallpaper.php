@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <?php
 require_once 'accountProcess/connect.php';
 
@@ -18,7 +20,6 @@ class UserProfile {
             $result = $stmt->get_result();
 
             $userData = $result->fetch_assoc();
-
 
             if (!$userData) {
                 echo "<script>alert('No login session'); window.location = 'index.php';</script>";
@@ -47,7 +48,34 @@ if ($databaseConnection->getConnection()) {
 } else {
     echo "Error: Database connection not established.";
 }
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST["add_wallpaper"])) {
+        $title = $_POST["title"];
+
+        // Get the user ID of the uploader
+        $uploaderID = $userData['ID'];
+
+        // Upload image to a specific directory
+        $uploadDirectory = "path_to_your_upload_directory/"; // Change this path to your actual upload directory
+        $newWallpaper = $_FILES["new_wallpaper"]["name"];
+        $targetFile = $uploadDirectory . basename($newWallpaper);
+
+        // Your existing image upload code
+        // ...
+
+        // After successfully uploading the image, insert the record into the wallpaper table
+        $sql = "INSERT INTO wallpaper (Title, WallpaperLocation, UserID) VALUES (?, ?, ?)";
+        $stmt = $databaseConnection->getConnection()->prepare($sql);
+        $stmt->bind_param("sss", $title, $newWallpaper, $uploaderID);
+        $stmt->execute();
+        $stmt->close();
+    }
+}
 ?>
+
+<!-- The rest of your HTML code remains the same -->
+
 
     <head>
         <meta charset="UTF-8">

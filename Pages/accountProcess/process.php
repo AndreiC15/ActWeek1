@@ -36,9 +36,6 @@ class UserAuth {
         }
     }
 
-
-    // Inside the UserAuth class in process.php
-
 public function register($FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode) {
     $con = $this->db->getConnection();
 
@@ -84,12 +81,6 @@ public function register($FirstName, $MiddleName, $LastName, $Email, $Password, 
     }
     $query->close();
 }
-
-     // Inside the UserAuth class in process.php
-
-// Inside the UserAuth class in process.php
-
-// Inside the UserAuth class in process.php
 
 public function editInformation($id, $FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode, $ProfilePic) {
     $db = $this->db->getConnection();
@@ -219,11 +210,6 @@ public function removeProfilePicture($id) {
     }
 }
 
-
-
-
-
-    
     public function addWallpaper($WallpaperID, $Title, $WallpaperLocation) {
         $con = $this->db->getConnection();
 
@@ -276,9 +262,6 @@ public function removeProfilePicture($id) {
             }
         }
     }
-
-    
-    
 
     public function logout() {
         echo "<script>alert('Logout Successful'); window.location = '../index.php';</script>";

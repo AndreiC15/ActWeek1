@@ -19,7 +19,6 @@ class UserProfile {
 
             $userData = $result->fetch_assoc();
 
-
             if (!$userData) {
                 echo "<script>alert('No login session'); window.location = 'index.php';</script>";
                 exit();
@@ -40,14 +39,15 @@ if ($databaseConnection->getConnection()) {
     if (!empty($_SESSION['id'])) {
         $id = $_SESSION['id'];
         $userData = $userProfile->getUserProfile($id);
-    } else {
-        echo "<script>alert('Logout successfully'); window.location = 'index.php';</script>";
-        exit();
+
+        // Updated SQL query to retrieve only the wallpapers uploaded by the logged-in user
+        $userID = $_SESSION['id'];
+        $sql = "SELECT WallpaperID, Title, WallpaperLocation FROM wallpaper WHERE UserID = $userID";
+        $result = $databaseConnection->getConnection()->query($sql);
     }
-} else {
-    echo "Error: Database connection not established.";
 }
 ?>
+
 
 <head>
     <meta charset="UTF-8">

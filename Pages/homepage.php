@@ -196,7 +196,7 @@ if ($databaseConnection->getConnection()) {
                 echo '</ul>';
             } else {
                 echo '<div style="text-align: center; padding: 5px; background-color: #f0f0f0; border: 1px solid #ccc; width:50%">';
-                echo '<p style="font-size: 18px; color: #333;margin-left:-1%">You haven\'t uploaded any wallpaper yet.</p>';
+                echo '<p style="font-size: 18px; color: #333;margin-left:-1%">No uploaded wallpapers&#128531</p>';
                 echo '</div>';
             }
             ?>
