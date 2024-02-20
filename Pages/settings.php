@@ -128,35 +128,46 @@ if ($databaseConnection->getConnection()) {
             <div class="profilePic">
                 <form enctype="multipart/form-data" method="post" action="./accountProcess/process.php">
                 <?php
-                    $sql = "SELECT ProfilePic FROM user_acct WHERE ID = ?";
-                    $stmt = $databaseConnection->getConnection()->prepare($sql);
-                    $stmt->bind_param('i', $_SESSION['id']);
-                    $stmt->execute();
-                    $result = $stmt->get_result();
+function displayProfilePicture($userId, $db) {
+    // Prepare and execute the SQL query to get the user's profile picture path
+    $getProfilePicPathSql = "SELECT ProfilePic FROM user_acct WHERE ID = ?";
+    $getProfilePicPathStmt = $db->prepare($getProfilePicPathSql);
+    $getProfilePicPathStmt->bind_param('i', $userId);
+    $getProfilePicPathStmt->execute();
+    $profilePicResult = $getProfilePicPathStmt->get_result();
 
-                    // Check if the user has a profile picture
-                    if ($result->num_rows === 1) {
-                        $row = $result->fetch_assoc();
-                        $profilePicPath = 'accountProcess/' . $row['ProfilePic'];
+    // Check if the query returned a result
+    if ($profilePicResult->num_rows === 1) {
+        $row = $profilePicResult->fetch_assoc();
+        $profilePicPath = 'accountProcess/' . $row['ProfilePic'];
 
-                        if (file_exists($profilePicPath)) {
-                            echo '<div class="profilePic">';
-                            echo '<img class="userImage" src="' . $profilePicPath . '" alt="user profile">';
-                            echo '</div>';
-                        } else {
-                            echo '<div class="profilePic">';
-                            echo '<p style="color: red;">Profile picture not found</p>';
-                            echo '</div>';
-                        }
-                    } else {
-                        echo '<div class="profilePic">';
-                        echo '<p style="color: red;">User not found or has no profile picture</p>';
-                        echo '</div>';
-                    }
+        // Check if the user has a profile picture and the file exists
+        if (!empty($row['ProfilePic']) && file_exists($profilePicPath)) {
+            echo '<div class="profilePic">';
+            echo '<img class="userImage" src="' . $profilePicPath . '" alt="user profile">';
+            echo '</div>';
+        } else {
+            // No profile picture found or invalid path, display default image
+            echo '<div class="profilePic">';
+            echo '<img style="position:relative;width:120px;height:120px;margin-left:-25%" src="./testImages/user.png" alt="user profile">';
+            echo '</div>';
+        }
+    } else {
+        // User not found, display default image
+        echo '<div class="profilePic">';
+        echo '<img style="position:relative;width:120px;height:120px;margin-left:-25%" src="./testImages/user.png" alt="user profile">';
+        echo '</div>';
+    }
+}
 
-                    ?>
+// Usage
+displayProfilePicture($_SESSION['id'], $databaseConnection->getConnection());
+?>
+
+
             </br>
             <input type="file" id="profile_pic" name="profile_pic">
+            <input style="position:absolute;margin-top:2.5%;margin-left:-18%" name="remove_pic" id="remove_pic" type=submit value="Remove picture">
             </div>
             <div class="dividerTop"></div>
             <div class="dividerProfile"></div>

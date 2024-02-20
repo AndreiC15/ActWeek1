@@ -10,3 +10,4 @@ Project Test for OJT
 -Register and settings email and contact number duplicate check function added 9:15PM <br>
 -Change branch from "first" to "main"<br>
 -Upload Profile Picture added 11:55AM <br>
+-Delete Profile Picture added 2:30AM <br>

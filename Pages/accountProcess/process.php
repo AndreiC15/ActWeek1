@@ -168,6 +168,60 @@ public function editInformation($id, $FirstName, $MiddleName, $LastName, $Email,
     $stmt->close();
 }
 
+// Inside the UserAuth class in process.php
+
+public function removeProfilePicture($id) {
+    $id = filter_var($id, FILTER_VALIDATE_INT);
+
+    if ($id === false || $id <= 0) {
+        echo "Invalid user ID";
+        exit;
+    }
+
+    $db = $this->db->getConnection();
+
+    // Fetch the current profile picture path
+    $getProfilePicPathSql = "SELECT ProfilePic FROM user_acct WHERE ID = ?";
+    $getProfilePicPathStmt = $db->prepare($getProfilePicPathSql);
+    $getProfilePicPathStmt->bind_param('i', $id);
+    $getProfilePicPathStmt->execute();
+    $profilePicResult = $getProfilePicPathStmt->get_result();
+
+    if ($profilePicResult->num_rows === 1) {
+        $row = $profilePicResult->fetch_assoc();
+
+        // Use __DIR__ to get the absolute path of the script directory
+        $profilePicPath = '' . $row['ProfilePic'];
+
+        // Check if the user has a profile picture
+        if (file_exists($profilePicPath)) {
+            // Remove the existing profile picture file
+            if (unlink($profilePicPath)) {
+                // Update the database to set ProfilePic to NULL
+                $updateProfilePicSql = "UPDATE user_acct SET ProfilePic = NULL WHERE ID = ?";
+                $updateProfilePicStmt = $db->prepare($updateProfilePicSql);
+                $updateProfilePicStmt->bind_param('i', $id);
+                $updateProfilePicStmt->execute();
+
+                if ($updateProfilePicStmt->affected_rows >= 1) {
+                    echo "<script>alert('Profile picture removed successfully!'); window.location = '../settings.php';</script>";
+                } else {
+                    echo "Failed to update profile picture record in the database";
+                }
+            } else {
+                echo "Failed to remove the profile picture file";
+            }
+        } else {
+            echo "Profile picture not found at path: $profilePicPath";
+        }
+    } else {
+        echo "User not found";
+    }
+}
+
+
+
+
 
     
     public function addWallpaper($WallpaperID, $Title, $WallpaperLocation) {
@@ -267,6 +321,10 @@ if ($databaseConnection->getConnection()) {
             $_POST['zipcode'],
             $_FILES['profile_pic']
         );
+    }
+    if (isset($_POST['remove_pic'])) {
+        $id = $_SESSION['id'];
+        $userAuth->removeProfilePicture($id);
     }
     
     if (isset($_POST['add_wallpaper'])) {
