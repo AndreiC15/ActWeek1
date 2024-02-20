@@ -37,80 +37,123 @@ class UserAuth {
     }
 
 
-    public function register($FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode) {
-        $con = $this->db->getConnection();
-    
-        // Check if email already exists
-        $checkEmailDuplicate = "SELECT * FROM user_acct WHERE Email = ?";
-        $stmtCheckEmail = $this->db->prepare($checkEmailDuplicate);
-        $stmtCheckEmail->bind_param("s", $Email);
-        $stmtCheckEmail->execute();
-        $checkEmailResult = $stmtCheckEmail->get_result();
-    
-        if ($checkEmailResult->num_rows > 0) {
-            echo "<script>alert('Email Already Exists'); window.location = '../register.php';</script>";
-            exit;
-        }
+    // Inside the UserAuth class in process.php
 
-        $sql = "INSERT INTO user_acct (FirstName, MiddleName, LastName, Email, Password, PhoneNumber, Country, Province, CityCity, District, HouseNoStreet, ZipCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $query = $this->db->prepare($sql);
-    
-        $insertParams = [&$FirstName, &$MiddleName, &$LastName, &$Email, &$Password, &$PhoneNumber, &$Country, &$Province, &$CityCity, &$District, &$HouseNoStreet, &$ZipCode];
-    
-        // Bind parameters using foreach loop
-        $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
-        $query->bind_param($paramTypes, ...$insertParams);
+public function register($FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode) {
+    $con = $this->db->getConnection();
 
-        $result = $query->execute();
+    // Check if email already exists
+    $checkEmailDuplicate = "SELECT * FROM user_acct WHERE Email = ?";
+    $stmtCheckEmail = $this->db->prepare($checkEmailDuplicate);
+    $stmtCheckEmail->bind_param("s", $Email);
+    $stmtCheckEmail->execute();
+    $checkEmailResult = $stmtCheckEmail->get_result();
 
-        if ($result) {
-            echo "<script>alert('Registered Successfully, please proceed to login page'); window.location = '../index.php';</script>";
-        } else {
-            echo "<script>alert('Error in registration'); window.location = '../register.php';</script>";
-        }
-        $query->close();
+    if ($checkEmailResult->num_rows > 0) {
+        echo "<script>alert('Email Already Exists'); window.location = '../register.php';</script>";
+        exit;
     }
 
-     public function editInformation($id, $FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode) {
-        $db = $this->db->getConnection();
-        $fields = ['FirstName', 'MiddleName', 'LastName', 'Email', 'Password', 'PhoneNumber', 'Country', 'Province', 'CityCity', 'District', 'HouseNoStreet', 'ZipCode'];
-        $id = $db->real_escape_string($id);
-    
-        foreach ($fields as $field) {
-            $$field = $db->real_escape_string($$field);
-        }
-    
-        $sql = "UPDATE user_acct SET ";
-        $updateFields = [];
-        $params = [];
-        
-        foreach ($fields as $field) {
-            if (!empty($$field)) {
-                $updateFields[] = "$field = ?";
-                $params[] = $$field;
-            }
-        }
-    
-        $sql .= implode(", ", $updateFields);
-        $sql .= " WHERE ID = ?";
-        
-        // Add the ID to the parameters
-        $params[] = $id;
-    
-        $stmt = $db->prepare($sql);
-        $paramTypes = str_repeat('s', count($params));
-        $stmt->bind_param($paramTypes, ...$params);
+    // Check if contact number already exists
+    $checkPhoneNumberDuplicate = "SELECT * FROM user_acct WHERE PhoneNumber = ?";
+    $stmtCheckPhoneNumber = $this->db->prepare($checkPhoneNumberDuplicate);
+    $stmtCheckPhoneNumber->bind_param("s", $PhoneNumber);
+    $stmtCheckPhoneNumber->execute();
+    $checkPhoneNumberResult = $stmtCheckPhoneNumber->get_result();
 
-        $result = $stmt->execute();
-
-        if ($result) {
-            echo "<script>alert('User info updated!'); window.location = '../settings.php';</script>";
-            exit;
-        } else {
-            echo "<script>alert('Failed to update user information'); window.location = '../settings.php';</script>";
-        }
-        $stmt->close();
+    if ($checkPhoneNumberResult->num_rows > 0) {
+        echo "<script>alert('Contact Number Already Exists'); window.location = '../register.php';</script>";
+        exit;
     }
+
+    $sql = "INSERT INTO user_acct (FirstName, MiddleName, LastName, Email, Password, PhoneNumber, Country, Province, CityCity, District, HouseNoStreet, ZipCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = $this->db->prepare($sql);
+
+    $insertParams = [&$FirstName, &$MiddleName, &$LastName, &$Email, &$Password, &$PhoneNumber, &$Country, &$Province, &$CityCity, &$District, &$HouseNoStreet, &$ZipCode];
+
+    // Bind parameters using foreach loop
+    $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
+    $query->bind_param($paramTypes, ...$insertParams);
+
+    $result = $query->execute();
+
+    if ($result) {
+        echo "<script>alert('Registered Successfully, please proceed to the login page'); window.location = '../index.php';</script>";
+    } else {
+        echo "<script>alert('Error in registration'); window.location = '../register.php';</script>";
+    }
+    $query->close();
+}
+
+     // Inside the UserAuth class in process.php
+
+// Inside the UserAuth class in process.php
+
+public function editInformation($id, $FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode) {
+    $db = $this->db->getConnection();
+    $fields = ['FirstName', 'MiddleName', 'LastName', 'Email', 'Password', 'PhoneNumber', 'Country', 'Province', 'CityCity', 'District', 'HouseNoStreet', 'ZipCode'];
+    $id = $db->real_escape_string($id);
+
+    foreach ($fields as $field) {
+        $$field = $db->real_escape_string($$field);
+    }
+
+    // Check if the new email is already in use
+    $checkEmailDuplicate = "SELECT * FROM user_acct WHERE Email = ? AND ID != ?";
+    $stmtCheckEmail = $this->db->prepare($checkEmailDuplicate);
+    $stmtCheckEmail->bind_param("si", $Email, $id);
+    $stmtCheckEmail->execute();
+    $checkEmailResult = $stmtCheckEmail->get_result();
+
+    if ($checkEmailResult->num_rows > 0) {
+        echo "<script>alert('Email Already in Use'); window.location = '../settings.php';</script>";
+        exit;
+    }
+
+    // Check if the new contact number is already in use
+    $checkPhoneNumberDuplicate = "SELECT * FROM user_acct WHERE PhoneNumber = ? AND ID != ?";
+    $stmtCheckPhoneNumber = $this->db->prepare($checkPhoneNumberDuplicate);
+    $stmtCheckPhoneNumber->bind_param("si", $PhoneNumber, $id);
+    $stmtCheckPhoneNumber->execute();
+    $checkPhoneNumberResult = $stmtCheckPhoneNumber->get_result();
+
+    if ($checkPhoneNumberResult->num_rows > 0) {
+        echo "<script>alert('Phone Number Already in Use'); window.location = '../settings.php';</script>";
+        exit;
+    }
+
+    $sql = "UPDATE user_acct SET ";
+    $updateFields = [];
+    $params = [];
+
+    foreach ($fields as $field) {
+        if (!empty($$field)) {
+            $updateFields[] = "$field = ?";
+            $params[] = $$field;
+        }
+    }
+
+    $sql .= implode(", ", $updateFields);
+    $sql .= " WHERE ID = ?";
+
+    // Add the ID to the parameters
+    $params[] = $id;
+
+    $stmt = $db->prepare($sql);
+    $paramTypes = str_repeat('s', count($params));
+    $stmt->bind_param($paramTypes, ...$params);
+
+    $result = $stmt->execute();
+
+    if ($result) {
+        echo "<script>alert('User info updated!'); window.location = '../settings.php';</script>";
+        exit;
+    } else {
+        echo "<script>alert('Failed to update user information'); window.location = '../settings.php';</script>";
+    }
+    $stmt->close();
+}
+
     
     public function addWallpaper($WallpaperID, $Title, $WallpaperLocation) {
         $con = $this->db->getConnection();
@@ -207,7 +250,6 @@ if ($databaseConnection->getConnection()) {
             $_POST['district'],
             $_POST['house_no_street'],
             $_POST['zipcode'],
-            $_POST['profile_pic']
         );
     }
     
