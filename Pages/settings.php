@@ -127,9 +127,36 @@ if ($databaseConnection->getConnection()) {
         <div class="profileContainerInside">
             <div class="profilePic">
                 <form enctype="multipart/form-data" method="post" action="./accountProcess/process.php">
-                <img class="userImage" src="./testImages/user.png" title="user icons"></br>
-</br>
-                <input type="file" id="profile_pic" name="profile_pic">
+                <?php
+                    $sql = "SELECT ProfilePic FROM user_acct WHERE ID = ?";
+                    $stmt = $databaseConnection->getConnection()->prepare($sql);
+                    $stmt->bind_param('i', $_SESSION['id']);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+
+                    // Check if the user has a profile picture
+                    if ($result->num_rows === 1) {
+                        $row = $result->fetch_assoc();
+                        $profilePicPath = 'accountProcess/' . $row['ProfilePic'];
+
+                        if (file_exists($profilePicPath)) {
+                            echo '<div class="profilePic">';
+                            echo '<img class="userImage" src="' . $profilePicPath . '" alt="user profile">';
+                            echo '</div>';
+                        } else {
+                            echo '<div class="profilePic">';
+                            echo '<p style="color: red;">Profile picture not found</p>';
+                            echo '</div>';
+                        }
+                    } else {
+                        echo '<div class="profilePic">';
+                        echo '<p style="color: red;">User not found or has no profile picture</p>';
+                        echo '</div>';
+                    }
+
+                    ?>
+            </br>
+            <input type="file" id="profile_pic" name="profile_pic">
             </div>
             <div class="dividerTop"></div>
             <div class="dividerProfile"></div>
@@ -171,15 +198,15 @@ if ($databaseConnection->getConnection()) {
         </table>
         </div>
     </div>
-<script>
-            function myFunction() {
-            var x = document.getElementById("password");
-            if (x.type === "password") {
+    <script>
+    function myFunction() {
+        var x = document.getElementById("password");
+        if (x.type === "password") {
             x.type = "text";
-            } else {
+        } else {
             x.type = "password";
-                }
-            }
-        </script>  
+        }
+    }
+</script>
 </body>
 </html>

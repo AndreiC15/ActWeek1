@@ -31,6 +31,7 @@ border-radius: 20px;
 margin-left:-60px;
 width:120px;
 height:120px;
+object-fit: cover;
 }
 .dividerProfile{
 position: absolute;
@@ -48,6 +49,7 @@ margin-left: -20px;
 }
 .userProfile{
   margin-top: -3%;
+  margin-left: -3%;
 }
 .personalInfo{
   margin-top: 3%;

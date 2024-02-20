@@ -89,14 +89,12 @@ public function register($FirstName, $MiddleName, $LastName, $Email, $Password, 
 
 // Inside the UserAuth class in process.php
 
-public function editInformation($id, $FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode) {
-    $db = $this->db->getConnection();
-    $fields = ['FirstName', 'MiddleName', 'LastName', 'Email', 'Password', 'PhoneNumber', 'Country', 'Province', 'CityCity', 'District', 'HouseNoStreet', 'ZipCode'];
-    $id = $db->real_escape_string($id);
+// Inside the UserAuth class in process.php
 
-    foreach ($fields as $field) {
-        $$field = $db->real_escape_string($$field);
-    }
+public function editInformation($id, $FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode, $ProfilePic) {
+    $db = $this->db->getConnection();
+    $fields = ['FirstName', 'MiddleName', 'LastName', 'Email', 'Password', 'PhoneNumber', 'Country', 'Province', 'CityCity', 'District', 'HouseNoStreet', 'ZipCode', 'ProfilePic'];
+    $id = $db->real_escape_string($id);
 
     // Check if the new email is already in use
     $checkEmailDuplicate = "SELECT * FROM user_acct WHERE Email = ? AND ID != ?";
@@ -122,14 +120,30 @@ public function editInformation($id, $FirstName, $MiddleName, $LastName, $Email,
         exit;
     }
 
+    // Handle profile picture upload
+    $profilePicLocation = null;
+    if (!empty($_FILES['profile_pic']['name'])) {
+        $profilePic = $_FILES['profile_pic'];
+        $profilePic_temp = $profilePic['tmp_name'];
+        $profilePicLocation = "profilePic/" . $profilePic['name'];
+        move_uploaded_file($profilePic_temp, $profilePicLocation);
+    }
+
     $sql = "UPDATE user_acct SET ";
     $updateFields = [];
     $params = [];
 
     foreach ($fields as $field) {
         if (!empty($$field)) {
-            $updateFields[] = "$field = ?";
-            $params[] = $$field;
+            if ($field === 'ProfilePic') {
+                if ($profilePicLocation !== null) {
+                    $updateFields[] = "$field = ?";
+                    $params[] = $profilePicLocation;
+                } // If no new picture is uploaded, the existing picture remains unchanged
+            } else {
+                $updateFields[] = "$field = ?";
+                $params[] = $$field;
+            }
         }
     }
 
@@ -153,6 +167,7 @@ public function editInformation($id, $FirstName, $MiddleName, $LastName, $Email,
     }
     $stmt->close();
 }
+
 
     
     public function addWallpaper($WallpaperID, $Title, $WallpaperLocation) {
@@ -250,6 +265,7 @@ if ($databaseConnection->getConnection()) {
             $_POST['district'],
             $_POST['house_no_street'],
             $_POST['zipcode'],
+            $_FILES['profile_pic']
         );
     }
     
