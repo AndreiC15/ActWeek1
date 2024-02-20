@@ -4,4 +4,4 @@ Project Test for OJT
 -Image in dashboard not showing 4:18pm 14/02/24 <br>
 -Image upload now showing 3:00PM 14/02/24<br>
 -Image download 4:54PM 14/02/24<br>
--Email, Register and settings email and contact number duplicate check function added 9:15PM 20/02/24
+-Email, Register and settings email and contact number duplicate check function added 9:15PM 20/02/24<br>
