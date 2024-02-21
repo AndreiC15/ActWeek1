@@ -48,30 +48,6 @@ if ($databaseConnection->getConnection()) {
 } else {
     echo "Error: Database connection not established.";
 }
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST["add_wallpaper"])) {
-        $title = $_POST["title"];
-
-        // Get the user ID of the uploader
-        $uploaderID = $userData['ID'];
-
-        // Upload image to a specific directory
-        $uploadDirectory = "path_to_your_upload_directory/"; // Change this path to your actual upload directory
-        $newWallpaper = $_FILES["new_wallpaper"]["name"];
-        $targetFile = $uploadDirectory . basename($newWallpaper);
-
-        // Your existing image upload code
-        // ...
-
-        // After successfully uploading the image, insert the record into the wallpaper table
-        $sql = "INSERT INTO wallpaper (Title, WallpaperLocation, UserID) VALUES (?, ?, ?)";
-        $stmt = $databaseConnection->getConnection()->prepare($sql);
-        $stmt->bind_param("sss", $title, $newWallpaper, $uploaderID);
-        $stmt->execute();
-        $stmt->close();
-    }
-}
 ?>
 
 <!-- The rest of your HTML code remains the same -->
@@ -164,8 +140,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <td><input class="titleText" type="text" name="title" id="title" required ></td>
                 </tr>
                 <tr>
+                    <!-- Modify the file input in your form -->
                     <td>Upload image:</td>
-                    <td><input class="titleText" id="new_wallpaper" type="file" name="new_wallpaper"  onchange="PreviewImage();" required/></td>
+                    <td><input class="titleText" id="new_wallpaper" type="file" name="new_wallpaper" accept=".jpg, .jpeg, .png, .gif" onchange="PreviewImage();" required/></td>
                 </tr>
             </center>
         </table>

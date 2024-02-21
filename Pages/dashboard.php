@@ -39,12 +39,12 @@ if ($databaseConnection->getConnection()) {
     if (!empty($_SESSION['id'])) {
         $id = $_SESSION['id'];
         $userData = $userProfile->getUserProfile($id);
-
-        // Updated SQL query to retrieve only the wallpapers uploaded by the logged-in user
-        $userID = $_SESSION['id'];
-        $sql = "SELECT WallpaperID, Title, WallpaperLocation FROM wallpaper WHERE UserID = $userID";
-        $result = $databaseConnection->getConnection()->query($sql);
+    } else {
+        echo "<script>alert('Logout successfully'); window.location = 'index.php';</script>";
+        exit();
     }
+} else {
+    echo "Error: Database connection not established.";
 }
 ?>
 

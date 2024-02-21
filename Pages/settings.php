@@ -166,7 +166,7 @@ displayProfilePicture($_SESSION['id'], $databaseConnection->getConnection());
 
 
             </br>
-            <input type="file" id="profile_pic" name="profile_pic">
+            <input type="file" id="profile_pic" name="profile_pic" accept=".jpg, .jpeg, .png, .gif">
             <input style="position:absolute;margin-top:2.5%;margin-left:-18%" name="remove_pic" id="remove_pic" type=submit value="Remove picture">
             </div>
             <div class="dividerTop"></div>

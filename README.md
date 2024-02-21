@@ -12,3 +12,6 @@ Project Test for OJT
 -Upload Profile Picture added 11:55AM <br>
 -Delete Profile Picture added 2:30AM <br>
 -Default picture display if no uploaded profile picture 3:30AM <br>
+
+<b>21/02/24</b><br>
+-Add file upload restriction 11:05AM (only .jpg, .jpeg, .png, .gif)<br>

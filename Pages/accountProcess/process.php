@@ -210,32 +210,44 @@ public function removeProfilePicture($id) {
     }
 }
 
-    public function addWallpaper($WallpaperID, $Title, $WallpaperLocation) {
-        $con = $this->db->getConnection();
+    // Inside the addWallpaper method in the UserAuth class
 
-        $wallpaper = $_FILES['new_wallpaper'];
-        $wallpaper_temp = $wallpaper['tmp_name'];
-        $WallpaperLocation = "upload/" . $wallpaper['name'];
-        move_uploaded_file($wallpaper_temp, $WallpaperLocation);
+public function addWallpaper($WallpaperID, $Title, $WallpaperLocation) {
+    $allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
 
-        $sql = "INSERT INTO wallpaper (WallpaperID, Title, WallpaperLocation) VALUES ('', ?, ?)";
-        $query = $this->db->prepare($sql);
+    $con = $this->db->getConnection();
 
-        $insertParams = [&$Title, &$WallpaperLocation]; // Removed &$WallpaperID
+    $wallpaper = $_FILES['new_wallpaper'];
+    $wallpaper_temp = $wallpaper['tmp_name'];
 
-        // Bind parameters using foreach loop
-        $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
-        $query->bind_param($paramTypes, ...$insertParams);
-
-        $result = $query->execute();
-
-        if ($result) {
-            echo "<script>alert('Wallpaper Added!'); window.location = '../dashboard.php';</script>";
-        } else {
-            echo "<script>alert('Upload Error'); window.location = '../register.php';</script>";
-        }
-        $query->close();
+    // Check if the uploaded file is of an allowed type
+    if (!in_array($wallpaper['type'], $allowedFileTypes)) {
+        echo "<script>alert('Invalid file type. Only JPG, PNG, and GIF files are allowed.'); window.location = '../dashboard.php';</script>";
+        exit;
     }
+
+    $WallpaperLocation = "upload/" . $wallpaper['name'];
+    move_uploaded_file($wallpaper_temp, $WallpaperLocation);
+
+    $sql = "INSERT INTO wallpaper (WallpaperID, Title, WallpaperLocation) VALUES ('', ?, ?)";
+    $query = $this->db->prepare($sql);
+
+    $insertParams = [&$Title, &$WallpaperLocation]; // Removed &$WallpaperID
+
+    // Bind parameters using foreach loop
+    $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
+    $query->bind_param($paramTypes, ...$insertParams);
+
+    $result = $query->execute();
+
+    if ($result) {
+        echo "<script>alert('Wallpaper Added!'); window.location = '../dashboard.php';</script>";
+    } else {
+        echo "<script>alert('Upload Error'); window.location = '../register.php';</script>";
+    }
+    $query->close();
+}
+
     
     public function deleteWallpaper($WallpaperId) {
         $WallpaperId = filter_var($WallpaperId, FILTER_VALIDATE_INT);
