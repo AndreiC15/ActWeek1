@@ -4,7 +4,7 @@
     -Image Preview added 1:45pm<br>
     -Image in dashboard not showing 4:18pm<br>
     -Image upload now showing 3:00PM<br>
-    -Image download 4:54PM<br><br>
+    -Image download 4:54PM<br>
 
 <b>20/02/24</b><br>
     -Register and settings email and contact number duplicate check function added 9:15PM <br>
@@ -18,7 +18,7 @@
 <b>11:05AM</b>
     -Add file upload restriction (only .jpg, .jpeg, .png, .gif)<br>
 
-<b>3:55PM</b>
+<b>3:55PM</b><br>
     -Reset password <br>
     -Confirm password added in register and reset password<br>
     -DOMContentLoaded event listener added in settings.php <br>
