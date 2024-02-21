@@ -1,2 +1,2 @@
-Pages/accountProcess/upload
-Pages/accountProcess/profilePic
+touch Pages/accountProcess/upload/.gitkeep
+touch touch FOLDER_NAME/.gitkeep
