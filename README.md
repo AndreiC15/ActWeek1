@@ -15,3 +15,4 @@ Project Test for OJT
 
 <b>21/02/24</b><br>
 -Add file upload restriction 11:05AM (only .jpg, .jpeg, .png, .gif)<br>
+-Exclude upload and profilePic
