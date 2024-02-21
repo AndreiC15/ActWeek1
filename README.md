@@ -1,5 +1,8 @@
 Project Test for OJT
 
+<b>NOTE!!!</b>
+-I excluded 
+
 <b>14/02/24</b><br>
 -Image Preview added 1:45pm<br>
 -Image in dashboard not showing 4:18pm<br>
@@ -15,4 +18,3 @@ Project Test for OJT
 
 <b>21/02/24</b><br>
 -Add file upload restriction 11:05AM (only .jpg, .jpeg, .png, .gif)<br>
--Exclude upload and profilePic
