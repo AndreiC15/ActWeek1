@@ -16,7 +16,6 @@ body{
     justify-content: center;
     margin-top: 3%; /* Center content horizontally */
 }
-
 .webIcon p {
     color: white;
     font-size: 50px;
@@ -29,6 +28,29 @@ body{
     color: white;
     margin-left: 10px; /* Add some space between "Wallpaper" and "Hub" */
 }
+.ForgotwebIcon {
+    background-color: blue;
+    width: 450px;
+    height: 80px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center; /* Align items vertically in the center */
+    justify-content: center;
+    margin-top: 1%; /* Center content horizontally */
+}
+.ForgotwebIcon p {
+    color: white;
+    font-size: 50px;
+    margin: 0; /* Remove default margin */
+}
+
+.ForgotwebIcon .hub {
+    background-color: red;
+    border-radius: 10px;
+    color: white;
+    margin-left: 10px; /* Add some space between "Wallpaper" and "Hub" */
+}
+
   .LogForm{
     width: 300px;
     background-color: rgba(255, 255, 255, 0.637);

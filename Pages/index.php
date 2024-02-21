@@ -31,7 +31,8 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
                         <br>
                         <input class="SubmitButton" type="submit" id="login" name="login" value="Log In" required>
         </form>
-                <p>Not registered yet? <a href="register.php">Register here</a></p>
+        <p>Forgot password? <a href="reset.php">Click here</a></p>        
+        <p>Not registered yet? <a href="register.php">Register here</a></p>
         </div>
 
 

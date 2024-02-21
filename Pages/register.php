@@ -14,14 +14,13 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
     </head>
     <body>
        <center>
-       <div class="webIcon">
+       <div class="ForgotwebIcon">
         <p class="webtitle">Wallpaper</p>
         <div class="hub">
             <p class="webtitle" style="padding: 0 10px 0 10px;">Station</p>
         </div>
     </div>
         <div class="RegForm">
-            
                 <h1>Registration</h1>
                     <div class="divider"></div>
                             <table class="userInfo">
@@ -42,12 +41,16 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
                                 <input class="PasswordText" type="password" id="password" name="password" placeholder="Password" required>  
                                 </tr>
                                 <tr>
+                                <input class="PasswordText" type="password" id="confirmPassword" name="confirmPassword" placeholder="Retype password" required>  
+                                </tr>
+                                <tr>
                                     <input class="LogInText" type="number" id="phone_number" name="phone_number" placeholder="Phone Number" required>
                                 </tr>
 
                                     <br></br>
                                     <center>
-                                    <input class="ShowPass" type="checkbox" onclick="myFunction()">Show Password
+                                    <input class="ShowPass" type="checkbox" onclick="togglePasswordVisibility()">Show Password
+
                                 </center>
                             </table>
                             
@@ -98,14 +101,25 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
         </div>
        </center> 
         <script>
-            function myFunction() {
-            var x = document.getElementById("password");
-            if (x.type === "password") {
-                x.type = "text";
-            } else {
-                x.type = "password";
-            }
-            }
+    function togglePasswordVisibility() {
+        var password = document.getElementById("password");
+        var confirmPassword = document.getElementById("confirmPassword");
+
+        // Toggle visibility for the "Password" field
+        if (password.type === "password") {
+            password.type = "text";
+        } else {
+            password.type = "password";
+        }
+
+        // Toggle visibility for the "Confirm Password" field
+        if (confirmPassword.type === "password") {
+            confirmPassword.type = "text";
+        } else {
+            confirmPassword.type = "password";
+        }
+    }
+    
         </script>    
     </body>
 </html>

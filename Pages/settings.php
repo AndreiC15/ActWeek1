@@ -163,8 +163,6 @@ function displayProfilePicture($userId, $db) {
 // Usage
 displayProfilePicture($_SESSION['id'], $databaseConnection->getConnection());
 ?>
-
-
             </br>
             <input type="file" id="profile_pic" name="profile_pic" accept=".jpg, .jpeg, .png, .gif">
             <input style="position:absolute;margin-top:2.5%;margin-left:-18%" name="remove_pic" id="remove_pic" type=submit value="Remove picture">
@@ -182,11 +180,11 @@ displayProfilePicture($_SESSION['id'], $databaseConnection->getConnection());
             </tr>
                 <tr>
                 <td>Email:</td>
-                <td><input type="text" id="email" name="email" placeholder="<?php echo $userData['Email']; ?>"></td>
+                <td><input type="text" id="email" name="email" placeholder="<?php echo $userData['Email']; ?> "autocomplete="off"></td>
                 <td>Password:</td>
                 <td><input type="password" id="password" name="password"></td>
                 <td>Phone Number:</td>
-                <td><input type="number" id="phone_number" name="phone_number" placeholder="<?php echo $userData['PhoneNumber']; ?>"></td> 
+                <td><input type="number" id="phone_number" name="phone_number" placeholder="<?php echo $userData['PhoneNumber']; ?>"autocomplete="off"></td> 
             </tr>
             <tr>  
             <td>Country:</td>
@@ -210,14 +208,28 @@ displayProfilePicture($_SESSION['id'], $databaseConnection->getConnection());
         </div>
     </div>
     <script>
-    function myFunction() {
-        var x = document.getElementById("password");
-        if (x.type === "password") {
-            x.type = "text";
-        } else {
-            x.type = "password";
+        document.addEventListener("DOMContentLoaded", function () {
+            var inputFields = document.querySelectorAll('input');
+
+            inputFields.forEach(function (inputField, index) {
+                inputField.addEventListener('keypress', function (event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        var nextIndex = (index + 1) % inputFields.length;
+                        inputFields[nextIndex].focus();
+                    }
+                });
+            });
+        });
+
+        function myFunction() {
+            var x = document.getElementById("password");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
         }
-    }
-</script>
+    </script>
 </body>
 </html>

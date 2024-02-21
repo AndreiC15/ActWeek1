@@ -1,12 +1,33 @@
 <?php
 require_once 'connect.php';
 
-
 class UserAuth {
     private $db;
 
     public function __construct($db) {
         $this->db = $db;
+    }
+
+    // EMAIL DUPLICATE CHECK
+    public function checkDuplicateEmail($email) {
+        $checkEmailDuplicate = "SELECT * FROM user_acct WHERE Email = ?";
+        $stmtCheckEmail = $this->db->prepare($checkEmailDuplicate);
+        $stmtCheckEmail->bind_param("s", $email);
+        $stmtCheckEmail->execute();
+        $checkEmailResult = $stmtCheckEmail->get_result();
+    
+        return $checkEmailResult->num_rows > 0;
+    }
+    
+    // CONTACT NUMBER DUPLICATE CHECK
+    public function checkDuplicatePhoneNumber($phoneNumber) {
+        $checkPhoneNumberDuplicate = "SELECT * FROM user_acct WHERE PhoneNumber = ?";
+        $stmtCheckPhoneNumber = $this->db->prepare($checkPhoneNumberDuplicate);
+        $stmtCheckPhoneNumber->bind_param("s", $phoneNumber);
+        $stmtCheckPhoneNumber->execute();
+        $checkPhoneNumberResult = $stmtCheckPhoneNumber->get_result();
+    
+        return $checkPhoneNumberResult->num_rows > 0;
     }
 
     public function login($Email, $password) {
@@ -36,78 +57,84 @@ class UserAuth {
         }
     }
 
-public function register($FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode) {
+    public function register($FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode) {
+        $con = $this->db->getConnection();
+    
+        if ($this->checkDuplicateEmail($Email)) {
+            echo "<script>alert('Email Already Exists'); window.location = '../register.php';</script>";
+            exit;
+        }
+    
+        if ($this->checkDuplicatePhoneNumber($PhoneNumber)) {
+            echo "<script>alert('Contact Number Already Exists'); window.location = '../register.php';</script>";
+            exit;
+        }
+    
+        if ($_POST['password'] !== $_POST['confirmPassword']) {
+            echo "<script>alert('Passwords do not match'); window.location = '../register.php';</script>";
+            exit;
+        }
+    
+        $sql = "INSERT INTO user_acct (FirstName, MiddleName, LastName, Email, Password, PhoneNumber, Country, Province, CityCity, District, HouseNoStreet, ZipCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $query = $this->db->prepare($sql);
+    
+        $insertParams = [&$FirstName, &$MiddleName, &$LastName, &$Email, &$Password, &$PhoneNumber, &$Country, &$Province, &$CityCity, &$District, &$HouseNoStreet, &$ZipCode];
+    
+        $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
+        $query->bind_param($paramTypes, ...$insertParams);
+    
+        $result = $query->execute();
+    
+        if ($result) {
+            echo "<script>alert('Registered Successfully, please proceed to the login page'); window.location = '../index.php';</script>";
+        } else {
+            echo "<script>alert('Error in registration'); window.location = '../register.php';</script>";
+        }
+        $query->close();
+    }
+
+    public function resetPassword($Email, $password){
     $con = $this->db->getConnection();
+        // You may want to perform additional validation and sanitation for $password
+        $result = mysqli_query($con, "SELECT * FROM user_acct WHERE email = '$Email'");
+        $row = mysqli_fetch_assoc($result);
 
-    // Check if email already exists
-    $checkEmailDuplicate = "SELECT * FROM user_acct WHERE Email = ?";
-    $stmtCheckEmail = $this->db->prepare($checkEmailDuplicate);
-    $stmtCheckEmail->bind_param("s", $Email);
-    $stmtCheckEmail->execute();
-    $checkEmailResult = $stmtCheckEmail->get_result();
+        if (mysqli_num_rows($result) > 0) {
+            $sql = "UPDATE user_acct SET Password = ? WHERE Email = ?";
+            $stmt = $this->db->getConnection()->prepare($sql);
+            $stmt->bind_param('ss', $password, $Email);
 
-    if ($checkEmailResult->num_rows > 0) {
-        echo "<script>alert('Email Already Exists'); window.location = '../register.php';</script>";
-        exit;
+            if ($_POST['password'] !== $_POST['confirmPassword']) {
+                echo "<script>alert('Passwords do not match'); window.location = '../reset.php';</script>";
+                exit;
+            }
+
+        if ($stmt->execute()) {
+            echo "<script>alert('Password reset successful.'); window.location = '../index.php';</script>";
+            exit();
+        } else {
+            echo "<script>alert('Password reset failed.'); window.location = '../index.php';</script>";
+            exit();
+        }
+        } else {
+            echo "<script>alert('User not found'); window.location = '../index.php';</script>";
+            exit;
+        }  
     }
-
-    // Check if contact number already exists
-    $checkPhoneNumberDuplicate = "SELECT * FROM user_acct WHERE PhoneNumber = ?";
-    $stmtCheckPhoneNumber = $this->db->prepare($checkPhoneNumberDuplicate);
-    $stmtCheckPhoneNumber->bind_param("s", $PhoneNumber);
-    $stmtCheckPhoneNumber->execute();
-    $checkPhoneNumberResult = $stmtCheckPhoneNumber->get_result();
-
-    if ($checkPhoneNumberResult->num_rows > 0) {
-        echo "<script>alert('Contact Number Already Exists'); window.location = '../register.php';</script>";
-        exit;
-    }
-
-    $sql = "INSERT INTO user_acct (FirstName, MiddleName, LastName, Email, Password, PhoneNumber, Country, Province, CityCity, District, HouseNoStreet, ZipCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    $query = $this->db->prepare($sql);
-
-    $insertParams = [&$FirstName, &$MiddleName, &$LastName, &$Email, &$Password, &$PhoneNumber, &$Country, &$Province, &$CityCity, &$District, &$HouseNoStreet, &$ZipCode];
-
-    // Bind parameters using foreach loop
-    $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
-    $query->bind_param($paramTypes, ...$insertParams);
-
-    $result = $query->execute();
-
-    if ($result) {
-        echo "<script>alert('Registered Successfully, please proceed to the login page'); window.location = '../index.php';</script>";
-    } else {
-        echo "<script>alert('Error in registration'); window.location = '../register.php';</script>";
-    }
-    $query->close();
-}
+    
 
 public function editInformation($id, $FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode, $ProfilePic) {
     $db = $this->db->getConnection();
     $fields = ['FirstName', 'MiddleName', 'LastName', 'Email', 'Password', 'PhoneNumber', 'Country', 'Province', 'CityCity', 'District', 'HouseNoStreet', 'ZipCode', 'ProfilePic'];
     $id = $db->real_escape_string($id);
 
-    // Check if the new email is already in use
-    $checkEmailDuplicate = "SELECT * FROM user_acct WHERE Email = ? AND ID != ?";
-    $stmtCheckEmail = $this->db->prepare($checkEmailDuplicate);
-    $stmtCheckEmail->bind_param("si", $Email, $id);
-    $stmtCheckEmail->execute();
-    $checkEmailResult = $stmtCheckEmail->get_result();
-
-    if ($checkEmailResult->num_rows > 0) {
-        echo "<script>alert('Email Already in Use'); window.location = '../settings.php';</script>";
+    if ($this->checkDuplicateEmail($Email)) {
+        echo "<script>alert('Email Already Exists'); window.location = '../settings.php';</script>";
         exit;
     }
 
-    // Check if the new contact number is already in use
-    $checkPhoneNumberDuplicate = "SELECT * FROM user_acct WHERE PhoneNumber = ? AND ID != ?";
-    $stmtCheckPhoneNumber = $this->db->prepare($checkPhoneNumberDuplicate);
-    $stmtCheckPhoneNumber->bind_param("si", $PhoneNumber, $id);
-    $stmtCheckPhoneNumber->execute();
-    $checkPhoneNumberResult = $stmtCheckPhoneNumber->get_result();
-
-    if ($checkPhoneNumberResult->num_rows > 0) {
-        echo "<script>alert('Phone Number Already in Use'); window.location = '../settings.php';</script>";
+    if ($this->checkDuplicatePhoneNumber($PhoneNumber)) {
+        echo "<script>alert('Contact Number Already Exists'); window.location = '../settings.php';</script>";
         exit;
     }
 
@@ -292,6 +319,13 @@ if ($databaseConnection->getConnection()) {
 
     if (isset($_POST['register'])) {
         $userAuth->register($_POST['first_name'], $_POST['middle_name'], $_POST['last_name'], $_POST['email'], $_POST['password'], $_POST['phone_number'], $_POST['country'], $_POST['province'], $_POST['citycity'], $_POST['district'], $_POST['house_no_street'], $_POST['zip_code']);
+    }
+    if (isset($_POST['reset_password'])) {
+        $userAuth->resetPassword(
+            $_POST['email'],
+            $_POST['password'],
+            $_POST['confirmPassword'],
+        );
     }
 
     if (isset($_POST['logout'])) {
