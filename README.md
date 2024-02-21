@@ -15,7 +15,7 @@
 
 <b>21/02/24</b><br>
 
-<b>11:05AM</b>
+<b>11:05AM</b><br>
     -Add file upload restriction (only .jpg, .jpeg, .png, .gif)<br>
 
 <b>3:55PM</b><br>
