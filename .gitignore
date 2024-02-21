@@ -1,7 +1,2 @@
-# ignore files in folder
-Pages/accountProcess/profilePic/*
-Pages/accountProcess/upload/*
-
-# ...but keep the folder
-Pages/accountProcess/profilePic/.gitkeep
-Pages/accountProcess/profilePic/.gitkeep
+touch C:/xampp/htdocs/ActWeek1/Pages/accountProcess/profilePic/.gitignore
+touch C:/xampp/htdocs/ActWeek1/Pages/accountProcess/upload/.gitignore
