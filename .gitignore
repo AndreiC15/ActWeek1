@@ -1,0 +1,7 @@
+# ignore files in folder
+Pages/accountProcess/profilePic/*
+Pages/accountProcess/upload/*
+
+# ...but keep the folder
+Pages/accountProcess/profilePic/.gitkeep
+Pages/accountProcess/profilePic/.gitkeep
