@@ -29,5 +29,5 @@
 -Fix <b>Phone Number</b> length (limit to 11 characters)<br>
 -Homepage wallpaper pagination<br>
 
-<span style="font-size: larger;">TO-DO</span>
+<span style="font-size: 50px;">TO-DO</span><br>
 -Edit Wallpaper function
