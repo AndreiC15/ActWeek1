@@ -182,9 +182,9 @@ displayProfilePicture($_SESSION['id'], $databaseConnection->getConnection());
                 <td>Email:</td>
                 <td><input type="text" id="email" name="email" placeholder="<?php echo $userData['Email']; ?> "autocomplete="off"></td>
                 <td>Password:</td>
-                <td><input type="password" id="password" name="password"></td>
+                <td><input type="password" id="password" name="password" minlength="8" autocomplete="off"></td>
                 <td>Phone Number:</td>
-                <td><input type="number" id="phone_number" name="phone_number" placeholder="<?php echo $userData['PhoneNumber']; ?>"autocomplete="off"></td> 
+                <td><input type="number" id="phone_number" name="phone_number" placeholder="<?php echo $userData['PhoneNumber']; ?>" maxlength="11" oninput="validatePhoneNumber()"></td> 
             </tr>
             <tr>  
             <td>Country:</td>

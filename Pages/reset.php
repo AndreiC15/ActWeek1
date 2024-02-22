@@ -26,8 +26,8 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
             <h1>Reset Password</h1>
                 <div class="divider"></div>
                     <input class="LogInText" type="email" id="email" name="email" placeholder="Email" required>
-                    <input class="PasswordText" type="password" id="password" name="password" placeholder="Password" required>
-                    <input class="PasswordText" type="password" id="confirmPassword" name="confirmPassword" placeholder="Retype password" required></br></br>
+                    <input class="PasswordText" type="password" id="password" name="password" placeholder="Password" minlength="8" required>
+                    <input class="PasswordText" type="password" id="confirmPassword" name="confirmPassword" placeholder="Retype password" minlength="8" required></br></br>
                     <input class="ShowPass" type="checkbox" onclick="togglePasswordVisibility()">Show Password
                         <br>
                         <input class="SubmitButton" type="submit" id="reset_password" name="reset_password" value="Reset Password" required>

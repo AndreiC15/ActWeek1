@@ -16,10 +16,15 @@
 <b>21/02/24</b><br>
 
 <b>11:05AM</b><br>
-    -Add file upload restriction (only .jpg, .jpeg, .png, .gif)<br>
+-Add file upload restriction (only .jpg, .jpeg, .png, .gif)<br>
 
 <b>3:55PM</b><br>
-    -Reset password <br>
-    -Confirm password added in register and reset password<br>
-    -DOMContentLoaded event listener added in settings.php <br>
-    -Moved the Email and Contact Number duplicate checker to another class <br>
+-Reset password <br>
+-Confirm password added in register and reset password<br>
+-DOMContentLoaded event listener added in settings.php <br>
+-Moved the Email and Contact Number duplicate checker to another class <br>
+
+<b>21/02/24</b><br>
+
+<b>9:05AM</b><br>
+-Password minlength and maxlength attribute character limit for register, login, forgot and settings<br>

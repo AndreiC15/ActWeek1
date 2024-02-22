@@ -60,6 +60,11 @@ class UserAuth {
     public function register($FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode) {
         $con = $this->db->getConnection();
     
+        if (strlen($PhoneNumber) < 11) {
+            echo "<script>alert('Phone number must be at least 11 characters long.'); window.location = '../register.php';</script>";
+            exit;
+        }
+        
         if ($this->checkDuplicateEmail($Email)) {
             echo "<script>alert('Email Already Exists'); window.location = '../register.php';</script>";
             exit;
@@ -123,10 +128,15 @@ class UserAuth {
     }
     
 
-public function editInformation($id, $FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode, $ProfilePic) {
+    public function editInformation($id, $FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode, $ProfilePic) {
     $db = $this->db->getConnection();
     $fields = ['FirstName', 'MiddleName', 'LastName', 'Email', 'Password', 'PhoneNumber', 'Country', 'Province', 'CityCity', 'District', 'HouseNoStreet', 'ZipCode', 'ProfilePic'];
     $id = $db->real_escape_string($id);
+
+    if (strlen($PhoneNumber) < 11) {
+        echo "<script>alert('Phone number must be at least 11 characters long.'); window.location = '../settings.php';</script>";
+        exit;
+    }
 
     if ($this->checkDuplicateEmail($Email)) {
         echo "<script>alert('Email Already Exists'); window.location = '../settings.php';</script>";

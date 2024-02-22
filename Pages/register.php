@@ -38,13 +38,13 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
                                 <input class="LogInText" type="email" id="email" name="email" placeholder="Email" required>
                                 </tr>
                                 <tr>
-                                <input class="PasswordText" type="password" id="password" name="password" placeholder="Password" required>  
+                                <input class="PasswordText" type="password" id="password" name="password" placeholder="Password" minlength="8" required>  
                                 </tr>
                                 <tr>
-                                <input class="PasswordText" type="password" id="confirmPassword" name="confirmPassword" placeholder="Retype password" required>  
+                                <input class="PasswordText" type="password" id="confirmPassword" name="confirmPassword" placeholder="Retype password" minlength="8" required>  
                                 </tr>
                                 <tr>
-                                    <input class="LogInText" type="number" id="phone_number" name="phone_number" placeholder="Phone Number" required>
+                                    <input class="LogInText" type="number" id="phone_number" name="phone_number" placeholder="Phone Number" maxlength="11" required>
                                 </tr>
 
                                     <br></br>

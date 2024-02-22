@@ -26,7 +26,7 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
             <h1>Login</h1>
                 <div class="divider"></div>
                     <input class="LogInText" type="email" id="email" name="email" placeholder="Email" required>
-                    <input class="PasswordText" type="password" id="password" name="password" placeholder="Password" required></br></br>
+                    <input class="PasswordText" type="password" id="password" name="password" placeholder="Password" minlength="8" required></br></br>
                     <input class="ShowPass" type="checkbox" onclick="myFunction()">Show Password
                         <br>
                         <input class="SubmitButton" type="submit" id="login" name="login" value="Log In" required>
