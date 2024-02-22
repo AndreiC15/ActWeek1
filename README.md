@@ -28,3 +28,6 @@
 -Uppercase letters for <b>Zip Code</b><br>
 -Fix <b>Phone Number</b> length (limit to 11 characters)<br>
 -Homepage wallpaper pagination<br>
+
+<span style="font-size: larger;">TO-DO</span>
+-Edit Wallpaper function

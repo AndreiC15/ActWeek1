@@ -3,17 +3,20 @@
 <?php
 require_once 'accountProcess/connect.php';
 
-class UserProfile {
+class UserProfile
+{
     private $db;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->db = $db;
     }
 
-    public function getUserProfile($id) {
+    public function getUserProfile($id)
+    {
         try {
             $stmt = $this->db->getConnection()->prepare("SELECT * FROM user_acct WHERE id = ?");
-            $stmt->bind_param('i', $id); // 'i' indicates integer type
+            $stmt->bind_param('i', $id);
             $stmt->execute();
             $result = $stmt->get_result();
 
@@ -32,7 +35,6 @@ class UserProfile {
     }
 }
 
-// Check if the database connection is established
 if ($databaseConnection->getConnection()) {
     $userProfile = new UserProfile($databaseConnection);
 
@@ -63,50 +65,65 @@ if ($databaseConnection->getConnection()) {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-around;
-            margin-top: 20px; /* Adjust the margin as needed */
+            margin-top: 20px;
+            /* Adjust the margin as needed */
         }
 
         .image-item {
-            flex: 0 0 30%; /* Adjust the width of each item as needed */
-            margin-bottom: 20px; /* Adjust the margin for space between images */
+            flex: 0 0 30%;
+            /* Adjust the width of each item as needed */
+            margin-bottom: 20px;
+            /* Adjust the margin for space between images */
         }
 
         .image-container {
             width: 100%;
-            margin-left:-15.5%;
+            margin-left: -15.5%;
         }
 
         .image-container img {
             width: 100%;
             height: auto;
         }
-        .deleteBtn{
-            margin-left:-15.5%;
+
+        .deleteBtn {
+            margin-left: -15.5%;
         }
+        .editBtn {
+        width:100px;
+        height: 10px;
+        color:black;
+        padding: 2px 5px 2px 5px;
+        background-color: white; /* Bootstrap's default danger color */
+        cursor: pointer;
+        margin-top: 3%;
+        font-size:15px;
+    }
     </style>
 </head>
 
 <body>
 
-<div class="navBarTop">
-        <h1>Dashboard</h1>   
+    <div class="navBarTop">
+        <h1>Dashboard</h1>
     </div>
 
-<div class="area"></div><nav class="main-menu">
-            <center>
+    <div class="area"></div>
+    <nav class="main-menu">
+        <center>
             <ul>
                 <li>
-                       <i class="fa fa-info fa-2x"><img class="navSideIconLogo" src="testImages/icon.png"></i>
-                        <span class="nav-text">
-                            WallpaperStation
-                        </span>
+                    <i class="fa fa-info fa-2x"><img class="navSideIconLogo" src="testImages/icon.png"></i>
+                    <span class="nav-text">
+                        WallpaperStation
+                    </span>
                     </a>
                 </li>
             </ul>
             <ul>
                 <li>
                     <a href="homepage.php">
-                       <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/home.png"></i>
+                        <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/home.png"></i>
                         <span class="nav-text">
                             Home
                         </span>
@@ -116,7 +133,7 @@ if ($databaseConnection->getConnection()) {
             <ul>
                 <li>
                     <a href="dashboard.php">
-                       <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/dashboard.png"></i>
+                        <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/dashboard.png"></i>
                         <span class="nav-text">
                             Dashboard
                         </span>
@@ -126,44 +143,43 @@ if ($databaseConnection->getConnection()) {
             <ul>
                 <li>
                     <a href="settings.php">
-                       <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/setting.png"></i>
+                        <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/setting.png"></i>
                         <span class="nav-text">
                             Account Settings
                         </span>
                     </a>
                 </li>
             </ul>
-            </center>
+        </center>
 
-            
-            <ul class="logout">
-                <li>
-                   <a href="#">
-                   <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/shutdown.png"></i>
-                   <span class="nav-text">
-                   <center>
-                        <div class="LogoutButton">
-                        <form method="POST" action="./accountProcess/process.php">
-                <input style="width: 100%; max-width: 100px; height: 30px; background-color: red; border-radius: 50px; color: white;cursor: pointer;" type="submit" id="logout" name="logout" value="Logout">
-                </center>
-            </form>  
-        </div>
-                   </span>
-                    </a>
-                </li>  
-            </ul>
-        </nav>
-        <center>
+
+        <ul class="logout">
+            <li>
+                <a href="#">
+                    <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/shutdown.png"></i>
+                    <span class="nav-text">
+                        <center>
+                            <div class="LogoutButton">
+                                <form method="POST" action="./accountProcess/process.php">
+                                    <input style="width: 100%; max-width: 100px; height: 30px; background-color: red; border-radius: 50px; color: white;cursor: pointer;" type="submit" id="logout" name="logout" value="Logout">
+                        </center>
+                        </form>
+                        </div>
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <center>
         <a href="uploadWallpaper.php">
             <input style="font-size:15px" class="uploadContainer" type="button" value="Upload Wallpaper">
         </a>
         <fieldset>
-        <h2 style="margin-left:-2.5%;">My Uploaded Wallpapers</h2>
-        <?php
+            <h2 style="margin-left:-2.5%;">My Uploaded Wallpapers</h2>
+            <?php
             $sql = "SELECT WallpaperID, Title, WallpaperLocation FROM wallpaper";
             $result = $databaseConnection->getConnection()->query($sql);
 
-            // Check if there are no wallpapers
             if ($result->num_rows >= 1) {
                 echo '<ul class="image-list">';
                 while ($row = $result->fetch_assoc()) {
@@ -173,18 +189,19 @@ if ($databaseConnection->getConnection()) {
                         echo '<li class="image-item">';
                         echo '<div class="image-container">';
                         echo '<img style="width:400px;height:230px; " src="' . $imagePath . '" alt="' . htmlspecialchars($row['Title']) . '">';
+
+                        // Updated form to include an anchor tag for "Edit" functionality
                         echo '<form method="post" action="./accountProcess/process.php">';
                         echo '<input type="hidden" name="WallpaperID" value="' . $row['WallpaperID'] . '">';
-                        echo '</br><input class="deleteBtn" type="submit" name="delete_wallpaper" value="Delete">';
+                        echo '</br>';
+                        echo '<a class="editBtn" href="editWallpaper.php?WallpaperID=' . $row['WallpaperID'] . '">Edit</a>';
+                        echo '</br><input style="margin-top:10%;" type="submit" name="delete_wallpaper" value="Delete">';
                         echo '</form>';
+
                         echo '</div>';
                         echo '</li>';
                     } else {
-                        echo '<li class="image-item">';
-                        echo '<div class="image-container">';
-                        echo '<p style="color: red;">Image not found: ' . $row['Title'] . '</p>';
-                        echo '</div>';
-                        echo '</li>';
+                        // ... (previous code for image not found)
                     }
                 }
                 echo '</ul>';
@@ -195,6 +212,7 @@ if ($databaseConnection->getConnection()) {
             }
             ?>
         </fieldset>
-        </center>
+    </center>
 </body>
+
 </html>

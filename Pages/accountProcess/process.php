@@ -322,6 +322,42 @@ class UserAuth
         $query->close();
     }
 
+    public function editWallpaper($WallpaperID, $Title, $WallpaperLocation)
+    {
+        $allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+
+        $con = $this->db->getConnection();
+
+        $wallpaper = $_FILES['new_wallpaper'];
+        $wallpaper_temp = $wallpaper['tmp_name'];
+
+        // Check if the uploaded file is of an allowed type
+        if (!in_array($wallpaper['type'], $allowedFileTypes)) {
+            echo "<script>alert('Invalid file type. Only JPG, PNG, and GIF files are allowed.'); window.location = '../dashboard.php';</script>";
+            exit;
+        }
+
+        $WallpaperLocation = "upload/" . $wallpaper['name'];
+        move_uploaded_file($wallpaper_temp, $WallpaperLocation);
+
+        $sql = "INSERT INTO wallpaper (WallpaperID, Title, WallpaperLocation) VALUES ('', ?, ?)";
+        $query = $this->db->prepare($sql);
+
+        $insertParams = [&$Title, &$WallpaperLocation]; // Removed &$WallpaperID
+
+        // Bind parameters using foreach loop
+        $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
+        $query->bind_param($paramTypes, ...$insertParams);
+
+        $result = $query->execute();
+
+        if ($result) {
+            echo "<script>alert('Wallpaper Added!'); window.location = '../dashboard.php';</script>";
+        } else {
+            echo "<script>alert('Upload Error'); window.location = '../register.php';</script>";
+        }
+        $query->close();
+    }
 
     public function deleteWallpaper($WallpaperId)
     {
@@ -408,6 +444,15 @@ if ($databaseConnection->getConnection()) {
     if (isset($_POST['add_wallpaper'])) {
         $id = $_SESSION['id'];
         $userAuth->addWallpaper(
+            $id,
+            $_POST['title'],
+            $_FILES['new_wallpaper']
+        );
+    }
+
+    if (isset($_POST['edit_wallpaper'])) {
+        $id = $_SESSION['id'];
+        $userAuth->editWallpaper(
             $id,
             $_POST['title'],
             $_FILES['new_wallpaper']
