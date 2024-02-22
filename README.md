@@ -23,3 +23,5 @@
 <b>22/02/24</b><br>
 -Password minlength and maxlength attribute character limit for register, login, forgot and settings<br>
 -Remove arrow button in number input<br>
+-Sentence case in input field in registration except password, Capitalise each word in House No. and Street<br>
+-Special character restriction in register and settings form except password

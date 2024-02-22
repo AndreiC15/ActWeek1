@@ -1,46 +1,51 @@
 <?php
 require_once 'connect.php';
 
-class UserAuth {
+class UserAuth
+{
     private $db;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->db = $db;
     }
 
     // EMAIL DUPLICATE CHECK
-    public function checkDuplicateEmail($email) {
+    public function checkDuplicateEmail($email)
+    {
         $checkEmailDuplicate = "SELECT * FROM user_acct WHERE Email = ?";
         $stmtCheckEmail = $this->db->prepare($checkEmailDuplicate);
         $stmtCheckEmail->bind_param("s", $email);
         $stmtCheckEmail->execute();
         $checkEmailResult = $stmtCheckEmail->get_result();
-    
+
         return $checkEmailResult->num_rows > 0;
     }
-    
+
     // CONTACT NUMBER DUPLICATE CHECK
-    public function checkDuplicatePhoneNumber($phoneNumber) {
+    public function checkDuplicatePhoneNumber($phoneNumber)
+    {
         $checkPhoneNumberDuplicate = "SELECT * FROM user_acct WHERE PhoneNumber = ?";
         $stmtCheckPhoneNumber = $this->db->prepare($checkPhoneNumberDuplicate);
         $stmtCheckPhoneNumber->bind_param("s", $phoneNumber);
         $stmtCheckPhoneNumber->execute();
         $checkPhoneNumberResult = $stmtCheckPhoneNumber->get_result();
-    
+
         return $checkPhoneNumberResult->num_rows > 0;
     }
 
-    public function login($Email, $password) {
+    public function login($Email, $password)
+    {
         $con = $this->db->getConnection();
-    
+
         if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
             echo "<script>alert('You are already logged in.'); window.location = '../homepage.php';</script>";
             exit;
         }
-    
+
         $result = mysqli_query($con, "SELECT * FROM user_acct WHERE email = '$Email'");
         $row = mysqli_fetch_assoc($result);
-    
+
         if (mysqli_num_rows($result) > 0) {
             if ($password == $row['Password']) {
                 $_SESSION['login'] = true;
@@ -57,39 +62,40 @@ class UserAuth {
         }
     }
 
-    public function register($FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode) {
+    public function register($FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode)
+    {
         $con = $this->db->getConnection();
-    
+
         if (strlen($PhoneNumber) < 11) {
             echo "<script>alert('Phone number must be at least 11 characters long.'); window.location = '../register.php';</script>";
             exit;
         }
-        
+
         if ($this->checkDuplicateEmail($Email)) {
             echo "<script>alert('Email Already Exists'); window.location = '../register.php';</script>";
             exit;
         }
-    
+
         if ($this->checkDuplicatePhoneNumber($PhoneNumber)) {
             echo "<script>alert('Contact Number Already Exists'); window.location = '../register.php';</script>";
             exit;
         }
-    
+
         if ($_POST['password'] !== $_POST['confirmPassword']) {
             echo "<script>alert('Passwords do not match'); window.location = '../register.php';</script>";
             exit;
         }
-    
+
         $sql = "INSERT INTO user_acct (FirstName, MiddleName, LastName, Email, Password, PhoneNumber, Country, Province, CityCity, District, HouseNoStreet, ZipCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $query = $this->db->prepare($sql);
-    
+
         $insertParams = [&$FirstName, &$MiddleName, &$LastName, &$Email, &$Password, &$PhoneNumber, &$Country, &$Province, &$CityCity, &$District, &$HouseNoStreet, &$ZipCode];
-    
+
         $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
         $query->bind_param($paramTypes, ...$insertParams);
-    
+
         $result = $query->execute();
-    
+
         if ($result) {
             echo "<script>alert('Registered Successfully, please proceed to the login page'); window.location = '../index.php';</script>";
         } else {
@@ -98,8 +104,9 @@ class UserAuth {
         $query->close();
     }
 
-    public function resetPassword($Email, $password){
-    $con = $this->db->getConnection();
+    public function resetPassword($Email, $password)
+    {
+        $con = $this->db->getConnection();
         // You may want to perform additional validation and sanitation for $password
         $result = mysqli_query($con, "SELECT * FROM user_acct WHERE email = '$Email'");
         $row = mysqli_fetch_assoc($result);
@@ -114,192 +121,192 @@ class UserAuth {
                 exit;
             }
 
-        if ($stmt->execute()) {
-            echo "<script>alert('Password reset successful.'); window.location = '../index.php';</script>";
-            exit();
-        } else {
-            echo "<script>alert('Password reset failed.'); window.location = '../index.php';</script>";
-            exit();
-        }
+            if ($stmt->execute()) {
+                echo "<script>alert('Password reset successful.'); window.location = '../index.php';</script>";
+                exit();
+            } else {
+                echo "<script>alert('Password reset failed.'); window.location = '../index.php';</script>";
+                exit();
+            }
         } else {
             echo "<script>alert('User not found'); window.location = '../index.php';</script>";
             exit;
-        }  
-    }
-    
-
-    public function editInformation($id, $FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode, $ProfilePic) {
-    $db = $this->db->getConnection();
-    $fields = ['FirstName', 'MiddleName', 'LastName', 'Email', 'Password', 'PhoneNumber', 'Country', 'Province', 'CityCity', 'District', 'HouseNoStreet', 'ZipCode', 'ProfilePic'];
-    $id = $db->real_escape_string($id);
-
-    if (strlen($PhoneNumber) < 11) {
-        echo "<script>alert('Phone number must be at least 11 characters long.'); window.location = '../settings.php';</script>";
-        exit;
-    }
-
-    if ($this->checkDuplicateEmail($Email)) {
-        echo "<script>alert('Email Already Exists'); window.location = '../settings.php';</script>";
-        exit;
-    }
-
-    if ($this->checkDuplicatePhoneNumber($PhoneNumber)) {
-        echo "<script>alert('Contact Number Already Exists'); window.location = '../settings.php';</script>";
-        exit;
-    }
-
-    // Handle profile picture upload
-    $profilePicLocation = null;
-    if (!empty($_FILES['profile_pic']['name'])) {
-        $profilePic = $_FILES['profile_pic'];
-        $profilePic_temp = $profilePic['tmp_name'];
-        $profilePicLocation = "profilePic/" . $profilePic['name'];
-        move_uploaded_file($profilePic_temp, $profilePicLocation);
-    }
-
-    $sql = "UPDATE user_acct SET ";
-    $updateFields = [];
-    $params = [];
-
-    foreach ($fields as $field) {
-        if (!empty($$field)) {
-            if ($field === 'ProfilePic') {
-                if ($profilePicLocation !== null) {
-                    $updateFields[] = "$field = ?";
-                    $params[] = $profilePicLocation;
-                } // If no new picture is uploaded, the existing picture remains unchanged
-            } else {
-                $updateFields[] = "$field = ?";
-                $params[] = $$field;
-            }
         }
     }
 
-    $sql .= implode(", ", $updateFields);
-    $sql .= " WHERE ID = ?";
 
-    // Add the ID to the parameters
-    $params[] = $id;
+    public function editInformation($id, $FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode, $ProfilePic)
+    {
+        $db = $this->db->getConnection();
+        $fields = ['FirstName', 'MiddleName', 'LastName', 'Email', 'Password', 'PhoneNumber', 'Country', 'Province', 'CityCity', 'District', 'HouseNoStreet', 'ZipCode', 'ProfilePic'];
+        $id = $db->real_escape_string($id);
 
-    $stmt = $db->prepare($sql);
-    $paramTypes = str_repeat('s', count($params));
-    $stmt->bind_param($paramTypes, ...$params);
+        if ($this->checkDuplicateEmail($Email)) {
+            echo "<script>alert('Email Already Exists'); window.location = '../settings.php';</script>";
+            exit;
+        }
 
-    $result = $stmt->execute();
+        if ($this->checkDuplicatePhoneNumber($PhoneNumber)) {
+            echo "<script>alert('Contact Number Already Exists'); window.location = '../settings.php';</script>";
+            exit;
+        }
 
-    if ($result) {
-        echo "<script>alert('User info updated!'); window.location = '../settings.php';</script>";
-        exit;
-    } else {
-        echo "<script>alert('Failed to update user information'); window.location = '../settings.php';</script>";
-    }
-    $stmt->close();
-}
+        // Handle profile picture upload
+        $profilePicLocation = null;
+        if (!empty($_FILES['profile_pic']['name'])) {
+            $profilePic = $_FILES['profile_pic'];
+            $profilePic_temp = $profilePic['tmp_name'];
+            $profilePicLocation = "profilePic/" . $profilePic['name'];
+            move_uploaded_file($profilePic_temp, $profilePicLocation);
+        }
 
-// Inside the UserAuth class in process.php
+        $sql = "UPDATE user_acct SET ";
+        $updateFields = [];
+        $params = [];
 
-public function removeProfilePicture($id) {
-    $id = filter_var($id, FILTER_VALIDATE_INT);
-
-    if ($id === false || $id <= 0) {
-        echo "Invalid user ID";
-        exit;
-    }
-
-    $db = $this->db->getConnection();
-
-    // Fetch the current profile picture path
-    $getProfilePicPathSql = "SELECT ProfilePic FROM user_acct WHERE ID = ?";
-    $getProfilePicPathStmt = $db->prepare($getProfilePicPathSql);
-    $getProfilePicPathStmt->bind_param('i', $id);
-    $getProfilePicPathStmt->execute();
-    $profilePicResult = $getProfilePicPathStmt->get_result();
-
-    if ($profilePicResult->num_rows === 1) {
-        $row = $profilePicResult->fetch_assoc();
-
-        // Use __DIR__ to get the absolute path of the script directory
-        $profilePicPath = '' . $row['ProfilePic'];
-
-        // Check if the user has a profile picture
-        if (file_exists($profilePicPath)) {
-            // Remove the existing profile picture file
-            if (unlink($profilePicPath)) {
-                // Update the database to set ProfilePic to NULL
-                $updateProfilePicSql = "UPDATE user_acct SET ProfilePic = NULL WHERE ID = ?";
-                $updateProfilePicStmt = $db->prepare($updateProfilePicSql);
-                $updateProfilePicStmt->bind_param('i', $id);
-                $updateProfilePicStmt->execute();
-
-                if ($updateProfilePicStmt->affected_rows >= 1) {
-                    echo "<script>alert('Profile picture removed successfully!'); window.location = '../settings.php';</script>";
+        foreach ($fields as $field) {
+            if (!empty($$field)) {
+                if ($field === 'ProfilePic') {
+                    if ($profilePicLocation !== null) {
+                        $updateFields[] = "$field = ?";
+                        $params[] = $profilePicLocation;
+                    } // If no new picture is uploaded, the existing picture remains unchanged
                 } else {
-                    echo "Failed to update profile picture record in the database";
+                    $updateFields[] = "$field = ?";
+                    $params[] = $$field;
+                }
+            }
+        }
+
+
+        $sql .= implode(", ", $updateFields);
+        $sql .= " WHERE ID = ?";
+
+        // Add the ID to the parameters
+        $params[] = $id;
+
+        $stmt = $db->prepare($sql);
+        $paramTypes = str_repeat('s', count($params));
+        $stmt->bind_param($paramTypes, ...$params);
+
+        $result = $stmt->execute();
+
+        if ($result) {
+            echo "<script>alert('User info updated!'); window.location = '../settings.php';</script>";
+            exit;
+        } else {
+            echo "<script>alert('Failed to update user information'); window.location = '../settings.php';</script>";
+        }
+        $stmt->close();
+    }
+
+    // Inside the UserAuth class in process.php
+
+    public function removeProfilePicture($id)
+    {
+        $id = filter_var($id, FILTER_VALIDATE_INT);
+
+        if ($id === false || $id <= 0) {
+            echo "Invalid user ID";
+            exit;
+        }
+
+        $db = $this->db->getConnection();
+
+        // Fetch the current profile picture path
+        $getProfilePicPathSql = "SELECT ProfilePic FROM user_acct WHERE ID = ?";
+        $getProfilePicPathStmt = $db->prepare($getProfilePicPathSql);
+        $getProfilePicPathStmt->bind_param('i', $id);
+        $getProfilePicPathStmt->execute();
+        $profilePicResult = $getProfilePicPathStmt->get_result();
+
+        if ($profilePicResult->num_rows === 1) {
+            $row = $profilePicResult->fetch_assoc();
+
+            // Use __DIR__ to get the absolute path of the script directory
+            $profilePicPath = '' . $row['ProfilePic'];
+
+            // Check if the user has a profile picture
+            if (file_exists($profilePicPath)) {
+                // Remove the existing profile picture file
+                if (unlink($profilePicPath)) {
+                    // Update the database to set ProfilePic to NULL
+                    $updateProfilePicSql = "UPDATE user_acct SET ProfilePic = NULL WHERE ID = ?";
+                    $updateProfilePicStmt = $db->prepare($updateProfilePicSql);
+                    $updateProfilePicStmt->bind_param('i', $id);
+                    $updateProfilePicStmt->execute();
+
+                    if ($updateProfilePicStmt->affected_rows >= 1) {
+                        echo "<script>alert('Profile picture removed successfully!'); window.location = '../settings.php';</script>";
+                    } else {
+                        echo "Failed to update profile picture record in the database";
+                    }
+                } else {
+                    echo "Failed to remove the profile picture file";
                 }
             } else {
-                echo "Failed to remove the profile picture file";
+                echo "Profile picture not found at path: $profilePicPath";
             }
         } else {
-            echo "Profile picture not found at path: $profilePicPath";
+            echo "User not found";
         }
-    } else {
-        echo "User not found";
     }
-}
 
     // Inside the addWallpaper method in the UserAuth class
 
-public function addWallpaper($WallpaperID, $Title, $WallpaperLocation) {
-    $allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+    public function addWallpaper($WallpaperID, $Title, $WallpaperLocation)
+    {
+        $allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
 
-    $con = $this->db->getConnection();
+        $con = $this->db->getConnection();
 
-    $wallpaper = $_FILES['new_wallpaper'];
-    $wallpaper_temp = $wallpaper['tmp_name'];
+        $wallpaper = $_FILES['new_wallpaper'];
+        $wallpaper_temp = $wallpaper['tmp_name'];
 
-    // Check if the uploaded file is of an allowed type
-    if (!in_array($wallpaper['type'], $allowedFileTypes)) {
-        echo "<script>alert('Invalid file type. Only JPG, PNG, and GIF files are allowed.'); window.location = '../dashboard.php';</script>";
-        exit;
+        // Check if the uploaded file is of an allowed type
+        if (!in_array($wallpaper['type'], $allowedFileTypes)) {
+            echo "<script>alert('Invalid file type. Only JPG, PNG, and GIF files are allowed.'); window.location = '../dashboard.php';</script>";
+            exit;
+        }
+
+        $WallpaperLocation = "upload/" . $wallpaper['name'];
+        move_uploaded_file($wallpaper_temp, $WallpaperLocation);
+
+        $sql = "INSERT INTO wallpaper (WallpaperID, Title, WallpaperLocation) VALUES ('', ?, ?)";
+        $query = $this->db->prepare($sql);
+
+        $insertParams = [&$Title, &$WallpaperLocation]; // Removed &$WallpaperID
+
+        // Bind parameters using foreach loop
+        $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
+        $query->bind_param($paramTypes, ...$insertParams);
+
+        $result = $query->execute();
+
+        if ($result) {
+            echo "<script>alert('Wallpaper Added!'); window.location = '../dashboard.php';</script>";
+        } else {
+            echo "<script>alert('Upload Error'); window.location = '../register.php';</script>";
+        }
+        $query->close();
     }
 
-    $WallpaperLocation = "upload/" . $wallpaper['name'];
-    move_uploaded_file($wallpaper_temp, $WallpaperLocation);
 
-    $sql = "INSERT INTO wallpaper (WallpaperID, Title, WallpaperLocation) VALUES ('', ?, ?)";
-    $query = $this->db->prepare($sql);
-
-    $insertParams = [&$Title, &$WallpaperLocation]; // Removed &$WallpaperID
-
-    // Bind parameters using foreach loop
-    $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
-    $query->bind_param($paramTypes, ...$insertParams);
-
-    $result = $query->execute();
-
-    if ($result) {
-        echo "<script>alert('Wallpaper Added!'); window.location = '../dashboard.php';</script>";
-    } else {
-        echo "<script>alert('Upload Error'); window.location = '../register.php';</script>";
-    }
-    $query->close();
-}
-
-    
-    public function deleteWallpaper($WallpaperId) {
+    public function deleteWallpaper($WallpaperId)
+    {
         $WallpaperId = filter_var($WallpaperId, FILTER_VALIDATE_INT);
-    
+
         if ($WallpaperId === false || $WallpaperId <= 0) {
             echo "invalid wallpaper";
             exit;
         }
-    
+
         $deleteSql = "DELETE FROM wallpaper WHERE WallpaperID = ?";
         $deleteStmt = $this->db->getConnection()->prepare($deleteSql);
         $deleteStmt->bind_param("i", $WallpaperId);
         $deleteResult = $deleteStmt->execute();
         $deleteStmt->close();
-    
+
         if ($deleteResult) {
             $imagePath = './accountProcess/upload/' . $WallpaperId;
             if (file_exists($imagePath)) {
@@ -312,7 +319,8 @@ public function addWallpaper($WallpaperID, $Title, $WallpaperLocation) {
         }
     }
 
-    public function logout() {
+    public function logout()
+    {
         echo "<script>alert('Logout Successful'); window.location = '../index.php';</script>";
         session_unset();
         session_destroy();
@@ -365,7 +373,7 @@ if ($databaseConnection->getConnection()) {
         $id = $_SESSION['id'];
         $userAuth->removeProfilePicture($id);
     }
-    
+
     if (isset($_POST['add_wallpaper'])) {
         $id = $_SESSION['id'];
         $userAuth->addWallpaper(
@@ -382,4 +390,3 @@ if ($databaseConnection->getConnection()) {
 } else {
     echo "Error: Database connection not established.";
 }
-?>
