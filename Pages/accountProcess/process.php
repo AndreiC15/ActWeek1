@@ -141,6 +141,20 @@ class UserAuth
         $fields = ['FirstName', 'MiddleName', 'LastName', 'Email', 'Password', 'PhoneNumber', 'Country', 'Province', 'CityCity', 'District', 'HouseNoStreet', 'ZipCode', 'ProfilePic'];
         $id = $db->real_escape_string($id);
 
+        // Check if any changes were made
+        $changesMade = false;
+        foreach ($fields as $field) {
+            if (!empty($$field)) {
+                $changesMade = true;
+                break;
+            }
+        }
+
+        if (!$changesMade) {
+            echo "<script>alert('No changes made.'); window.location = '../settings.php';</script>";
+            exit;
+        }
+
         if ($this->checkDuplicateEmail($Email)) {
             echo "<script>alert('Email Already Exists'); window.location = '../settings.php';</script>";
             exit;
@@ -171,6 +185,10 @@ class UserAuth
                         $updateFields[] = "$field = ?";
                         $params[] = $profilePicLocation;
                     } // If no new picture is uploaded, the existing picture remains unchanged
+                } elseif ($field === 'ZipCode') {
+                    // Treat ZipCode as a string to preserve leading zeros
+                    $updateFields[] = "$field = ?";
+                    $params[] = (string) $$field;
                 } else {
                     $updateFields[] = "$field = ?";
                     $params[] = $$field;
@@ -178,26 +196,39 @@ class UserAuth
             }
         }
 
-
         $sql .= implode(", ", $updateFields);
-        $sql .= " WHERE ID = ?";
 
-        // Add the ID to the parameters
-        $params[] = $id;
+        // Check if any fields are updated
+        if (!empty($updateFields)) {
+            $sql .= " WHERE ID = ?";
 
-        $stmt = $db->prepare($sql);
-        $paramTypes = str_repeat('s', count($params));
-        $stmt->bind_param($paramTypes, ...$params);
+            // Add the ID to the parameters
+            $params[] = $id;
 
-        $result = $stmt->execute();
+            $stmt = $db->prepare($sql);
 
-        if ($result) {
-            echo "<script>alert('User info updated!'); window.location = '../settings.php';</script>";
-            exit;
+            if (!$stmt) {
+                // Check for errors in the preparation of the statement
+                echo "<script>alert('Error in SQL query preparation'); window.location = '../settings.php';</script>";
+                exit;
+            }
+
+            $paramTypes = str_repeat('s', count($params));
+            $stmt->bind_param($paramTypes, ...$params);
+
+            $result = $stmt->execute();
+
+            if ($result) {
+                echo "<script>alert('User info updated!'); window.location = '../settings.php';</script>";
+                exit;
+            } else {
+                echo "<script>alert('Failed to update user information'); window.location = '../settings.php';</script>";
+            }
+
+            $stmt->close();
         } else {
-            echo "<script>alert('Failed to update user information'); window.location = '../settings.php';</script>";
+            echo "<script>alert('No changes made.'); window.location = '../settings.php';</script>";
         }
-        $stmt->close();
     }
 
     // Inside the UserAuth class in process.php

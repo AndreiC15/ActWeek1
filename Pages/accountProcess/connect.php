@@ -1,20 +1,23 @@
 <?php
 
-class DatabaseConnection {
+class DatabaseConnection
+{
     private $host;
     private $username;
     private $password;
     private $database;
     private $con;
 
-    public function __construct($host, $username, $password, $database) {
+    public function __construct($host, $username, $password, $database)
+    {
         $this->host = $host;
         $this->username = $username;
         $this->password = $password;
         $this->database = $database;
     }
 
-    public function connect() {
+    public function connect()
+    {
         $this->con = new mysqli($this->host, $this->username, $this->password, $this->database);
 
         if ($this->con->connect_error) {
@@ -26,15 +29,18 @@ class DatabaseConnection {
         }
     }
 
-    public function prepare($sql) {
+    public function prepare($sql)
+    {
         return $this->con->prepare($sql);
     }
 
-    public function getConnection() {
+    public function getConnection()
+    {
         return $this->con;
     }
 
-    public function closeConnection() {
+    public function closeConnection()
+    {
         if ($this->con) {
             $this->con->close();
         }
@@ -44,4 +50,3 @@ class DatabaseConnection {
 // Instantiate the DatabaseConnection class and connect to the database
 $databaseConnection = new DatabaseConnection("localhost", "root", "", "logintest");
 $databaseConnection->connect();
-?>

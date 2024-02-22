@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
 <?php
 require_once 'accountProcess/connect.php';
 
@@ -21,7 +19,6 @@ class UserProfile
             $result = $stmt->get_result();
 
             $userData = $result->fetch_assoc();
-
 
             if (!$userData) {
                 echo "<script>alert('No login session'); window.location = 'index.php';</script>";
@@ -52,6 +49,9 @@ if ($databaseConnection->getConnection()) {
 }
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -68,9 +68,7 @@ if ($databaseConnection->getConnection()) {
             <ul>
                 <li>
                     <i class="fa fa-info fa-2x"><img class="navSideIconLogo" src="testImages/icon.png"></i>
-                    <span class="nav-text">
-                        WallpaperStation
-                    </span>
+                    <span class="nav-text">WallpaperStation</span>
                     </a>
                 </li>
             </ul>
@@ -78,9 +76,7 @@ if ($databaseConnection->getConnection()) {
                 <li>
                     <a href="homepage.php">
                         <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/home.png"></i>
-                        <span class="nav-text">
-                            Home
-                        </span>
+                        <span class="nav-text">Home</span>
                     </a>
                 </li>
             </ul>
@@ -88,9 +84,7 @@ if ($databaseConnection->getConnection()) {
                 <li>
                     <a href="dashboard.php">
                         <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/dashboard.png"></i>
-                        <span class="nav-text">
-                            Dashboard
-                        </span>
+                        <span class="nav-text">Dashboard</span>
                     </a>
                 </li>
             </ul>
@@ -98,9 +92,7 @@ if ($databaseConnection->getConnection()) {
                 <li>
                     <a href="settings.php">
                         <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/setting.png"></i>
-                        <span class="nav-text">
-                            Account Settings
-                        </span>
+                        <span class="nav-text">Account Settings</span>
                     </a>
                 </li>
             </ul>
@@ -125,7 +117,6 @@ if ($databaseConnection->getConnection()) {
     <div class="navBarTop">
         <h1>Account Settings</h1>
     </div>
-
 
     <div class="profileContainer">
         <h2>User Profile</h2>
@@ -190,7 +181,9 @@ if ($databaseConnection->getConnection()) {
                     <td>Password:</td>
                     <td><input type="password" id="password" name="password" minlength="8" autocomplete="off"></td>
                     <td>Phone Number:</td>
-                    <td><input type="text" id="phone_number" name="phone_number" placeholder="<?php echo $userData['PhoneNumber']; ?>" pattern="[0-9]{11}" title="Please enter a valid 11-digit phone number" oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 11);"></td>
+                    <!-- Updated input tag for phone number -->
+                    <td><input type="text" id="phone_number" name="phone_number" placeholder="<?php echo $userData['PhoneNumber']; ?>" oninput="sanitizeNumericInput(event);" maxlength="11"></td>
+
                 </tr>
                 <tr>
                     <td>Country:</td>
@@ -203,10 +196,10 @@ if ($databaseConnection->getConnection()) {
                 <tr>
                     <td>District:</td>
                     <td><input type="text" id="district" name="district" placeholder="<?php echo $userData['District']; ?>" oninput="sanitizeInput(this); applySentenceCase(this);"></td>
-                    <td>House No. & Street</td>
-                    <td><input type="text" id="house_no_street" name="house_no_street" placeholder="<?php echo $userData['HouseNoStreet']; ?>" oninput="sanitizeInput(this); applySentenceCase(this);">
+                    <td>House No. & Street:</td>
+                    <td><input type="text" id="house_no_street" name="house_no_street" placeholder="<?php echo $userData['HouseNoStreet']; ?>" oninput="applySentenceCase(this);"></td>
                     <td>Zip Code:</td>
-                    <td><input class="LogInText" type="text" id="zipcode" name="zipcode" placeholder="<?php echo $userData['ZipCode']; ?>" pattern="[0-9]+" title="Only numbers are allowed" oninput="sanitizeNumericInput(this);">
+                    <td><input class="LogInText" type="text" id="zipcode" name="zipcode" placeholder="<?php echo strtoupper($userData['ZipCode']); ?>" oninput="convertToUppercase(this);"></td>
                 </tr>
                 <input class="editBtn" type="submit" id="update_profile" name="update_profile" value="Save Changes">
                 </form>
@@ -243,16 +236,6 @@ if ($databaseConnection->getConnection()) {
             });
         }
 
-        // Function to convert input value to sentence case for specific fields
-        function applySentenceCase(inputElement) {
-            var inputValue = inputElement.value;
-            var sentenceCaseValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
-            if (inputElement.id === "house_no_street") {
-                sentenceCaseValue = capitalizeEachWord(sentenceCaseValue);
-            }
-            inputElement.value = sentenceCaseValue;
-        }
-
         function sanitizeInput(inputElement) {
             // Remove special characters
             inputElement.value = inputElement.value.replace(/[^A-Za-z\s]/g, '');
@@ -260,13 +243,33 @@ if ($databaseConnection->getConnection()) {
 
         function applySentenceCase(inputElement) {
             var inputValue = inputElement.value;
-            var sentenceCaseValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
-            inputElement.value = sentenceCaseValue;
+
+            // Special case for "House No. & Street"
+            if (inputElement.id === "house_no_street") {
+                inputValue = capitalizeEachWord(inputValue);
+            } else {
+                // Regular sentence case for other fields
+                var words = inputValue.split(/\s+/); // Split by whitespace
+                words = words.map(function(word) {
+                    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                });
+                inputValue = words.join(' ');
+            }
+
+            inputElement.value = inputValue;
         }
 
-        function sanitizeNumericInput(inputElement) {
-            // Remove non-numeric characters
-            inputElement.value = inputElement.value.replace(/[^0-9]/g, '');
+        function convertToUppercase(inputElement) {
+            inputElement.value = inputElement.value.toUpperCase();
+        }
+
+        function sanitizeNumericInput(event) {
+            var inputValue = event.target.value;
+            // Replace any non-numeric characters with an empty string
+            var numericValue = inputValue.replace(/[^0-9]/g, '');
+
+            // Truncate to a maximum length of 11 characters
+            event.target.value = numericValue.substring(0, 11);
         }
     </script>
 </body>

@@ -21,7 +21,10 @@
 -Moved the Email and Contact Number duplicate checker to another class <br>
 
 <b>22/02/24</b><br>
--Password minlength and maxlength attribute character limit for register, login, forgot and settings<br>
+-Password minlength attribute character limit for <b>Register, Login, Forgot and Settings</b><br>
 -Remove arrow button in number input<br>
--Sentence case in input field in registration except password, Capitalise each word in House No. and Street<br>
--Special character restriction in register and settings form except password
+-Sentence case and Capitalise each word and every space in input field in <b>Registration except Password and Upload Wallpaper Title</b><br>
+-Special character restriction in <b>Register and Rettings form except Password and Zip Code</b><br>
+-Uppercase letters for <b>Zip Code</b><br>
+-Fix <b>Phone Number</b> length (limit to 11 characters)<br>
+-Homepage wallpaper pagination<br>

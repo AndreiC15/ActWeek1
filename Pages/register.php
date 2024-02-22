@@ -47,13 +47,12 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
                         <input class="PasswordText" type="password" id="confirmPassword" name="confirmPassword" placeholder="Retype password" minlength="8" required>
                     </tr>
                     <tr>
-                        <input class="LogInText" type="text" id="phone_number" name="phone_number" placeholder="Phone Number" pattern="[0-9]{11}" title="Please enter a valid 11-digit phone number" oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 11);" required>
+                        <input class="LogInText" type="text" id="phone_number" name="phone_number" placeholder="Phone Number" oninput="sanitizeNumericInput(event);" maxlength="11" required>
                     </tr>
 
                     <br></br>
                     <center>
                         <input class="ShowPass" type="checkbox" onclick="togglePasswordVisibility()">Show Password
-
                     </center>
             </table>
 
@@ -76,7 +75,6 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
                             <input class="LogInText" type="text" id="citycity" name="citycity" placeholder="City/Municipality" oninput="sanitizeInput(this); applySentenceCase(this);" required>
                         </td>
                     </tr>
-
                 </table>
 
                 <table class="userInfo">
@@ -87,13 +85,11 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
                     </tr>
                     <tr>
                         <td>
-                            <input class="LogInText" type="text" id="house_no_street" name="house_no_street" placeholder="House Number & Street:" oninput="sanitizeInput(this); applySentenceCase(this);" required>
+                            <input class="LogInText" type="text" id="house_no_street" name="house_no_street" placeholder="House Number & Street:" oninput="applySentenceCase(this);" required>
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            <input class="LogInText" type="number" id="zip_code" name="zip_code" placeholder="Zip Code" required>
-                        </td>
+                        <td><input class="LogInText" type="text" id="zipcode" name="zipcode" placeholder="Zip Code" oninput="convertToUppercase(this);"></td>
                     </tr>
                 </table>
             </div>
@@ -109,18 +105,14 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
             var confirmPassword = document.getElementById("confirmPassword");
 
             // Toggle visibility for the "Password" field
-            if (password.type === "password") {
-                password.type = "text";
-            } else {
-                password.type = "password";
-            }
+            toggleInputType(password);
 
             // Toggle visibility for the "Confirm Password" field
-            if (confirmPassword.type === "password") {
-                confirmPassword.type = "text";
-            } else {
-                confirmPassword.type = "password";
-            }
+            toggleInputType(confirmPassword);
+        }
+
+        function toggleInputType(inputElement) {
+            inputElement.type = (inputElement.type === "password") ? "text" : "password";
         }
 
         function capitalizeEachWord(str) {
@@ -129,25 +121,34 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
             });
         }
 
-        // Function to convert input value to sentence case for specific fields
         function applySentenceCase(inputElement) {
             var inputValue = inputElement.value;
-            var sentenceCaseValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
+
+            // Special case for "House No. & Street"
             if (inputElement.id === "house_no_street") {
-                sentenceCaseValue = capitalizeEachWord(sentenceCaseValue);
+                inputValue = capitalizeEachWord(inputValue);
+            } else {
+                // Regular sentence case for other fields
+                var words = inputValue.split(/\s+/); // Split by whitespace
+                words = words.map(function(word) {
+                    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                });
+                inputValue = words.join(' ');
             }
-            inputElement.value = sentenceCaseValue;
+            inputElement.value = inputValue;
         }
 
-        function sanitizeInput(inputElement) {
-            // Remove special characters
-            inputElement.value = inputElement.value.replace(/[^A-Za-z\s]/g, '');
+        function convertToUppercase(inputElement) {
+            inputElement.value = inputElement.value.toUpperCase();
         }
 
-        function applySentenceCase(inputElement) {
-            var inputValue = inputElement.value;
-            var sentenceCaseValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
-            inputElement.value = sentenceCaseValue;
+        function sanitizeNumericInput(event) {
+            var inputValue = event.target.value;
+            // Replace any non-numeric characters with an empty string
+            var numericValue = inputValue.replace(/[^0-9]/g, '');
+
+            // Truncate to a maximum length of 11 characters
+            event.target.value = numericValue.substring(0, 11);
         }
     </script>
 </body>

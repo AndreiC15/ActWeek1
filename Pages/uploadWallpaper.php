@@ -5,14 +5,17 @@
 <?php
 require_once 'accountProcess/connect.php';
 
-class UserProfile {
+class UserProfile
+{
     private $db;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->db = $db;
     }
 
-    public function getUserProfile($id) {
+    public function getUserProfile($id)
+    {
         try {
             $stmt = $this->db->getConnection()->prepare("SELECT * FROM user_acct WHERE id = ?");
             $stmt->bind_param('i', $id); // 'i' indicates integer type
@@ -50,37 +53,35 @@ if ($databaseConnection->getConnection()) {
 }
 ?>
 
-<!-- The rest of your HTML code remains the same -->
-
-
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Upload</title>
-        <link rel="stylesheet" href="pagesCSS/uploadWallpaper.css">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload</title>
+    <link rel="stylesheet" href="pagesCSS/uploadWallpaper.css">
+</head>
 
 <body>
 
     <div class="navBarTop">
-        <h1>UPLOAD</h1>   
+        <h1>UPLOAD</h1>
     </div>
 
-<div class="area"></div><nav class="main-menu">
-            <center>
+    <div class="area"></div>
+    <nav class="main-menu">
+        <center>
             <ul>
                 <li>
-                       <i class="fa fa-info fa-2x"><img class="navSideIconLogo" src="testImages/icon.png"></i>
-                        <span class="nav-text">
-                            WallpaperStation
-                        </span>
+                    <i class="fa fa-info fa-2x"><img class="navSideIconLogo" src="testImages/icon.png"></i>
+                    <span class="nav-text">
+                        WallpaperStation
+                    </span>
                     </a>
                 </li>
             </ul>
             <ul>
                 <li>
                     <a href="homepage.php">
-                       <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/home.png"></i>
+                        <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/home.png"></i>
                         <span class="nav-text">
                             Home
                         </span>
@@ -90,7 +91,7 @@ if ($databaseConnection->getConnection()) {
             <ul>
                 <li>
                     <a href="dashboard.php">
-                       <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/dashboard.png"></i>
+                        <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/dashboard.png"></i>
                         <span class="nav-text">
                             Dashboard
                         </span>
@@ -100,77 +101,111 @@ if ($databaseConnection->getConnection()) {
             <ul>
                 <li>
                     <a href="settings.php">
-                       <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/setting.png"></i>
+                        <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/setting.png"></i>
                         <span class="nav-text">
                             Account Settings
                         </span>
                     </a>
                 </li>
             </ul>
-            </center>  
-            <ul class="logout">
-                <li>
-                   <a href="#">
-                   <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/shutdown.png"></i>
-                   <span class="nav-text">
-                   <center>
-                        <div class="LogoutButton">
-                        <form method="POST" action="./accountProcess/process.php">
-                <input style="width: 100%; max-width: 100px; height: 30px; background-color: red; border-radius: 50px; color: white;cursor: pointer;" type="submit" id="logout" name="logout" value="Logout">
-                </center>
-            </form>  
-        </div>
-                   </span>
-                    </a>
-                </li>  
-            </ul>
-        </nav>
-</br></br>
-        <fieldset>
-            <center>
+        </center>
+        <ul class="logout">
+            <li>
+                <a href="#">
+                    <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/shutdown.png"></i>
+                    <span class="nav-text">
+                        <center>
+                            <div class="LogoutButton">
+                                <form method="POST" action="./accountProcess/process.php">
+                                    <input style="width: 100%; max-width: 100px; height: 30px; background-color: red; border-radius: 50px; color: white;cursor: pointer;" type="submit" id="logout" name="logout" value="Logout">
+                        </center>
+                        </form>
+                        </div>
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    </br></br>
+    <fieldset>
+        <center>
             <div class="divider">
                 <h2 style="margin-left:-2.5%;color:black;">Upload Wallpaper</h2>
-        </div>
-        <table>
-            <form method="POST" action="./accountProcess/process.php" enctype="multipart/form-data">
-                <center>
-                <tr>
-                </br>
-                    <td>Title:</td>
-                    <td><input class="titleText" type="text" name="title" id="title" required ></td>
-                </tr>
-                <tr>
-                    <!-- Modify the file input in your form -->
-                    <td>Upload image:</td>
-                    <td><input class="titleText" id="new_wallpaper" type="file" name="new_wallpaper" accept=".jpg, .jpeg, .png, .gif" onchange="PreviewImage();" required/></td>
-                </tr>
-            </center>
-        </table>
-            
+            </div>
+            <table>
+                <form method="POST" action="./accountProcess/process.php" enctype="multipart/form-data">
+                    <center>
+                        <tr>
+                            </br>
+                            <td>Title:</td>
+                            <td><input class="titleText" type="text" name="title" id="title" required oninput="applySentenceCase(this);"></td>
+                        </tr>
+                        <tr>
+                            <!-- Modify the file input in your form -->
+                            <td>Upload image:</td>
+                            <td><input class="titleText" id="new_wallpaper" type="file" name="new_wallpaper" accept=".jpg, .jpeg, .png, .gif" onchange="PreviewImage();" required /></td>
+                        </tr>
+                    </center>
+            </table>
+
             <div id="imagePreviewContainer" style="display: none;">
                 Image Preview:</br></br>
                 <img id="uploadPreview" style="width: 550px;"></br></br>
             </div>
 
             <input type="submit" name="add_wallpaper" id="add_wallpaper">
-            </center>
-            </form>
-        </fieldset>
+        </center>
+        </form>
+    </fieldset>
 
 
-<script type="text/javascript">
+    <script type="text/javascript">
         function PreviewImage() {
             var oFReader = new FileReader();
             var previewContainer = document.getElementById("imagePreviewContainer");
 
             oFReader.readAsDataURL(document.getElementById("new_wallpaper").files[0]);
 
-            oFReader.onload = function (oFREvent) {
+            oFReader.onload = function(oFREvent) {
                 document.getElementById("uploadPreview").src = oFREvent.target.result;
                 previewContainer.style.display = "block"; // Show the preview container
             };
         };
-</script>
+
+        function capitalizeEachWord(str) {
+            return str.replace(/\b\w/g, function(char) {
+                return char.toUpperCase();
+            });
+        }
+
+        function applySentenceCase(inputElement) {
+            var inputValue = inputElement.value;
+
+            // Special case for "House No. & Street"
+            if (inputElement.id === "house_no_street") {
+                inputValue = capitalizeEachWord(inputValue);
+            } else {
+                // Regular sentence case for other fields
+                var words = inputValue.split(/\s+/); // Split by whitespace
+                words = words.map(function(word) {
+                    // Check for '-' and capitalize the next character
+                    if (word.includes('-')) {
+                        var parts = word.split('-');
+                        parts = parts.map(function(part) {
+                            return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+                        });
+                        return parts.join('-');
+                    } else {
+                        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                    }
+                });
+                inputValue = words.join(' ');
+            }
+            inputElement.value = inputValue;
+        }
+    </script>
+
 
 </body>
+
 </html>
