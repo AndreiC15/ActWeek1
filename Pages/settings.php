@@ -55,6 +55,7 @@ if ($databaseConnection->getConnection()) {
     <title>Account Settings</title>
     <link rel="stylesheet" href="pagesCSS/Settings.css">
     <link rel="stylesheet" href="pagesCSS/UserProfileSettings.css">
+    <link rel="stylesheet" href="pagesCSS/removeArrowinput.css">
 </head>
 
 <body>

@@ -11,6 +11,7 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
     <title>Registration</title>
     <head>
     <link rel="stylesheet" href="pagesCSS/IndexStyle.css">
+    <link rel="stylesheet" href="pagesCSS/removeArrowinput.css">
     </head>
     <body>
        <center>
