@@ -429,7 +429,7 @@ if ($databaseConnection->getConnection()) {
     }
 
     if (isset($_POST['register'])) {
-        $userAuth->register($_POST['first_name'], $_POST['middle_name'], $_POST['last_name'], $_POST['email'], $_POST['password'], $_POST['phone_number'], $_POST['country'], $_POST['province'], $_POST['citycity'], $_POST['district'], $_POST['house_no_street'], $_POST['zip_code']);
+        $userAuth->register($_POST['first_name'], $_POST['middle_name'], $_POST['last_name'], $_POST['email'], $_POST['password'], $_POST['phone_number'], $_POST['country'], $_POST['province'], $_POST['citycity'], $_POST['district'], $_POST['house_no_street'], $_POST['zipcode']);
     }
     if (isset($_POST['reset_password'])) {
         $userAuth->resetPassword(
