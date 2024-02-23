@@ -152,37 +152,39 @@ if (isset($_GET['WallpaperID'])) {
     </br></br>
     <fieldset>
         <center>
-            <div class="divider">
-                <h2 style="margin-left:-2.5%;color:black;">Edit Wallpaper</h2>
-            </div>
-            <table>
-                <!-- Use fetched title in the input value -->
-                <tr>
-                    <td>Title:</td>
-                    <td><input class="titleText" type="text" name="title" id="title" value="<?php echo htmlspecialchars($title); ?>" required oninput="applySentenceCase(this);"></td>
-                </tr>
-                <tr>
-                    <!-- Use fetched image path for preview -->
-                    <td>Current Image:</td>
-                    <td>
-                        <img style="width: 550px;" src="<?php echo $imagePath; ?>" alt="Current Image">
-                    </td>
-                </tr>
-                <tr>
-                    <!-- Modify the file input in your form -->
-                    <td>New Image:</td>
-                    <td><input class="titleText" id="new_wallpaper" type="file" name="new_wallpaper" accept=".jpg, .jpeg, .png, .gif" onchange="PreviewImage();" required /></td>
-                </tr>
-            </table>
+        <form method="POST" action="./accountProcess/process.php" enctype="multipart/form-data">
+    <div class="divider">
+        <h2 style="margin-left:-2.5%;color:black;">Edit Wallpaper</h2>
+    </div>
+    <table>
+        <tr>
+            <td>Title:</td>
+            <td><input class="titleText" type="text" name="title" id="title" value="<?php echo htmlspecialchars($title); ?>" required oninput="applySentenceCase(this);"></td>
+        </tr>
+        <tr>
+            <td>Current Image:</td>
+            <td>
+                <img style="width: 550px;" src="<?php echo $imagePath; ?>" alt="Current Image">
+            </td>
+        </tr>
+        <tr>
+            <td>New Image:</td>
+            <td><input class="titleText" id="new_wallpaper" type="file" name="new_wallpaper" accept=".jpg, .jpeg, .png, .gif" onchange="PreviewImage();" /></td>
+        </tr>
+    </table>
 
-            <div id="imagePreviewContainer" style="display: none;">
-                Image Preview:</br></br>
-                <img id="uploadPreview" style="width: 550px;"></br></br>
-            </div>
+    <div id="imagePreviewContainer" style="display: none;">
+        Image Preview:</br></br>
+        <img id="uploadPreview" style="width: 550px;"></br></br>
+    </div>
 
-            <input type="submit" name="edit_wallpaper" id="edit_wallpaper">
-        </center>
-        </form>
+    <!-- Add WallpaperID as a hidden field to pass it in the form -->
+    <input type="hidden" name="WallpaperID" value="<?php echo $wallpaperID; ?>">
+
+    <input type="submit" name="edit_wallpaper" id="edit_wallpaper">
+</form>
+
+        </center>  
     </fieldset>
 
 

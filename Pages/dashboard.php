@@ -55,7 +55,7 @@ if ($databaseConnection->getConnection()) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="pagesCSS/Dashboard.css">
+    <link rel="stylesheet" href="pagesCSS/dashboard.css">
 
     <style>
         .image-list {
@@ -90,14 +90,23 @@ if ($databaseConnection->getConnection()) {
             margin-left: -15.5%;
         }
         .editBtn {
-        width:100px;
+        width:100%;
         height: 10px;
-        color:black;
-        padding: 2px 5px 2px 5px;
-        background-color: white; /* Bootstrap's default danger color */
+        color:white;
+        padding: 2px 30px 2px 30px;
+        background-color: blue; 
         cursor: pointer;
-        margin-top: 3%;
-        font-size:15px;
+        font-size:14px;
+        font-family: arial;
+        border-style: solid;
+        border-width: 1.5px;
+        border-color: gray;
+    }
+    input{
+        cursor: pointer;
+    }
+    table{
+        margin-left:-20%;
     }
     </style>
 </head>
@@ -188,14 +197,18 @@ if ($databaseConnection->getConnection()) {
                     if (file_exists($imagePath)) {
                         echo '<li class="image-item">';
                         echo '<div class="image-container">';
-                        echo '<img style="width:400px;height:230px; " src="' . $imagePath . '" alt="' . htmlspecialchars($row['Title']) . '">';
-
+                        echo '<img style="width:400px;height:230px;object-fit:cover " src="' . $imagePath . '" alt="' . htmlspecialchars($row['Title']) . '">';
+                        
                         // Updated form to include an anchor tag for "Edit" functionality
                         echo '<form method="post" action="./accountProcess/process.php">';
                         echo '<input type="hidden" name="WallpaperID" value="' . $row['WallpaperID'] . '">';
-                        echo '</br>';
-                        echo '<a class="editBtn" href="editWallpaper.php?WallpaperID=' . $row['WallpaperID'] . '">Edit</a>';
-                        echo '</br><input style="margin-top:10%;" type="submit" name="delete_wallpaper" value="Delete">';
+                        echo '<p style="color: white;text-transform: capitalize;">' . $row['Title'] . '</p>';
+                        echo '<table>';
+                        echo '<tr>';
+                        echo '<td><a class="editBtn" href="editWallpaper.php?WallpaperID=' . $row['WallpaperID'] . '">Edit</a><td>';
+                        echo '<td><input style="background-color:red;color:white;width:150%" type="submit" name="delete_wallpaper" value="Delete"></td>';
+                        echo '</tr>';
+                        echo '</table>';
                         echo '</form>';
 
                         echo '</div>';

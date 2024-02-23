@@ -322,42 +322,61 @@ class UserAuth
         $query->close();
     }
 
-    public function editWallpaper($WallpaperID, $Title, $WallpaperLocation)
+    public function updateWallpaper($WallpaperID, $Title, $NewWallpaper)
     {
         $allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
 
         $con = $this->db->getConnection();
 
-        $wallpaper = $_FILES['new_wallpaper'];
-        $wallpaper_temp = $wallpaper['tmp_name'];
+        // Check if a new wallpaper is being uploaded
+        if (!empty($NewWallpaper['name'])) {
+            $newWallpaper_temp = $NewWallpaper['tmp_name'];
 
-        // Check if the uploaded file is of an allowed type
-        if (!in_array($wallpaper['type'], $allowedFileTypes)) {
-            echo "<script>alert('Invalid file type. Only JPG, PNG, and GIF files are allowed.'); window.location = '../dashboard.php';</script>";
-            exit;
-        }
+            // Check if the uploaded file is of an allowed type
+            if (!in_array($NewWallpaper['type'], $allowedFileTypes)) {
+                echo "<script>alert('Invalid file type. Only JPG, PNG, and GIF files are allowed.'); window.location = '../dashboard.php';</script>";
+                exit;
+            }
 
-        $WallpaperLocation = "upload/" . $wallpaper['name'];
-        move_uploaded_file($wallpaper_temp, $WallpaperLocation);
+            $WallpaperLocation = "upload/" . $NewWallpaper['name'];
+            move_uploaded_file($newWallpaper_temp, $WallpaperLocation);
 
-        $sql = "INSERT INTO wallpaper (WallpaperID, Title, WallpaperLocation) VALUES ('', ?, ?)";
-        $query = $this->db->prepare($sql);
+            // Use UPDATE query to modify existing wallpaper information
+            $sql = "UPDATE wallpaper SET Title = ?, WallpaperLocation = ? WHERE WallpaperID = ?";
+            $query = $this->db->prepare($sql);
 
-        $insertParams = [&$Title, &$WallpaperLocation]; // Removed &$WallpaperID
+            $insertParams = [&$Title, &$WallpaperLocation, &$WallpaperID];
+            $paramTypes = "ssi"; // 's' for string, 'i' for integer
+            $query->bind_param($paramTypes, ...$insertParams);
 
-        // Bind parameters using foreach loop
-        $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
-        $query->bind_param($paramTypes, ...$insertParams);
+            $result = $query->execute();
 
-        $result = $query->execute();
-
-        if ($result) {
-            echo "<script>alert('Wallpaper Added!'); window.location = '../dashboard.php';</script>";
+            if ($result) {
+                echo "<script>alert('Wallpaper Updated!'); window.location = '../dashboard.php';</script>";
+            } else {
+                echo "<script>alert('Update Error'); window.location = '../register.php';</script>";
+            }
         } else {
-            echo "<script>alert('Upload Error'); window.location = '../register.php';</script>";
+            // If no new image is uploaded, only update the title
+            $sql = "UPDATE wallpaper SET Title = ? WHERE WallpaperID = ?";
+            $query = $this->db->prepare($sql);
+
+            $insertParams = [&$Title, &$WallpaperID];
+            $paramTypes = "si"; // 's' for string, 'i' for integer
+            $query->bind_param($paramTypes, ...$insertParams);
+
+            $result = $query->execute();
+
+            if ($result) {
+                echo "<script>alert('Wallpaper Title Updated!'); window.location = '../dashboard.php';</script>";
+            } else {
+                echo "<script>alert('Update Error'); window.location = '../register.php';</script>";
+            }
         }
+
         $query->close();
     }
+
 
     public function deleteWallpaper($WallpaperId)
     {
@@ -380,7 +399,7 @@ class UserAuth
                 unlink($imagePath); // Delete the file
                 echo "deleted";
             } else {
-                echo "file not found";
+                echo "<script>alert('Wallpaper deleted successfully'); window.location = '../dashboard.php';</script>";
                 exit;
             }
         }
@@ -452,12 +471,13 @@ if ($databaseConnection->getConnection()) {
 
     if (isset($_POST['edit_wallpaper'])) {
         $id = $_SESSION['id'];
-        $userAuth->editWallpaper(
-            $id,
+        $userAuth->updateWallpaper(
+            $_POST['WallpaperID'],  // Assuming WallpaperID is available in the form
             $_POST['title'],
             $_FILES['new_wallpaper']
         );
     }
+
 
     if (isset($_POST['delete_wallpaper'])) {
         $WallpaperIdToDelete = $_POST['WallpaperID'];

@@ -29,5 +29,5 @@
 -Fix <b>Phone Number</b> length (limit to 11 characters)<br>
 -Homepage wallpaper pagination<br>
 
-# TO-DO
--Edit Wallpaper function
+<b>23/02/24</b><br>
+-Edit Wallpaper title and image function<b>
