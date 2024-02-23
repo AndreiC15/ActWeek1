@@ -32,7 +32,7 @@
 <b>23/02/24</b><br>
 -Edit Wallpaper title and image function<b>
 
-<b>Minor Changes</b>
+<b>Minor Changes</b><br>
 -Sort by latest upload in homepage and dashboard<br>
 -Removed the Sentence case and Capitalise each word in Edit Wallpaper<br>
 -Alert user when no changes was made when submit (editWallpaper.php)<br>
