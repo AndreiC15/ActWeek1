@@ -368,14 +368,21 @@ class UserAuth
             $result = $query->execute();
 
             if ($result) {
-                echo "<script>alert('Wallpaper Title Updated!'); window.location = '../dashboard.php';</script>";
+                // Check if any changes were made
+                $changesMade = $query->affected_rows > 0;
+
+                if ($changesMade) {
+                    echo "<script>alert('Wallpaper Title Updated!'); window.location = '../dashboard.php';</script>";
+                } else {
+                    echo "<script>alert('No changes made.'); window.location = '../editWallpaper.php?WallpaperID=$WallpaperID';</script>";
+                }
             } else {
                 echo "<script>alert('Update Error'); window.location = '../register.php';</script>";
             }
         }
-
         $query->close();
     }
+
 
 
     public function deleteWallpaper($WallpaperId)

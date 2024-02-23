@@ -115,6 +115,11 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
             inputElement.type = (inputElement.type === "password") ? "text" : "password";
         }
 
+        function sanitizeInput(inputElement) {
+            // Remove special characters
+            inputElement.value = inputElement.value.replace(/[^A-Za-z\s]/g, '');
+        }
+
         function capitalizeEachWord(str) {
             return str.replace(/\b\w/g, function(char) {
                 return char.toUpperCase();

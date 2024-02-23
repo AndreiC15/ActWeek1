@@ -186,7 +186,8 @@ if ($databaseConnection->getConnection()) {
         <fieldset>
             <h2 style="margin-left:-2.5%;">My Uploaded Wallpapers</h2>
             <?php
-            $sql = "SELECT WallpaperID, Title, WallpaperLocation FROM wallpaper";
+            $sql = "SELECT WallpaperID, Title, WallpaperLocation FROM wallpaper ORDER BY WallpaperID DESC";
+
             $result = $databaseConnection->getConnection()->query($sql);
 
             if ($result->num_rows >= 1) {
@@ -202,7 +203,7 @@ if ($databaseConnection->getConnection()) {
                         // Updated form to include an anchor tag for "Edit" functionality
                         echo '<form method="post" action="./accountProcess/process.php">';
                         echo '<input type="hidden" name="WallpaperID" value="' . $row['WallpaperID'] . '">';
-                        echo '<p style="color: white;text-transform: capitalize;">' . $row['Title'] . '</p>';
+                        echo '<p style="color: white;">' . $row['Title'] . '</p>';
                         echo '<table>';
                         echo '<tr>';
                         echo '<td><a class="editBtn" href="editWallpaper.php?WallpaperID=' . $row['WallpaperID'] . '">Edit</a><td>';

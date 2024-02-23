@@ -138,7 +138,7 @@ if ($databaseConnection->getConnection()) {
                         <tr>
                             </br>
                             <td>Title:</td>
-                            <td><input class="titleText" type="text" name="title" id="title" required oninput="applySentenceCase(this);"></td>
+                            <td><input class="titleText" type="text" name="title" id="title" required></td>
                         </tr>
                         <tr>
                             <!-- Modify the file input in your form -->
@@ -171,38 +171,6 @@ if ($databaseConnection->getConnection()) {
                 previewContainer.style.display = "block"; // Show the preview container
             };
         };
-
-        function capitalizeEachWord(str) {
-            return str.replace(/\b\w/g, function(char) {
-                return char.toUpperCase();
-            });
-        }
-
-        function applySentenceCase(inputElement) {
-            var inputValue = inputElement.value;
-
-            // Special case for "House No. & Street"
-            if (inputElement.id === "house_no_street") {
-                inputValue = capitalizeEachWord(inputValue);
-            } else {
-                // Regular sentence case for other fields
-                var words = inputValue.split(/\s+/); // Split by whitespace
-                words = words.map(function(word) {
-                    // Check for '-' and capitalize the next character
-                    if (word.includes('-')) {
-                        var parts = word.split('-');
-                        parts = parts.map(function(part) {
-                            return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
-                        });
-                        return parts.join('-');
-                    } else {
-                        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-                    }
-                });
-                inputValue = words.join(' ');
-            }
-            inputElement.value = inputValue;
-        }
     </script>
 
 

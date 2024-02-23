@@ -181,7 +181,7 @@ if ($databaseConnection->getConnection()) {
             $totalResult = $databaseConnection->getConnection()->query($countQuery);
             $totalWallpapers = $totalResult->fetch_assoc()['total'];
 
-            $sql = "SELECT WallpaperID, Title, WallpaperLocation FROM wallpaper LIMIT $offset, $limit";
+            $sql = "SELECT WallpaperID, Title, WallpaperLocation FROM wallpaper ORDER BY WallpaperID DESC LIMIT $offset, $limit";
             $result = $databaseConnection->getConnection()->query($sql);
 
             // Check if there are no wallpapers
@@ -198,7 +198,7 @@ if ($databaseConnection->getConnection()) {
                         echo '</div>';
                         echo '<div class="dl_Btn">';
                         echo '<a style="display:flex;padding-left:5px;padding-right:5px; font-family:arial;" href="' . $imagePath . '" download="' . htmlspecialchars($row['Title']) . '">
-                        <img style="filter: invert(100%);padding-right:5px" src="testImages/download.png" width="20" height="20"> Download</a>';
+                <img style="filter: invert(100%);padding-right:5px" src="testImages/download.png" width="20" height="20"> Download</a>';
                         echo '</div>';
                         echo '</li>';
                     } else {
@@ -226,6 +226,7 @@ if ($databaseConnection->getConnection()) {
                 echo '<p style="font-size: 18px; color: #333;margin-left:-1%">No uploaded wallpapers&#128531</p>';
                 echo '</div>';
             }
+
             ?>
         </fieldset>
 

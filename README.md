@@ -24,10 +24,15 @@
 -Password minlength attribute character limit for <b>Register, Login, Forgot and Settings</b><br>
 -Remove arrow button in number input<br>
 -Sentence case and Capitalise each word and every space in input field in <b>Registration except Password and Upload Wallpaper Title</b><br>
--Special character restriction in <b>Register and Rettings form except Password and Zip Code</b><br>
+-Special character restriction in <b>Register and Settings form except Password and Zip Code</b><br>
 -Uppercase letters for <b>Zip Code</b><br>
 -Fix <b>Phone Number</b> length (limit to 11 characters)<br>
 -Homepage wallpaper pagination<br>
 
 <b>23/02/24</b><br>
 -Edit Wallpaper title and image function<b>
+
+<b>Minor Changes</b>
+-Sort by latest upload in homepage and dashboard<br>
+-Removed the Sentence case and Capitalise each word in Edit Wallpaper<br>
+-Alert user when no changes was made when submit (editWallpaper.php)<br>
