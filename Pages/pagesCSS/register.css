@@ -8,7 +8,7 @@ body {
     padding: 0;
 }
 
-.webIcon{
+.webIcon {
     background-color: blue;
     width: 450px;
     height: 80px;
@@ -16,47 +16,80 @@ body {
     display: flex;
     align-items: center; /* Align items vertically in the center */
     justify-content: center;
-    margin-top: 5%; /* Center content horizontally */
+    margin-top: 20%; /* Center content horizontally */
 }
-
-.webIcon p, .ForgotwebIcon p {
+.webIcon p {
     color: white;
     font-size: 50px;
     margin: 0; /* Remove default margin */
 }
 
-.webIcon .hub, .ForgotwebIcon .hub {
+.webIcon .hub {
+    background-color: red;
+    border-radius: 10px;
+    color: white;
+    margin-left: 10px; /* Add some space between "Wallpaper" and "Hub" */
+}
+.ForgotwebIcon {
+    background-color: blue;
+    width: 450px;
+    height: 80px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center; /* Align items vertically in the center */
+    justify-content: center;
+    margin-top: 2%; /* Center content horizontally */
+}
+.ForgotwebIcon p {
+    color: white;
+    font-size: 50px;
+    margin: 0; /* Remove default margin */
+}
+
+.ForgotwebIcon .hub {
     background-color: red;
     border-radius: 10px;
     color: white;
     margin-left: 10px; /* Add some space between "Wallpaper" and "Hub" */
 }
 
-.ForgotwebIcon {
-    margin-top: 1%; /* Center content horizontally */
-}
 
-.LogForm {
-    width: 40%;
+.LogForm, .RegForm {
+    width: 90%;
+    max-width: 800px;
     background-color: rgba(255, 255, 255, 0.637);
     border: 2px solid black;
     border-radius: 10px;
-    margin-top: 50px;
+    margin-top: 2%;
     box-sizing: border-box;
     margin-bottom: 10px;
 }
 
+/* .dividerTop {
+    position: absolute;
+    height: 2px;
+    width: 51.9%;
+    margin-left: 0%;
+    margin-top: 0.5%;
+    background-color: black;
+    z-index: 3;
+} */
+
 .userInfoAddress {
-    margin-top: -3%;/* Display vertically */
+    margin-top: -3%;
+    display: flex;
+    justify-content: space-evenly;
 }
 
-.userInfoo {
+.userInfoo{
     border-style: solid;
     border-width: 3px;
     border-color: black;
     border-bottom: 5px;
-    width: 100%;
+    width:100%;
 }
+
+
 
 .LogInText, .PasswordText, .SubmitButton, .userInfoAddress input {
     width: 100%;
@@ -73,18 +106,20 @@ body {
     cursor: pointer;
 }
 
+
 .SubmitButton {
     margin-top: 10px;
     cursor: pointer;
-    width:80px;
 }
 
 @media screen and (max-width: 600px) {
     .webIcon, .ForgotwebIcon {
         margin-top: 5%;
     }
+    .dividerTop {
+        width: 89.5%;
+    }
     .LogForm, .RegForm {
         margin-top: 3vw;
-        width:80%;
     }
 }

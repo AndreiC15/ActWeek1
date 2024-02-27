@@ -12,7 +12,7 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
 <title>Log in</title>
 
 <head>
-    <link rel="stylesheet" href="pagesCSS/IndexStyle.css">
+    <link rel="stylesheet" href="pagesCSS/reset.css">
 </head>
 
 <body>
@@ -26,18 +26,16 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
         <div class="LogForm">
             <form method="POST" action="./accountProcess/process.php">
                 <h1>Reset Password</h1>
-                <div class="divider"></div>
+                <div class="resetInfo">
                 <input class="LogInText" type="email" id="email" name="email" placeholder="Email" required>
                 <input class="PasswordText" type="password" id="password" name="password" placeholder="Password" minlength="8" required>
                 <input class="PasswordText" type="password" id="confirmPassword" name="confirmPassword" placeholder="Retype password" minlength="8" required></br></br>
                 <input class="ShowPass" type="checkbox" onclick="togglePasswordVisibility()">Show Password
+                </div>
                 <br>
                 <input class="SubmitButton" type="submit" id="reset_password" name="reset_password" value="Reset Password" required>
-
             </form>
         </div>
-
-
     </center>
     <script>
         function togglePasswordVisibility() {

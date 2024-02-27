@@ -124,7 +124,6 @@ if ($databaseConnection->getConnection()) {
                 <p class="webtitle" style="padding: 0 10px 0 10px;">Station</p>
             </div>
         </div>
-        <p style="font-family: rockwell;color:white;">Hello <b style="font-size:20px;"><u><?php echo $userData['FirstName']; ?></u></b>&nbsp;!, this is my sample website. Contact me in my <a style="color:white;" href="https://www.facebook.com/atc11502" target="_blank">Facebook account</a> if you have any inquiries</p>
         <h2>Popular HD Wallpaper</h2>
         <div class="area"></div>
         <nav class="main-menu">

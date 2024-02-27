@@ -36,3 +36,6 @@
 -Sort by latest upload in homepage and dashboard<br>
 -Removed the Sentence case and Capitalise each word in Edit Wallpaper<br>
 -Alert user when no changes was made when submit (editWallpaper.php)<br>
+
+<b>27/02/24</b><br>
+-Dynamic register, login, reset<b>

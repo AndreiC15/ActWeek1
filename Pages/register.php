@@ -11,7 +11,7 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
 <title>Registration</title>
 
 <head>
-    <link rel="stylesheet" href="pagesCSS/IndexStyle.css">
+    <link rel="stylesheet" href="pagesCSS/register.css">
     <link rel="stylesheet" href="pagesCSS/removeArrowinput.css">
 </head>
 
@@ -24,9 +24,8 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
             </div>
         </div>
         <div class="RegForm">
-            <h1>Registration</h1>
-            <div class="divider"></div>
-            <table class="userInfo">
+            <h1 class="RegText">Registration</h1>
+            <table class="userInfoo">
                 <form method="POST" action="./accountProcess/process.php">
                     <tr>
                         <input class="LogInText" type="text" id="first_name" name="first_name" placeholder="First Name" oninput="sanitizeInput(this); applySentenceCase(this);" required>
@@ -52,11 +51,14 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
 
                     <br></br>
                     <center>
+                        <div class="ShowPassDiv">
                         <input class="ShowPass" type="checkbox" onclick="togglePasswordVisibility()">Show Password
+                        </div></br>
                     </center>
             </table>
 
             <div class="dividerTop"></div>
+            
             <h1>Address</h1>
             <div class="userInfoAddress">
                 <table class="userInfo">
@@ -85,7 +87,7 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
                     </tr>
                     <tr>
                         <td>
-                            <input class="LogInText" type="text" id="house_no_street" name="house_no_street" placeholder="House Number & Street:" oninput="applySentenceCase(this);" required>
+                            <input class="LogInText" type="text" id="house_no_street" name="house_no_street" placeholder="House Number & Street" oninput="applySentenceCase(this);" required>
                         </td>
                     </tr>
                     <tr>
