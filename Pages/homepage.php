@@ -60,8 +60,6 @@ if ($databaseConnection->getConnection()) {
     <style>
         .image-list {
             list-style: none;
-            padding: 5;
-            margin: 5;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-around;
@@ -87,15 +85,15 @@ if ($databaseConnection->getConnection()) {
             width: fit-content;
             height: 20px;
             padding: 5px;
-            background-color: red;
+            background-color: white;
             border-radius: 50px;
-            color: white;
+            color: black;
             cursor: pointer;
             text-decoration: none;
         }
 
         a {
-            color: white;
+            color: black;
             text-decoration: none;
         }
 
@@ -125,7 +123,67 @@ if ($databaseConnection->getConnection()) {
             </div>
         </div>
         <h2>Popular HD Wallpaper</h2>
-        <div class="area"></div>
+        <fieldset>
+            <?php
+            $limit = 6; // Number of wallpapers to display per page
+
+            // Calculate the offset based on the current page
+            $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            $offset = ($currentPage - 1) * $limit;
+
+            // Query to count total wallpapers
+            $countQuery = "SELECT COUNT(*) as total FROM wallpaper";
+            $totalResult = $databaseConnection->getConnection()->query($countQuery);
+            $totalWallpapers = $totalResult->fetch_assoc()['total'];
+
+            $sql = "SELECT WallpaperID, Title, WallpaperLocation FROM wallpaper ORDER BY WallpaperID DESC LIMIT $offset, $limit";
+            $result = $databaseConnection->getConnection()->query($sql);
+
+            // Check if there are no wallpapers
+            if ($result->num_rows >= 1) {
+                echo '<ul class="image-list" id="wallpaperList">';
+                while ($row = $result->fetch_assoc()) {
+                    $imagePath = 'accountProcess/' . $row['WallpaperLocation'];
+
+                    if (file_exists($imagePath)) {
+                        echo '<li class="image-item">';
+                        echo '<div class="image-container">';
+                        echo '<img style="width:400px;height:230px;object-fit:cover " src="' . $imagePath . '" alt="' . htmlspecialchars($row['Title']) . '">';
+                        echo '<p style="color: white;text-transform: capitalize;">' . $row['Title'] . '</p>';
+                        echo '</div>';
+                        echo '<div class="dl_Btn">';
+                        echo '<a style="display:flex;padding-left:5px;padding-right:5px; font-family:arial;" href="' . $imagePath . '" download="' . htmlspecialchars($row['Title']) . '">
+                <img style="padding-right:5px" src="testImages/download.png" width="20" height="20"> Download</a>';
+                        echo '</div>';
+                        echo '</li>';
+                    } else {
+                        echo '<li class="image-item">';
+                        echo '<div class="image-container">';
+                        echo '<p style="color: red;">Image not found: ' . $row['Title'] . '</p>';
+                        echo '</div>';
+                        echo '</li>';
+                    }
+                }
+                echo '</ul>';
+
+                // Pagination links
+                echo '<center>';
+                $totalPages = ceil($totalWallpapers / $limit);
+
+                for ($page = 1; $page <= $totalPages; $page++) {
+                    $isActive = ($page == $currentPage) ? 'active' : '';
+                    echo '<a href="?page=' . $page . '" class="pagination ' . $isActive . '">' . $page . '</a>';
+                }
+
+                echo '</center>';
+            } else {
+                echo '<div style="text-align: center; padding: 5px; background-color: #f0f0f0; border: 1px solid #ccc; width:50%">';
+                echo '<p style="font-size: 18px; color: #333;margin-left:-1%">No uploaded wallpapers&#128531</p>';
+                echo '</div>';
+            }
+
+            ?>
+        </fieldset>
         <nav class="main-menu">
             <ul>
                 <li>
@@ -167,67 +225,7 @@ if ($databaseConnection->getConnection()) {
                 </li>
             </ul>
         </nav>
-        <fieldset>
-            <?php
-            $limit = 6; // Number of wallpapers to display per page
 
-            // Calculate the offset based on the current page
-            $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-            $offset = ($currentPage - 1) * $limit;
-
-            // Query to count total wallpapers
-            $countQuery = "SELECT COUNT(*) as total FROM wallpaper";
-            $totalResult = $databaseConnection->getConnection()->query($countQuery);
-            $totalWallpapers = $totalResult->fetch_assoc()['total'];
-
-            $sql = "SELECT WallpaperID, Title, WallpaperLocation FROM wallpaper ORDER BY WallpaperID DESC LIMIT $offset, $limit";
-            $result = $databaseConnection->getConnection()->query($sql);
-
-            // Check if there are no wallpapers
-            if ($result->num_rows >= 1) {
-                echo '<ul class="image-list" id="wallpaperList">';
-                while ($row = $result->fetch_assoc()) {
-                    $imagePath = 'accountProcess/' . $row['WallpaperLocation'];
-
-                    if (file_exists($imagePath)) {
-                        echo '<li class="image-item">';
-                        echo '<div class="image-container">';
-                        echo '<img style="width:400px;height:230px; " src="' . $imagePath . '" alt="' . htmlspecialchars($row['Title']) . '">';
-                        echo '<p style="color: white;text-transform: capitalize;">' . $row['Title'] . '</p>';
-                        echo '</div>';
-                        echo '<div class="dl_Btn">';
-                        echo '<a style="display:flex;padding-left:5px;padding-right:5px; font-family:arial;" href="' . $imagePath . '" download="' . htmlspecialchars($row['Title']) . '">
-                <img style="filter: invert(100%);padding-right:5px" src="testImages/download.png" width="20" height="20"> Download</a>';
-                        echo '</div>';
-                        echo '</li>';
-                    } else {
-                        echo '<li class="image-item">';
-                        echo '<div class="image-container">';
-                        echo '<p style="color: red;">Image not found: ' . $row['Title'] . '</p>';
-                        echo '</div>';
-                        echo '</li>';
-                    }
-                }
-                echo '</ul>';
-
-                // Pagination links
-                echo '<center>';
-                $totalPages = ceil($totalWallpapers / $limit);
-
-                for ($page = 1; $page <= $totalPages; $page++) {
-                    $isActive = ($page == $currentPage) ? 'active' : '';
-                    echo '<a href="?page=' . $page . '" class="pagination ' . $isActive . '">' . $page . '</a>';
-                }
-
-                echo '</center>';
-            } else {
-                echo '<div style="text-align: center; padding: 5px; background-color: #f0f0f0; border: 1px solid #ccc; width:50%">';
-                echo '<p style="font-size: 18px; color: #333;margin-left:-1%">No uploaded wallpapers&#128531</p>';
-                echo '</div>';
-            }
-
-            ?>
-        </fieldset>
 
         <script>
             var offset = <?php echo $currentPage * $limit; ?>;
@@ -245,7 +243,7 @@ if ($databaseConnection->getConnection()) {
                 };
 
                 spinner.style.display = "block";
-                xhr.open("GET", "load_more.php?offset=" + offset, true);
+                xhr.open("GET", "load_more.php?page=<?php echo $currentPage + 1; ?>", true);
                 xhr.send();
             }
         </script>

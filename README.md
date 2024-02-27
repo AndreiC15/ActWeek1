@@ -38,4 +38,4 @@
 -Alert user when no changes was made when submit (editWallpaper.php)<br>
 
 <b>27/02/24</b><br>
--Dynamic register, login, reset<b>
+-Dynamic register, login, reset, homepage<b>

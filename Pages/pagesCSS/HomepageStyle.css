@@ -4,23 +4,31 @@ h1 {
   font-size: 30px;
   font-family: "Goudy Bookletter 1911", sans-serif;
 }
+
 h2 {
   font-family: roboto, arial;
   color: white;
 }
+
 .webtitle {
   font-family: "Goudy Bookletter 1911", sans-serif;
 }
+
 body {
-  background-image: url("../testImages/wallpaper.jpg");
+  background-image: url('../testImages/wallpaper.jpg');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
+  background-position: center center; /* Center the background image */
+  margin: 0;
+  padding: 0;
 }
+
 .title {
   color: white;
   text-transform: uppercase;
 }
+
 .userName {
   font-weight: bold;
   font-family: rockwell;
@@ -32,46 +40,18 @@ body {
   display: flex;
   justify-content: center;
   margin-top: 10px;
-  flex-wrap: wrap; /* Ensure images wrap to the next line on smaller screens */
+  flex-wrap: wrap;
   margin-bottom: -10px;
-}
-
-.zoom {
-  transition: transform 0.2s; /* Animation */
-  margin: 0 10px; /* Adjust spacing between images */
-  position: relative;
-  z-index: 1; /* Default z-index */
-  flex: 1; /* Equal width for all images within the container */
-}
-
-.zoom:hover {
-  -ms-transform: scale(1.1); /* IE 9 */
-  -webkit-transform: scale(1.1); /* Safari 3-8 */
-  transform: scale(1.1);
-  z-index: 2; /* Higher z-index on hover */
 }
 
 /* Adjust fieldset width for smaller screens */
 fieldset {
-  background-color: rgba(0, 0, 0, 0.608);
-  border-style: solid;
-  border-radius: 25px;
-  width: 94%;
-  margin: 0 auto; /* Center the fieldset */
-  box-sizing: border-box;
-  margin-left: 5%;
+  border-style: none;
+  width: 90%;
+  margin-right: 6%;
+  margin-left: 6%;
+  margin-bottom: 20px;
 }
-
-/* Adjust image width for smaller screens */
-.zoom a img {
-  border-style: solid;
-  border-color: white;
-  width: 100%;
-  max-width: 450px; /* Set maximum width for larger screens */
-  height: auto;
-}
-
-/* Adjust LogoutButton style for smaller screens */
 .LogoutButton {
   vertical-align: middle;
 }
@@ -79,6 +59,7 @@ fieldset {
 .fa-2x {
   font-size: 2em;
 }
+
 .fa {
   position: relative;
   display: table-cell;
@@ -109,7 +90,7 @@ nav.main-menu.expanded {
   transition: width 0.05s linear;
   -webkit-transform: translateZ(0) scale(1, 1);
   z-index: 4;
-  transform: translateZ(0) scale(1, 1); /* Standard transform property */
+  transform: translateZ(0) scale(1, 1);
 }
 
 .main-menu li > a {
@@ -122,7 +103,7 @@ nav.main-menu.expanded {
   font-size: 14px;
   text-decoration: none;
   -webkit-transform: translateZ(0) scale(1, 1);
-  transform: translateZ(0) scale(1, 1); /* Standard transform property */
+  transform: translateZ(0) scale(1, 1);
   -webkit-transition: all 0.1s linear;
   transition: all 0.1s linear;
 }
@@ -189,6 +170,7 @@ nav li {
   margin: 0;
   padding: 0;
 }
+
 .main-menu li:hover > a,
 nav.main-menu li.active > a,
 .dropdown-menu > li > a:hover,
@@ -201,40 +183,77 @@ nav.main-menu li.active > a,
   color: #fff;
   background-color: #5fa2db;
 }
-.area {
-  float: left;
-  background: #e2e2e2;
-  width: 100%;
-  height: 100%;
-}
+
 .navSideIcon {
   filter: invert(1);
   width: 20px;
   height: 20px;
 }
+
 .navSideIconLogo {
   width: 40px;
   height: 40px;
 }
+
 .webIcon {
   background-color: blue;
-  width: 450px;
+  width: 90%;
+  max-width: 450px;
   height: 80px;
+  margin-top: 1%;
   border-radius: 10px;
   display: flex;
-  align-items: center; /* Align items vertically in the center */
-  justify-content: center; /* Center content horizontally */
+  align-items: center;
+  justify-content: center;
 }
 
 .webIcon p {
   color: white;
   font-size: 50px;
-  margin: 0; /* Remove default margin */
+  margin: 0;
 }
 
 .webIcon .hub {
   background-color: red;
   border-radius: 10px;
   color: white;
-  margin-left: 10px; /* Add some space between "Wallpaper" and "Hub" */
+  margin-left: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  h1 {
+    font-size: 40px;
+  }
+
+  h2 {
+    font-size: 20px;
+    margin-left: 12%;
+  }
+
+  .image-container {
+    margin-top: 5px;
+  }
+
+  fieldset {
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+
+  .LogoutButton {
+    width: 100%;
+    max-width: 100px;
+    height: 30px;
+  }
+
+  .webIcon {
+    width: 80%;
+    max-width: 450px;
+    margin-left: 10%;
+    margin-top: 5%;
+  }
+
+  .webIcon p {
+    font-size: 46px;
+  }
 }
