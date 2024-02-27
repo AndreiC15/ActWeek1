@@ -30,7 +30,7 @@
 -Homepage wallpaper pagination<br>
 
 <b>23/02/24</b><br>
--Edit Wallpaper title and image function<b>
+-Edit Wallpaper title and image function<br>
 
 <b>Minor Changes</b><br>
 -Sort by latest upload in homepage and dashboard<br>
@@ -38,4 +38,4 @@
 -Alert user when no changes was made when submit (editWallpaper.php)<br>
 
 <b>27/02/24</b><br>
--Dynamic register, login, reset, homepage<b>
+-Dynamic register, login, reset, homepage, dashboard<br>

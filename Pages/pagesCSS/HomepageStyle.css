@@ -20,8 +20,6 @@ body {
   background-attachment: fixed;
   background-size: cover;
   background-position: center center; /* Center the background image */
-  margin: 0;
-  padding: 0;
 }
 
 .title {
@@ -46,6 +44,7 @@ body {
 
 /* Adjust fieldset width for smaller screens */
 fieldset {
+  font-family: roboto, arial;
   border-style: none;
   width: 90%;
   margin-right: 6%;
@@ -235,6 +234,7 @@ nav.main-menu li.active > a,
   }
 
   fieldset {
+    
     width: 90%;
     margin-left: 5%;
     margin-right: 5%;
@@ -254,6 +254,6 @@ nav.main-menu li.active > a,
   }
 
   .webIcon p {
-    font-size: 46px;
+    font-size: 44px;
   }
 }

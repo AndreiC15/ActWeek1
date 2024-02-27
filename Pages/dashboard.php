@@ -184,7 +184,7 @@ if ($databaseConnection->getConnection()) {
             <input style="font-size:15px" class="uploadContainer" type="button" value="Upload Wallpaper">
         </a>
         <fieldset>
-            <h2 style="margin-left:-2.5%;">My Uploaded Wallpapers</h2>
+            <h2 style="margin-left:-2.5%;margin-top:-1%">My Uploaded Wallpapers</h2>
             <?php
             $sql = "SELECT WallpaperID, Title, WallpaperLocation FROM wallpaper ORDER BY WallpaperID DESC";
 

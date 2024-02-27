@@ -122,8 +122,9 @@ if ($databaseConnection->getConnection()) {
                 <p class="webtitle" style="padding: 0 10px 0 10px;">Station</p>
             </div>
         </div>
-        <h2>Popular HD Wallpaper</h2>
+        
         <fieldset>
+        <h2>Popular HD Wallpaper</h2>
             <?php
             $limit = 6; // Number of wallpapers to display per page
 
