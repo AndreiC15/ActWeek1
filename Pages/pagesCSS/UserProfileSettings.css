@@ -1,45 +1,37 @@
 .profileContainer {
   background-color: rgba(253, 253, 253, 0.762);
   border-style: solid;
-  width: 75%;
-  height: 500px;
+  width: 55%;
+  height:530px;
   border-radius: 10px;
-  display: flex;
+  margin-left:20%;
+  margin-top:2%;
   padding: 20px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
 }
-.profileContainerInside {
-  margin-top: 80px;
-  display: flex;
-}
+
 .profilePic {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center items horizontally */
-  text-align: center; /* Center text within the container */
+  margin-left: 41%; 
+  margin-top: 8%;/* Adjust as needed */
 }
-.profileContainerInside1 {
-  margin-top: 80px;
-  display: flex;
+.userProfile{
+  margin-left: 49%;
 }
 .userImage {
   border-style: solid;
   border-radius: 20px;
-  margin-left: -60px;
-  width: 120px;
-  height: 120px;
+  margin-left: -200%;
+  width: 180px;
+  height: 180px;
   object-fit: cover;
 }
-.dividerProfile {
-  position: absolute;
-  background-color: black;
-  height: 85.7%;
-  width: 2px;
-  margin-left: 200px;
-  margin-top: -23px;
+.pickImage {
+  margin-top: 2.5%;
+  margin-left: -61.5%;
+}
+.removeImage {
+  margin-top: 2.5%;
+  margin-left: -75%;
 }
 tr,
 td {
@@ -48,27 +40,40 @@ td {
 table {
   margin-left: -20px;
 }
-.userProfile {
-  margin-top: -3%;
-  margin-left: -3%;
-}
+
 .personalInfo {
-  margin-top: 3%;
+  margin-top: 0%;
 }
-.userInfoTable1 {
-  margin-left: 9%;
+::placeholder, input{
+  text-align: center;
 }
-.ShowPass {
+.userProfile{
   position: absolute;
-  margin-left: 55%;
-  margin-top: 16.5%;
 }
+.userInfo1 {
+  text-align: center;
+  margin-top: 10%;
+  margin-left: -400%;
+}
+.userInfo2 {
+  text-align: center;
+  margin-top: -70%;
+  margin-left: -215%;
+}
+.userInfo3 {
+  text-align: center;
+  margin-top: -70%;
+  margin-left: -30%;
+}
+.userInfo4 {
+  text-align: center;
+  margin-top: -69%;
+  margin-left: 80%;
+}
+
 .editBtn {
   background-color: green;
   color: white;
-  display: flex;
-  align-items: center; /* Align items vertically in the center */
-  justify-content: center;
   padding: 5px 10px 10px 10px;
   border-style: solid;
   border-radius: 10px;
@@ -76,53 +81,70 @@ table {
   height: 30px;
   width: fit-content;
   cursor: pointer;
-  margin-left: 50%;
-  margin-top: 33%;
-  position: absolute;
+  margin-top: 8%;
+  margin-left: -120%;
   z-index: 4;
 }
-.editImg {
-  filter: invert(1);
-  width: 20px;
-  height: 20px;
-  padding-right: 3px;
-}
+
 p {
   filter: invert(1);
   font-weight: bold;
-}
-h1 {
-  position: relative;
-  margin-left: 6%;
 }
 h2 {
   position: absolute;
   font-size: xx-large;
   font-family: rockwell;
   text-transform: uppercase;
-  margin-left: 0.5%;
+  margin-left: 32%;
   margin-top: 0;
 }
-.dividerTop {
-  position: absolute;
-  height: 2px;
-  width: 100%;
-  margin-left: -1.8%;
-  margin-top: -2%;
-  background-color: black;
-  z-index: 3;
-}
-.profileContainer1 {
-  background-color: rgba(253, 253, 253, 0.762);
-  border-style: solid;
-  width: 70%;
-  height: 250px;
-  border-radius: 10px;
-  display: flex;
-  padding: 20px;
-  justify-content: space-between;
-  position: absolute;
-  top: 73%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+
+@media screen and (max-width: 768px) {
+  .profileContainer {
+    margin-left: 20%;
+    margin-top: 5%;
+    height: 890px;
+    margin-bottom: 20px; /* Adjust as needed */
+  }
+  h2 {
+    font-size: 32px;
+    margin-left: 5%;
+    margin-top: 1%;
+  }
+  .userImage {
+    margin-top:30%;
+  }
+  .pickImage {
+    margin-left: -44%;
+  }
+  .removeImage {
+    margin-left: -74%;
+  }
+  .userProfile {
+    margin-top: 0%;
+    margin-left: -19%;
+  }
+  .userInfo1 {
+    position: relative;
+    margin-top: 10%;
+    margin-left: 47%;
+  }
+  .userInfo2 {
+    position: relative;
+    margin-top: 1%;
+    margin-left: 47%;
+  }
+  .userInfo3 {
+    position: relative;
+    margin-top: 1%;
+    margin-left: 47%;
+  }
+  .userInfo4 {
+    position: relative;
+    margin-top: 1%;
+    margin-left: 47%;
+  }
+  .editBtn{
+    margin-left: 69%;
+  }
 }

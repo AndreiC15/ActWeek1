@@ -120,9 +120,10 @@ if ($databaseConnection->getConnection()) {
 
     <div class="profileContainer">
         <h2>User Profile</h2>
-        <div class="profileContainerInside">
+        <center>
             <div class="profilePic">
                 <form enctype="multipart/form-data" method="post" action="./accountProcess/process.php">
+
                     <?php
                     function displayProfilePicture($userId, $db)
                     {
@@ -152,7 +153,7 @@ if ($databaseConnection->getConnection()) {
                         } else {
                             // User not found, display default image
                             echo '<div class="profilePic">';
-                            echo '<img style="position:relative;width:120px;height:120px;margin-left:-25%" src="./testImages/user.png" alt="user profile">';
+                            echo '<img style="position:relative;width:180px;height:180px;margin-left:-25%" src="./testImages/user.png" alt="user profile">';
                             echo '</div>';
                         }
                     }
@@ -160,52 +161,121 @@ if ($databaseConnection->getConnection()) {
                     // Usage
                     displayProfilePicture($_SESSION['id'], $databaseConnection->getConnection());
                     ?>
-                    </br>
-                    <input type="file" id="profile_pic" name="profile_pic" accept=".jpg, .jpeg, .png, .gif">
-                    <input style="position:absolute;margin-top:2.5%;margin-left:-18%" name="remove_pic" id="remove_pic" type=submit value="Remove picture">
+                    <input class="pickImage" type="file" id="profile_pic" name="profile_pic" accept=".jpg, .jpeg, .png, .gif"></br>
+                    <input class="removeImage" name="remove_pic" id="remove_pic" type="submit" value="Remove picture">
             </div>
-            <div class="dividerTop"></div>
-            <div class="dividerProfile"></div>
-            <table class="userProfile">
-                <tr>
-                    <td>First Name:</td>
-                    <td><input type="text" id="first_name" name="first_name" placeholder="<?php echo $userData['FirstName']; ?> " oninput="sanitizeInput(this); applySentenceCase(this);"></td>
-                    <td>Middle Name:</td>
-                    <td><input type="text" id="middle_name" name="middle_name" placeholder="<?php echo $userData['MiddleName']; ?>" oninput="sanitizeInput(this); applySentenceCase(this);"></td>
-                    <td>Last Name:</td>
-                    <td><input type="text" id="last_name" name="last_name" placeholder="<?php echo $userData['LastName']; ?>" oninput="sanitizeInput(this); applySentenceCase(this);"></td>
-                </tr>
-                <tr>
-                    <td>Email:</td>
-                    <td><input type="text" id="email" name="email" placeholder="<?php echo $userData['Email']; ?> " autocomplete="off"></td>
-                    <td>Password:</td>
-                    <td><input type="password" id="password" name="password" minlength="8" autocomplete="off"></td>
-                    <td>Phone Number:</td>
-                    <!-- Updated input tag for phone number -->
-                    <td><input type="text" id="phone_number" name="phone_number" placeholder="<?php echo $userData['PhoneNumber']; ?>" oninput="sanitizeNumericInput(event);" maxlength="11"></td>
+            <div class="userProfile">
+                <table class="userInfo1">
+                    <tr>
+                        <td>First Name:</td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" id="first_name" name="first_name" placeholder="<?php echo $userData['FirstName']; ?> " oninput="sanitizeInput(this); applySentenceCase(this);"></td>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <td>Middle Name:</td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" id="middle_name" name="middle_name" placeholder="<?php echo $userData['MiddleName']; ?>" oninput="sanitizeInput(this); applySentenceCase(this);"></td>
+                    </tr>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <td>Last Name:</td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" id="last_name" name="last_name" placeholder="<?php echo $userData['LastName']; ?>" oninput="sanitizeInput(this); applySentenceCase(this);"></td>
+                    </tr>
+                    </tr>
+                </table>
 
-                </tr>
-                <tr>
-                    <td>Country:</td>
-                    <td><input type="text" id="country" name="country" placeholder="<?php echo $userData['Country']; ?>" oninput="sanitizeInput(this); applySentenceCase(this);"></td>
-                    <td>Province:</td>
+                <table class="userInfo2">
+                    <tr>
+                    <tr>
+                        <td>Email:</td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" id="email" name="email" placeholder="<?php echo $userData['Email']; ?> " autocomplete="off"></td>
+                    </tr>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <td>Password:</td>
+                    </tr>
+                    <tr>
+                        <td><input type="password" id="password" name="password" minlength="8" autocomplete="off"></td>
+                    </tr>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <td>Phone Number:</td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" id="phone_number" name="phone_number" placeholder="<?php echo $userData['PhoneNumber']; ?>" oninput="sanitizeNumericInput(event);" maxlength="11"></td>
+                    </tr>
+                    </tr>
+                </table>
+
+
+                <table class="userInfo3">
+                    <tr>
+                    <tr>
+                        <td>Country:</td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" id="country" name="country" placeholder="<?php echo $userData['Country']; ?>" oninput="sanitizeInput(this); applySentenceCase(this);"></td>
+                    </tr>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <td>Province:</td>
+                    </tr>
+                    </tr>
                     <td><input type="text" id="province" name="province" placeholder="<?php echo $userData['Province']; ?>" oninput="sanitizeInput(this); applySentenceCase(this);"></td>
-                    <td>City/Municipality:</td>
-                    <td><input type="text" id="citycity" name="citycity" placeholder="<?php echo $userData['CityCity']; ?>" oninput="sanitizeInput(this); applySentenceCase(this);"></td>
-                </tr>
-                <tr>
-                    <td>District:</td>
-                    <td><input type="text" id="district" name="district" placeholder="<?php echo $userData['District']; ?>" oninput="sanitizeInput(this); applySentenceCase(this);"></td>
-                    <td>House No. & Street:</td>
-                    <td><input type="text" id="house_no_street" name="house_no_street" placeholder="<?php echo $userData['HouseNoStreet']; ?>" oninput="applySentenceCase(this);"></td>
-                    <td>Zip Code:</td>
-                    <td><input class="LogInText" type="text" id="zipcode" name="zipcode" placeholder="<?php echo strtoupper($userData['ZipCode']); ?>" oninput="convertToUppercase(this);"></td>
-                </tr>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <td>City/Municipality:</td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" id="citycity" name="citycity" placeholder="<?php echo $userData['CityCity']; ?>" oninput="sanitizeInput(this); applySentenceCase(this);"></td>
+                    </tr>
+                    </tr>
+                </table>
+
+                <table class="userInfo4">
+                    <tr>
+                        <td>District:</td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" id="district" name="district" placeholder="<?php echo $userData['District']; ?>" oninput="sanitizeInput(this); applySentenceCase(this);"></td>
+                    </tr>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <td>House No. & Street:</td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" id="house_no_street" name="house_no_street" placeholder="<?php echo $userData['HouseNoStreet']; ?>" oninput="applySentenceCase(this);"></td>
+                    </tr>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <td>Zip Code:</td>
+                    </tr>
+                    <tr>
+                        <td><input class="LogInText" type="text" id="zipcode" name="zipcode" placeholder="<?php echo strtoupper($userData['ZipCode']); ?>" oninput="convertToUppercase(this);"></td>
+                    </tr>
+                    </tr>
+
+                </table>
                 <input class="editBtn" type="submit" id="update_profile" name="update_profile" value="Save Changes">
                 </form>
-            </table>
-        </div>
+            </div>
+        </center>
     </div>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var inputFields = document.querySelectorAll('input');

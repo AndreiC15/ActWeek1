@@ -39,3 +39,6 @@
 
 <b>27/02/24</b><br>
 -Dynamic register, login, reset, homepage, dashboard<br>
+
+<b>28/02/24</b><br>
+-Dynamic settings<br>
