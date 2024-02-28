@@ -119,66 +119,49 @@ if ($databaseConnection->getConnection()) {
 
     <div class="area"></div>
     <nav class="main-menu">
-        <center>
             <ul>
+                <center>
                 <li>
                     <i class="fa fa-info fa-2x"><img class="navSideIconLogo" src="testImages/icon.png"></i>
-                    <span class="nav-text">
-                        WallpaperStation
-                    </span>
-                    </a>
+                    <span class="nav-text">WallpaperStation</span>
                 </li>
-            </ul>
-            <ul>
+                <!-- Add your other menu items here -->
                 <li>
                     <a href="homepage.php">
                         <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/home.png"></i>
-                        <span class="nav-text">
-                            Home
-                        </span>
+                        <span class="nav-text">Home</span>
                     </a>
                 </li>
-            </ul>
-            <ul>
                 <li>
                     <a href="dashboard.php">
                         <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/dashboard.png"></i>
-                        <span class="nav-text">
-                            Dashboard
-                        </span>
+                        <span class="nav-text">Dashboard</span>
                     </a>
                 </li>
-            </ul>
-            <ul>
                 <li>
                     <a href="settings.php">
                         <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/setting.png"></i>
-                        <span class="nav-text">
-                            Account Settings
-                        </span>
+                        <span class="nav-text">Account Settings</span>
                     </a>
                 </li>
+                </center>
             </ul>
-        </center>
-
-
-        <ul class="logout">
-            <li>
-                <a href="#">
-                    <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/shutdown.png"></i>
-                    <span class="nav-text">
+            <ul class="logout">
+                <li>
                         <center>
+                        <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/shutdown.png"></i>
+                        <span class="nav-text">
                             <div class="LogoutButton">
                                 <form method="POST" action="./accountProcess/process.php">
                                     <input style="width: 100%; max-width: 100px; height: 30px; background-color: red; border-radius: 50px; color: white;cursor: pointer;" type="submit" id="logout" name="logout" value="Logout">
+                                </form>
+                            </div>
+                        </span>
                         </center>
-                        </form>
-                        </div>
-                    </span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     <center>
         <a href="uploadWallpaper.php">
             <input style="font-size:15px" class="uploadContainer" type="button" value="Upload Wallpaper">

@@ -1,3 +1,10 @@
+body {
+  background-image: url('../testImages/wallpaper.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center center; /* Center the background image */
+}
 h1 {
   color: white;
   text-transform: uppercase;
@@ -7,19 +14,12 @@ h1 {
 
 h2 {
   font-family: roboto, arial;
+  margin-left:-2%;
   color: white;
 }
 
 .webtitle {
   font-family: "Goudy Bookletter 1911", sans-serif;
-}
-
-body {
-  background-image: url('../testImages/wallpaper.jpg');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-  background-position: center center; /* Center the background image */
 }
 
 .title {
@@ -47,7 +47,7 @@ fieldset {
   font-family: roboto, arial;
   border-style: none;
   width: 90%;
-  margin-right: 6%;
+  margin-right: 10%;
   margin-left: 6%;
   margin-bottom: 20px;
 }
@@ -199,6 +199,7 @@ nav.main-menu li.active > a,
   width: 90%;
   max-width: 450px;
   height: 80px;
+  margin-left:2%;
   margin-top: 1%;
   border-radius: 10px;
   display: flex;
@@ -249,7 +250,7 @@ nav.main-menu li.active > a,
   .webIcon {
     width: 80%;
     max-width: 450px;
-    margin-left: 10%;
+    margin-left: 15%;
     margin-top: 5%;
   }
 

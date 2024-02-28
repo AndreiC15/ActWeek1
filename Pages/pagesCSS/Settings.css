@@ -1,9 +1,10 @@
 
-body{
-    background-image: url('../testImages/wallpaper.jpg');
+body {
+  background-image: url('../testImages/wallpaper.jpg');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
+  background-position: center center; /* Center the background image */
 }
 .navBarTop{
     display: flex;

@@ -1,127 +1,128 @@
-.profileContainer{
-background-color: rgba(253, 253, 253, 0.762);
-border-style: solid;
-width: 75%;
-height: 500px;
-border-radius: 10px;
-display: flex;
-padding: 20px;
-position: absolute;
+.profileContainer {
+  background-color: rgba(253, 253, 253, 0.762);
+  border-style: solid;
+  width: 75%;
+  height: 500px;
+  border-radius: 10px;
+  display: flex;
+  padding: 20px;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.profileContainerInside{
-margin-top: 80px;
-display: flex;
-}
-.profilePic {
-display: flex;
-flex-direction: column;
-align-items: center; /* Center items horizontally */
-text-align: center; /* Center text within the container */
-}
-.profileContainerInside1{
+.profileContainerInside {
   margin-top: 80px;
   display: flex;
-  }
-.userImage{
-border-style: solid;
-border-radius: 20px;
-margin-left:-60px;
-width:120px;
-height:120px;
-object-fit: cover;
 }
-.dividerProfile{
-position: absolute;
-background-color: black;
-height:85.7%;
-width:2px;
-margin-left:200px;
-margin-top:-23px;
+.profilePic {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items horizontally */
+  text-align: center; /* Center text within the container */
 }
-tr,td{
-padding: 0px 10px 0px 10px;
+.profileContainerInside1 {
+  margin-top: 80px;
+  display: flex;
 }
-table{
-margin-left: -20px;
+.userImage {
+  border-style: solid;
+  border-radius: 20px;
+  margin-left: -60px;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
 }
-.userProfile{
+.dividerProfile {
+  position: absolute;
+  background-color: black;
+  height: 85.7%;
+  width: 2px;
+  margin-left: 200px;
+  margin-top: -23px;
+}
+tr,
+td {
+  padding: 0px 10px 0px 10px;
+}
+table {
+  margin-left: -20px;
+}
+.userProfile {
   margin-top: -3%;
   margin-left: -3%;
 }
-.personalInfo{
+.personalInfo {
   margin-top: 3%;
 }
-.userInfoTable1{
-  margin-left:9%;
+.userInfoTable1 {
+  margin-left: 9%;
 }
-.ShowPass{
+.ShowPass {
   position: absolute;
   margin-left: 55%;
   margin-top: 16.5%;
 }
-.editBtn{
-background-color:green;
-color:white;
-display: flex;
-align-items: center; /* Align items vertically in the center */
-justify-content: center;
-padding: 5px 10px 10px 10px;
-border-style: solid;
-border-radius:10px;
-border-width: 0.5;
-height:30px;
-width:fit-content;
-cursor: pointer;
-margin-left: 50%;
-margin-top: 33%;
-position: absolute;
-z-index: 4;
+.editBtn {
+  background-color: green;
+  color: white;
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
+  justify-content: center;
+  padding: 5px 10px 10px 10px;
+  border-style: solid;
+  border-radius: 10px;
+  border-width: 0.5;
+  height: 30px;
+  width: fit-content;
+  cursor: pointer;
+  margin-left: 50%;
+  margin-top: 33%;
+  position: absolute;
+  z-index: 4;
 }
-.editImg{
-filter: invert(1);
-width: 20px;
-height: 20px;
-padding-right: 3px;
+.editImg {
+  filter: invert(1);
+  width: 20px;
+  height: 20px;
+  padding-right: 3px;
 }
-p{
-filter: invert(1);
-font-weight: bold;
+p {
+  filter: invert(1);
+  font-weight: bold;
 }
-h1{
-position: relative;
-margin-left: 6%;
+h1 {
+  position: relative;
+  margin-left: 6%;
 }
-h2{
-    position: absolute;
-    font-size:xx-large;
-    font-family: rockwell;
-    text-transform: uppercase;
-    margin-left: 0.5%;
-    margin-top: 0;
-    }
-.dividerTop{
-    position: absolute;
-    height:2px;
-    width:100%;
-    margin-left:-1.8%;
-    margin-top:-2%;
-    background-color: black;
-    z-index:3;
+h2 {
+  position: absolute;
+  font-size: xx-large;
+  font-family: rockwell;
+  text-transform: uppercase;
+  margin-left: 0.5%;
+  margin-top: 0;
 }
-.profileContainer1{
-    background-color: rgba(253, 253, 253, 0.762);
-    border-style: solid;
-    width: 70%;
-    height: 250px;
-    border-radius: 10px;
-    display: flex;
-    padding: 20px;
-    justify-content:space-between;
-    position: absolute;
-      top: 73%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
+.dividerTop {
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  margin-left: -1.8%;
+  margin-top: -2%;
+  background-color: black;
+  z-index: 3;
+}
+.profileContainer1 {
+  background-color: rgba(253, 253, 253, 0.762);
+  border-style: solid;
+  width: 70%;
+  height: 250px;
+  border-radius: 10px;
+  display: flex;
+  padding: 20px;
+  justify-content: space-between;
+  position: absolute;
+  top: 73%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
