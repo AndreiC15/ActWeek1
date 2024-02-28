@@ -101,18 +101,19 @@ h2 {
 
 @media screen and (max-width: 768px) {
   .profileContainer {
-    margin-left: 20%;
+    margin-left: 24%;
     margin-top: 5%;
     height: 890px;
     margin-bottom: 20px; /* Adjust as needed */
   }
   h2 {
     font-size: 32px;
-    margin-left: 5%;
+    margin-left: 4%;
     margin-top: 1%;
   }
   .userImage {
     margin-top:30%;
+    margin-left:-185%;
   }
   .pickImage {
     margin-left: -44%;
