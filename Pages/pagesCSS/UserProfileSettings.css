@@ -17,6 +17,9 @@
 .userProfile{
   margin-left: 49%;
 }
+.userIcon{
+  position:relative;width:180px;height:180px;margin-left:-200%
+}
 .userImage {
   border-style: solid;
   border-radius: 20px;
@@ -30,8 +33,15 @@
   margin-left: -61.5%;
 }
 .removeImage {
+  position: absolute;
   margin-top: 2.5%;
-  margin-left: -75%;
+  margin-left: -27.5%;
+}
+#redirectToWebcamBtn{
+  position: absolute;
+  margin-left:-59%;
+  margin-top:-100%;
+  margin-bottom:100px;
 }
 tr,
 td {
@@ -49,6 +59,7 @@ table {
 }
 .userProfile{
   position: absolute;
+  margin-top: 4%;
 }
 .userInfo1 {
   text-align: center;
@@ -103,7 +114,7 @@ h2 {
   .profileContainer {
     margin-left: 24%;
     margin-top: 5%;
-    height: 890px;
+    height: 140vh;
     margin-bottom: 20px; /* Adjust as needed */
   }
   h2 {
@@ -111,19 +122,32 @@ h2 {
     margin-left: 4%;
     margin-top: 1%;
   }
+  .userIcon{
+    margin-top: 30%;
+    margin-bottom: 10%;
+    margin-left:-180%;
+  }
   .userImage {
     margin-top:30%;
-    margin-left:-185%;
+    margin-left:-180%;
   }
   .pickImage {
-    margin-left: -44%;
+    margin-left: -38%;
   }
   .removeImage {
-    margin-left: -74%;
+    margin-left: -34%;
+    position:absolute;
+    margin-top: 15%;
   }
+  #redirectToWebcamBtn{
+    position: absolute;
+    margin-left:30%;
+    margin-top:-348%;
+  }
+
   .userProfile {
-    margin-top: 0%;
-    margin-left: -19%;
+    margin-top: 20%;
+    margin-left: -16%;
   }
   .userInfo1 {
     position: relative;

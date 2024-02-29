@@ -276,7 +276,7 @@ class UserAuth
                     echo "Failed to remove the profile picture file";
                 }
             } else {
-                echo "Profile picture not found at path: $profilePicPath";
+                echo "<script>alert('No existing profile picture!'); window.location = '../settings.php';</script>";
             }
         } else {
             echo "User not found";

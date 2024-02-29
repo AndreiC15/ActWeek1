@@ -210,6 +210,12 @@ if ($databaseConnection->getConnection()) {
                         <span class="nav-text">Account Settings</span>
                     </a>
                 </li>
+                <li>
+                    <a href="videocall.php">
+                        <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/webcamera.png"></i>
+                        <span class="nav-text">Video Call</span>
+                    </a>
+                </li>
             </ul>
             <ul class="logout">
                 <li>

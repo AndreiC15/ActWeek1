@@ -55,61 +55,37 @@ if ($databaseConnection->getConnection()) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="pagesCSS/dashboard.css">
-
+    <link rel="stylesheet" href="pagesCSS/webcam.css">
     <style>
-        .image-list {
-            list-style: none;
-            padding: 5;
-            margin: 5;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            margin-top: 20px;
-            /* Adjust the margin as needed */
+        #container {
+            margin: 0px auto;
+            width: 500px;
+            height: 375px;
+            margin-top:5%;
+            border: 10px #333 solid;
+            transform: scaleX(-1);
         }
 
-        .image-item {
-            flex: 0 0 30%;
-            /* Adjust the width of each item as needed */
-            margin-bottom: 20px;
-            /* Adjust the margin for space between images */
+        #videoElement {
+            width: 500px;
+            height: 375px;
+            background-color: #666;
+            
         }
 
-        .image-container {
-            width: 100%;
-            margin-left: -15.5%;
+        #buttonContainer {
+            text-align: center;
         }
 
-        .image-container img {
-            width: 100%;
-            height: auto;
-        }
-
-        .deleteBtn {
-            margin-left: -15.5%;
-        }
-
-        .editBtn {
-            width: 100%;
-            height: 10px;
-            color: white;
-            padding: 2px 30px 2px 30px;
-            background-color: blue;
+        #captureBtn,
+        #downloadLink {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
             cursor: pointer;
-            font-size: 14px;
-            font-family: arial;
-            border-style: solid;
-            border-width: 1.5px;
-            border-color: gray;
-        }
-
-        input {
-            cursor: pointer;
-        }
-
-        table {
-            margin-left: -20%;
         }
     </style>
 </head>
@@ -117,7 +93,7 @@ if ($databaseConnection->getConnection()) {
 <body>
 
     <div class="navBarTop">
-        <h1>Dashboard</h1>
+        <h1>Webcam</h1>
     </div>
 
     <div class="area"></div>
@@ -171,54 +147,50 @@ if ($databaseConnection->getConnection()) {
             </li>
         </ul>
     </nav>
-    <center>
-        <a href="uploadWallpaper.php">
-            <input style="font-size:15px" class="uploadContainer" type="button" value="Upload Wallpaper">
-        </a>
-        <fieldset>
-            <h2 style="margin-left:-2.5%;margin-top:-1%">My Uploaded Wallpapers</h2>
-            <?php
-            $sql = "SELECT WallpaperID, Title, WallpaperLocation FROM wallpaper ORDER BY WallpaperID DESC";
+    <div id="container">
+        <video autoplay="true" id="videoElement"></video>
+    </div>
+    <div id="buttonContainer">
+        <button id="captureBtn" onclick="captureImage()">Capture Image</button>
+        <canvas id="canvas" style="display:none;"></canvas>
+        <img id="capturedImage" style="display:none;">
+        <a id="downloadLink" style="display:none;" download="captured_image.png">Download Image</a>
+    </div>
 
-            $result = $databaseConnection->getConnection()->query($sql);
+    <script>
+        var video = document.querySelector("#videoElement");
+        var canvas = document.querySelector("#canvas");
+        var capturedImage = document.querySelector("#capturedImage");
+        var downloadLink = document.querySelector("#downloadLink");
 
-            if ($result->num_rows >= 1) {
-                echo '<ul class="image-list">';
-                while ($row = $result->fetch_assoc()) {
-                    $imagePath = 'accountProcess/' . $row['WallpaperLocation'];
+        if (navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({
+                    video: true
+                })
+                .then(function(stream) {
+                    video.srcObject = stream;
+                })
+                .catch(function(error) {
+                    console.log("Something went wrong!", error);
+                });
+        }
 
-                    if (file_exists($imagePath)) {
-                        echo '<li class="image-item">';
-                        echo '<div class="image-container">';
-                        echo '<img style="width:400px;height:230px;object-fit:cover " src="' . $imagePath . '" alt="' . htmlspecialchars($row['Title']) . '">';
+        function captureImage() {
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
 
-                        // Updated form to include an anchor tag for "Edit" functionality
-                        echo '<form method="post" action="./accountProcess/process.php">';
-                        echo '<input type="hidden" name="WallpaperID" value="' . $row['WallpaperID'] . '">';
-                        echo '<p style="color: white;">' . $row['Title'] . '</p>';
-                        echo '<table>';
-                        echo '<tr>';
-                        echo '<td><a class="editBtn" href="editWallpaper.php?WallpaperID=' . $row['WallpaperID'] . '">Edit</a><td>';
-                        echo '<td><input style="background-color:red;color:white;width:150%" type="submit" name="delete_wallpaper" value="Delete"></td>';
-                        echo '</tr>';
-                        echo '</table>';
-                        echo '</form>';
+    // Flip the captured image horizontally
+    canvas.getContext('2d').scale(-1, 1);
+    canvas.getContext('2d').drawImage(video, -video.videoWidth, 0, video.videoWidth, video.videoHeight);
 
-                        echo '</div>';
-                        echo '</li>';
-                    } else {
-                        // ... (previous code for image not found)
-                    }
-                }
-                echo '</ul>';
-            } else {
-                echo '<div style="text-align: center; padding: 5px; background-color: #f0f0f0; border: 1px solid #ccc; width:50%">';
-                echo '<p style="font-size: 18px; color: #333;margin-left:-1%">You haven\'t uploaded any wallpaper yet.</p>';
-                echo '</div>';
-            }
-            ?>
-        </fieldset>
-    </center>
+    capturedImage.src = canvas.toDataURL('image/png');
+    capturedImage.style.display = 'block';
+
+    downloadLink.href = capturedImage.src;
+    downloadLink.style.display = 'block';
+}
+    </script>
 </body>
 
 </html>

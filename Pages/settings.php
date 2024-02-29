@@ -61,6 +61,7 @@ if ($databaseConnection->getConnection()) {
     <link rel="stylesheet" href="pagesCSS/removeArrowinput.css">
 </head>
 
+
 <body>
     <center>
         <div class="area"></div>
@@ -93,6 +94,14 @@ if ($databaseConnection->getConnection()) {
                     <a href="settings.php">
                         <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/setting.png"></i>
                         <span class="nav-text">Account Settings</span>
+                    </a>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <a href="videocall.php">
+                        <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/webcamera.png"></i>
+                        <span class="nav-text">Video Call</span>
                     </a>
                 </li>
             </ul>
@@ -147,13 +156,13 @@ if ($databaseConnection->getConnection()) {
                             } else {
                                 // No profile picture found or invalid path, display default image
                                 echo '<div class="profilePic">';
-                                echo '<img style="position:relative;width:120px;height:120px;margin-left:-25%" src="./testImages/user.png" alt="user profile">';
+                                echo '<img class="userIcon" src="./testImages/user.png" alt="user profile">';
                                 echo '</div>';
                             }
                         } else {
                             // User not found, display default image
                             echo '<div class="profilePic">';
-                            echo '<img style="position:relative;width:180px;height:180px;margin-left:-25%" src="./testImages/user.png" alt="user profile">';
+                            echo '<img class="userIcon" src="./testImages/user.png" alt="user profile">';
                             echo '</div>';
                         }
                     }
@@ -161,9 +170,10 @@ if ($databaseConnection->getConnection()) {
                     // Usage
                     displayProfilePicture($_SESSION['id'], $databaseConnection->getConnection());
                     ?>
-                    <input class="pickImage" type="file" id="profile_pic" name="profile_pic" accept=".jpg, .jpeg, .png, .gif"></br>
+                    <input class="pickImage" type="file" id="profile_pic" name="profile_pic" accept=".jpg, .jpeg, .png, .gif"></br></br>
                     <input class="removeImage" name="remove_pic" id="remove_pic" type="submit" value="Remove picture">
             </div>
+            
             <div class="userProfile">
                 <table class="userInfo1">
                     <tr>
@@ -272,6 +282,7 @@ if ($databaseConnection->getConnection()) {
                 </table>
                 <input class="editBtn" type="submit" id="update_profile" name="update_profile" value="Save Changes">
                 </form>
+                <button id="redirectToWebcamBtn" onclick="redirectToWebcam()">Go to Webcam</button>  
             </div>
         </center>
     </div>
@@ -341,6 +352,10 @@ if ($databaseConnection->getConnection()) {
             // Truncate to a maximum length of 11 characters
             event.target.value = numericValue.substring(0, 11);
         }
+        function redirectToWebcam() {
+            window.location.href = 'webcam.php';
+        }
+
     </script>
 </body>
 

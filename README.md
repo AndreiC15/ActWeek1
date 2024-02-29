@@ -42,3 +42,6 @@
 
 <b>28/02/24</b><br>
 -Dynamic settings<br>
+
+<b>29/02/24</b><br>
+-Webcam picture<br>
