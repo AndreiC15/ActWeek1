@@ -207,7 +207,11 @@ if ($databaseConnection->getConnection()) {
                         echo '</div>';
                         echo '</li>';
                     } else {
-                        // ... (previous code for image not found)
+                        echo '<li class="image-item">';
+                        echo '<div class="image-container">';
+                        echo '<p style="color: red;">Image not found: ' . $row['Title'] . '</p>';
+                        echo '</div>';
+                        echo '</li>';
                     }
                 }
                 echo '</ul>';
