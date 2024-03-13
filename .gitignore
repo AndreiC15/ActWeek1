@@ -1,6 +1,7 @@
-.accountProcess/profilePic/.jpg
-.accountProcess/profilePic/.png
-.accountProcess/profilePic/.gif
-.accountProcess/upload/.jpg
-.accountProcess/upload/.png
-.accountProcess/upload/.gif
+.accountProcess/profilePic/*.jpg
+*.png
+*.gif
+
+.accountProcess/upload/*.jpg
+*.png
+*.gif
