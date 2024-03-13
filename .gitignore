@@ -1,2 +1,2 @@
-.accountProcess/profilePic
-.accountProcess/upload
+.accountProcess/profilePic/*
+.accountProcess/upload/*
