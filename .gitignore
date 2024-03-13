@@ -1,2 +1,2 @@
-.accountProcess/profilePic/*
-.accountProcess/upload/*
+accountProcess/profilePic/*.jpg .png .gif
+accountProcess/upload/*.jpg .png .gif
