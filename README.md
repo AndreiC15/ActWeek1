@@ -45,3 +45,5 @@
 
 <b>29/02/24</b><br>
 -Webcam picture<br>
+
+# Import the logintest.sql to your PhpMyAdmin localhost<br>
