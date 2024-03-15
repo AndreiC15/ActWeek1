@@ -2,23 +2,26 @@
   background-color: rgba(253, 253, 253, 0.762);
   border-style: solid;
   width: 55%;
-  height:530px;
+  height: 530px;
   border-radius: 10px;
-  margin-left:20%;
-  margin-top:2%;
+  margin-left: 20%;
+  margin-top: 2%;
   padding: 20px;
   position: relative;
 }
 
 .profilePic {
-  margin-left: 41%; 
-  margin-top: 8%;/* Adjust as needed */
+  margin-left: 41%;
+  margin-top: 8%; /* Adjust as needed */
 }
-.userProfile{
+.userProfile {
   margin-left: 49%;
 }
-.userIcon{
-  position:relative;width:180px;height:180px;margin-left:-200%
+.userIcon {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  margin-left: -200%;
 }
 .userImage {
   border-style: solid;
@@ -37,11 +40,11 @@
   margin-top: 2.5%;
   margin-left: -27.5%;
 }
-#redirectToWebcamBtn{
+#redirectToWebcamBtn {
   position: absolute;
-  margin-left:-59%;
-  margin-top:-100%;
-  margin-bottom:100px;
+  margin-left: -59%;
+  margin-top: -100%;
+  margin-bottom: 100px;
 }
 tr,
 td {
@@ -54,10 +57,11 @@ table {
 .personalInfo {
   margin-top: 0%;
 }
-::placeholder, input{
+::placeholder,
+input {
   text-align: center;
 }
-.userProfile{
+.userProfile {
   position: absolute;
   margin-top: 4%;
 }
@@ -114,7 +118,7 @@ h2 {
   .profileContainer {
     margin-left: 24%;
     margin-top: 5%;
-    height: 140vh;
+    height: 130vh;
     margin-bottom: 20px; /* Adjust as needed */
   }
   h2 {
@@ -122,27 +126,27 @@ h2 {
     margin-left: 4%;
     margin-top: 1%;
   }
-  .userIcon{
+  .userIcon {
     margin-top: 30%;
     margin-bottom: 10%;
-    margin-left:-180%;
+    margin-left: -180%;
   }
   .userImage {
-    margin-top:30%;
-    margin-left:-180%;
+    margin-top: 30%;
+    margin-left: -180%;
   }
   .pickImage {
     margin-left: -38%;
   }
   .removeImage {
     margin-left: -34%;
-    position:absolute;
+    position: absolute;
     margin-top: 15%;
   }
-  #redirectToWebcamBtn{
+  #redirectToWebcamBtn {
     position: absolute;
-    margin-left:30%;
-    margin-top:-348%;
+    margin-left: 26%;
+    margin-top: -348%;
   }
 
   .userProfile {
@@ -152,24 +156,24 @@ h2 {
   .userInfo1 {
     position: relative;
     margin-top: 10%;
-    margin-left: 47%;
+    margin-left: 43%;
   }
   .userInfo2 {
     position: relative;
     margin-top: 1%;
-    margin-left: 47%;
+    margin-left: 43%;
   }
   .userInfo3 {
     position: relative;
     margin-top: 1%;
-    margin-left: 47%;
+    margin-left: 43%;
   }
   .userInfo4 {
     position: relative;
     margin-top: 1%;
-    margin-left: 47%;
+    margin-left: 43%;
   }
-  .editBtn{
-    margin-left: 69%;
+  .editBtn {
+    margin-left: 63%;
   }
 }

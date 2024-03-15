@@ -80,7 +80,7 @@ if (isset($_GET['WallpaperID'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload</title>
-    <link rel="stylesheet" href="pagesCSS/uploadWallpaper.css">
+    <link rel="stylesheet" href="pagesCSS/editWallpaper.css">
 </head>
 
 <body>
@@ -164,7 +164,7 @@ if (isset($_GET['WallpaperID'])) {
         <tr>
             <td>Current Image:</td>
             <td>
-                <img style="width: 550px;" src="<?php echo $imagePath; ?>" alt="Current Image">
+                <img class="currentImage"style="width: 550px;" src="<?php echo $imagePath; ?>" alt="Current Image">
             </td>
         </tr>
         <tr>

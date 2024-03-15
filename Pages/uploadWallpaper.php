@@ -141,7 +141,6 @@ if ($databaseConnection->getConnection()) {
                             <td><input class="titleText" type="text" name="title" id="title" required></td>
                         </tr>
                         <tr>
-                            <!-- Modify the file input in your form -->
                             <td>Upload image:</td>
                             <td><input class="titleText" id="new_wallpaper" type="file" name="new_wallpaper" accept=".jpg, .jpeg, .png, .gif" onchange="PreviewImage();" required /></td>
                         </tr>
