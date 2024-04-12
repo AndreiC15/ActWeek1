@@ -1,93 +1,106 @@
 /* Original layout for desktop */
-body {
-    background-image: url("../testImages/pru1.jpg");
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-    background-position: center center; /* Center the background image */
-    margin: 0;
-    padding: 0;
-  }
-  
-  .LeftBG {
-    margin-top:2%;
-    width: 30%;
-    height:auto;
-    background-color: white;
-    border-radius:24px;
 
-  }
-  
-  .quote {
-    position: relative;
-    font-family: rockwell;
-    text-transform: capitalize;
-    font-size: 20px;
-    text-align: center;
-  }
-  
-  .LogoFigma {
-    margin-top: 5%;
-    width: 70%;
-  }
-  
-  .SessionOption {
-    margin-top: 13%;
-    margin-left: 72.5%;
-    background-color: rgba(255, 255, 255, 0.637);
-    border: 2px solid black;
-    border-radius: 10px;
-    width: 20%;
-    max-width: 300px; /* Set a maximum width */
-    height: auto;
-    padding: 20px;
-    position: absolute;
-  }
-  
-  .LogInButton, .SignUpButton {
-    background-color: blue;
-    font-size: x-large;
-    width: 100%; /* Adjusted to fill the container */
-    max-width: 250px; /* Set a maximum width */
-    height: 40px;
-    border-radius: 100px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    margin-top: 10px;
-  }
-  
-  .LogInText,
-  .PasswordText,
-  .userInfoAddress input {
-    width: 100%; /* Adjusted to fill the container */
-    max-width: 250px; /* Set a maximum width */
-    height: 30px;
-    border-radius: 10px;
-    margin-top: 10px;
-    text-align: center;
-    font-family: rockwell;
-    font-weight: bold;
-  }
-  
-  .SubmitButton {
-    width: 70%; /* Adjusted to fill the container */
-    max-width: 250px; /* Set a maximum width */
-    height: 30px;
-    border-radius: 10px;
-    margin-top: 10px;
-    text-align: center;
-    font-family: rockwell;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  .ShowPass {
-    cursor: pointer;
-  }
-  
-  a {
-    text-decoration: none;
-  }
+.LeftBG {
+  width: 25%;
+  height: auto;
+  background-color: white;
+  border-radius: 24px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+.quote {
+  width:50%;
+  position: relative;
+  font-family: rockwell;
+  text-transform: capitalize;
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.LogoFigma {
+  margin-top: 5%;
+  width: 70%;
+}
+
+.SessionOption {
+  margin-top: 13%;
+  margin-left: 72.5%;
+  background-color: rgba(255, 255, 255, 0.637);
+  border: 2px solid black;
+  border-radius: 10px;
+  width: 20%;
+  max-width: 300px; /* Set a maximum width */
+  height: auto;
+  padding: 20px;
+  position: absolute;
+}
+
+.LogInButton,
+.SignUpButton {
+  background-color: blue;
+  font-size: x-large;
+  width: 100%; /* Adjusted to fill the container */
+  max-width: 250px; /* Set a maximum width */
+  height: 40px;
+  border-radius: 100px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  margin-top: 10px;
+}
+
+.LogInText,
+.PasswordText,
+.userInfoAddress input {
+  width: 100%; /* Adjusted to fill the container */
+  max-width: 250px; /* Set a maximum width */
+  height: 30px;
+  border-radius: 10px;
+  margin-top: 10px;
+  text-align: center;
+  font-family: rockwell;
+  font-weight: bold;
+}
+
+.SubmitButton {
+  width: 30%; /* Adjusted to fill the container */
+  max-width: 250px; /* Set a maximum width */
+  height: 30px;
+  border-radius: 10px;
+  margin-top: 10px;
+  text-align: center;
+  font-family: rockwell;
+  font-weight: bold;
+  cursor: pointer;
+}
+.SignUpButton {
+  background-color: blue;
+  font-size: large;
+  width: 30%; /* Adjusted to fill the container */
+  max-width: 250px; /* Set a maximum width */
+  height: 30px;
+  border-radius: 100px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  margin-top: 10px;
+  margin-bottom: 20px; /* Add margin-bottom to create space */
+}
+
+
+.ShowPass {
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+}

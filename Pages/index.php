@@ -1,21 +1,73 @@
 <?php
-require_once './accountProcess/connect.php';
+require_once 'accountProcess/connect.php';
+// Fetch image URLs from the database
+$imageUrls = array(); // Initialize an empty array
+$sql = "SELECT WallpaperLocation FROM wallpaper"; // Adjust the SQL query according to your database schema
+$result = $databaseConnection->getConnection()->query($sql);
 
-// Check for an existing login session
-if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
-    echo "<script>alert('You are already logged in, redirecting you to homepage now.'); window.location = 'homepage.php';</script>";
-    exit();
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        // $imageUrls[] = $row['imageUrl'];
+        $imageUrls[] = 'accountProcess/' . $row['WallpaperLocation'];
+    }
 }
 ?>
 
-<html>
-<title>WallpaperStation</title>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <link rel="stylesheet" href="pagesCSS/StartupScreen.css">
-</head>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
 
+        #slideshow {
+            flex: 1;
+            height: 100%;
+        }
+
+        #slideshow img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .LeftBG {
+            flex-grow: 1;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .footer p {
+            margin: 0;
+        }
+    </style>
+</head>
 <body>
+    <!-- Your HTML body content here -->
+    <div id="slideshow">
+        <?php foreach ($imageUrls as $imageUrl): ?>
+            <img src="<?php echo $imageUrl; ?>" alt="Slideshow Image">
+        <?php endforeach; ?>
+    </div>
+
     <center>
         <div class="LeftBG">
             <center>
@@ -37,16 +89,38 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
             </a>
         </div>
     </center>
+
+    <div class="footer">
+        <p>For project purposes only, no copyright infringement</p>
+        <p style="margin-right:1%"><?php echo date("F j, Y"); ?></p>
+    </div>
+
     <script>
-        function myFunction() {
-            var x = document.getElementById("password");
-            if (x.type === "password") {
-                x.type = "text";
-            } else {
-                x.type = "password";
+        // JavaScript code for slideshow functionality
+        var slideshowIndex = 0;
+        var slideshowImages = <?php echo json_encode($imageUrls); ?>;
+
+        function showSlides() {
+            var slideshow = document.getElementById("slideshow");
+            if (slideshowImages.length === 0) return;
+
+            slideshow.innerHTML = ""; // Clear existing images
+
+            var img = document.createElement("img");
+            img.src = slideshowImages[slideshowIndex];
+            img.alt = "Slideshow Image";
+            slideshow.appendChild(img);
+
+            slideshowIndex++;
+            if (slideshowIndex >= slideshowImages.length) {
+                slideshowIndex = 0; // Restart slideshow from the beginning
             }
+
+            setTimeout(showSlides, 5000); // Change image every 3 seconds
         }
+
+        // Start the slideshow when the page loads
+        showSlides();
     </script>
 </body>
-
 </html>
