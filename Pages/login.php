@@ -9,33 +9,35 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
 ?>
 
 <html>
-<title>WallpaperStation</title>
+<title>Log in</title>
 
 <head>
-    <link rel="stylesheet" href="pagesCSS/StartupScreen.css">
+    <link rel="stylesheet" href="pagesCSS/IndexStyle.css">
 </head>
 
 <body>
     <center>
-        <div class="LeftBG">
-            <center>
-                <img class="LogoFigma" src="testImages/LogoFigma.png">
-                <p class="quote">Personalize your device with our vast collection of wallpapers</p>
-            </center>
+        <div class="webIcon">
+            <p class="webtitle">Wallpaper</p>
+            <div class="hub">
+                <p class="webtitle" style="padding: 0 10px 0 10px;">Station</p>
+            </div>
+        </div>
+        <div class="LogForm">
             <form method="POST" action="./accountProcess/process.php">
+                <h1>Login</h1>
+                <div class="divider"></div>
                 <input class="LogInText" type="email" id="email" name="email" placeholder="Email" required>
                 <input class="PasswordText" type="password" id="password" name="password" placeholder="Password" minlength="8" required></br></br>
                 <input class="ShowPass" type="checkbox" onclick="myFunction()">Show Password
                 <br>
                 <input class="SubmitButton" type="submit" id="login" name="login" value="Log In" required>
             </form>
-            <p>Forgot password? <a href="reset.php">Click here</a></br></br>Not registered yet? Sign up below</p>
-            <a href="register.php">
-                <div class="SignUpButton">
-                    <p>Sign Up</p>
-                </div>
-            </a>
+            <p>Forgot password? <a href="reset.php">Click here</a></p>
+            <p>Not registered yet? <a href="register.php">Register here</a></p>
         </div>
+
+
     </center>
     <script>
         function myFunction() {
