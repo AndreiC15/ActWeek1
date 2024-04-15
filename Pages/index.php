@@ -30,12 +30,22 @@ if ($result->num_rows > 0) {
         #slideshow {
             flex: 1;
             height: 100%;
+            position: relative;
         }
 
         #slideshow img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            opacity: 0; /* Set initial opacity to 0 */
+            position: absolute;
+            object-fit: cover; /* Ensure proper sizing without stretching */
+            top: 0;
+            left: 0;
+            transition: opacity 2s ease-in-out; /* Apply ease-in-out transition */
+        }
+
+        #slideshow img.active {
+            opacity: 1; /* Set opacity to 1 for active image */
         }
 
         .LeftBG {
@@ -46,11 +56,12 @@ if ($result->num_rows > 0) {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #333;
+            background-color: rgba(0, 0, 0, 0.75); /* Black color with 50% opacity */
             color: white;
-            padding: 10px;
+            padding: 5px;
             position: fixed;
             bottom: 0;
+            font-size: 12px;
             left: 0;
             width: 100%;
         }
@@ -63,8 +74,8 @@ if ($result->num_rows > 0) {
 <body>
     <!-- Your HTML body content here -->
     <div id="slideshow">
-        <?php foreach ($imageUrls as $imageUrl): ?>
-            <img src="<?php echo $imageUrl; ?>" alt="Slideshow Image">
+        <?php foreach ($imageUrls as $index => $imageUrl): ?>
+            <img src="<?php echo $imageUrl; ?>" alt="Slideshow Image" class="<?php echo $index === 0 ? 'active' : ''; ?>">
         <?php endforeach; ?>
     </div>
 
@@ -72,11 +83,13 @@ if ($result->num_rows > 0) {
         <div class="LeftBG">
             <center>
                 <img class="LogoFigma" src="testImages/LogoFigma.png">
-                <p class="quote">Personalize your device with our vast collection of wallpapers</p>
+                <p class="quote">Personalize your device with our vast collection of HD wallpapers</p>
             </center>
             <form method="POST" action="./accountProcess/process.php">
-                <input class="LogInText" type="email" id="email" name="email" placeholder="Email" required>
-                <input class="PasswordText" type="password" id="password" name="password" placeholder="Password" minlength="8" required></br></br>
+                <table>
+                    <tr><input class="LogInText" type="email" id="email" name="email" placeholder="Email" required></tr></br>
+                    <tr><input class="PasswordText" type="password" id="password" name="password" placeholder="Password" minlength="8" required></tr>
+                </table>
                 <input class="ShowPass" type="checkbox" onclick="myFunction()">Show Password
                 <br>
                 <input class="SubmitButton" type="submit" id="login" name="login" value="Log In" required>
@@ -91,32 +104,30 @@ if ($result->num_rows > 0) {
     </center>
 
     <div class="footer">
-        <p>For project purposes only, no copyright infringement</p>
+        <p>The images used in this website are for project purposes only, no copyright infringement to its rightful owners</p>
         <p style="margin-right:1%"><?php echo date("F j, Y"); ?></p>
     </div>
 
     <script>
+        function myFunction() {
+            var x = document.getElementById("password");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+
         // JavaScript code for slideshow functionality
         var slideshowIndex = 0;
         var slideshowImages = <?php echo json_encode($imageUrls); ?>;
+        var images = document.querySelectorAll('#slideshow img');
 
         function showSlides() {
-            var slideshow = document.getElementById("slideshow");
-            if (slideshowImages.length === 0) return;
-
-            slideshow.innerHTML = ""; // Clear existing images
-
-            var img = document.createElement("img");
-            img.src = slideshowImages[slideshowIndex];
-            img.alt = "Slideshow Image";
-            slideshow.appendChild(img);
-
-            slideshowIndex++;
-            if (slideshowIndex >= slideshowImages.length) {
-                slideshowIndex = 0; // Restart slideshow from the beginning
-            }
-
-            setTimeout(showSlides, 5000); // Change image every 3 seconds
+            images[slideshowIndex].classList.remove('active');
+            slideshowIndex = (slideshowIndex + 1) % images.length;
+            images[slideshowIndex].classList.add('active');
+            setTimeout(showSlides, 5000); // Change image every 5 seconds
         }
 
         // Start the slideshow when the page loads

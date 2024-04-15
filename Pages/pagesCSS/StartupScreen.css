@@ -1,23 +1,25 @@
 /* Original layout for desktop */
 
 .LeftBG {
-  width: 25%;
+  width: 30%;
   height: auto;
   background-color: white;
   border-radius: 24px;
   position: absolute;
+  border-style: solid;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  align-content: center;
 }
 
 
 .quote {
-  width:50%;
+  width:80%;
   position: relative;
   font-family: rockwell;
   text-transform: capitalize;
-  font-size: 10px;
+  font-size: 15px;
   font-weight: bold;
   text-align: center;
 }
@@ -39,7 +41,6 @@
   padding: 20px;
   position: absolute;
 }
-
 .LogInButton,
 .SignUpButton {
   background-color: blue;
@@ -57,8 +58,7 @@
 }
 
 .LogInText,
-.PasswordText,
-.userInfoAddress input {
+.PasswordText {
   width: 100%; /* Adjusted to fill the container */
   max-width: 250px; /* Set a maximum width */
   height: 30px;
@@ -70,7 +70,7 @@
 }
 
 .SubmitButton {
-  width: 30%; /* Adjusted to fill the container */
+  width: 20%; /* Adjusted to fill the container */
   max-width: 250px; /* Set a maximum width */
   height: 30px;
   border-radius: 10px;
@@ -103,4 +103,16 @@
 
 a {
   text-decoration: none;
+}
+
+@media screen and (max-width: 768px) {
+  .LeftBG{
+    width:70%;
+    height: auto;
+  }
+  .LogInText,
+  .PasswordText {
+    width: 100%; /* Adjusted to fill the container */
+    max-width: 250px; /* Set a maximum width */
+  }
 }
