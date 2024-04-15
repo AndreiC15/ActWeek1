@@ -1,125 +1,140 @@
-body {
-    background-image: url('../testImages/wallpaper.jpg');
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-    background-position: center center; /* Center the background image */
-    margin: 0;
-    padding: 0;
-}
-
 .webIcon {
-    background-color: blue;
-    width: 450px;
-    height: 80px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center; /* Align items vertically in the center */
-    justify-content: center;
-    margin-top: 20%; /* Center content horizontally */
+  background-color: blue;
+  width: 450px;
+  height: 80px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
+  justify-content: center;
+  margin-top: 20%; /* Center content horizontally */
 }
 .webIcon p {
-    color: white;
-    font-size: 50px;
-    margin: 0; /* Remove default margin */
+  color: white;
+  font-size: 50px;
+  margin: 0; /* Remove default margin */
 }
 
 .webIcon .hub {
-    background-color: red;
-    border-radius: 10px;
-    color: white;
-    margin-left: 10px; /* Add some space between "Wallpaper" and "Hub" */
+  background-color: red;
+  border-radius: 10px;
+  color: white;
+  margin-left: 10px; /* Add some space between "Wallpaper" and "Hub" */
 }
 .ForgotwebIcon {
-    background-color: blue;
-    width: 450px;
-    height: 80px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center; /* Align items vertically in the center */
-    justify-content: center;
-    margin-top: 2%; /* Center content horizontally */
+  background-color: blue;
+  width: 450px;
+  height: 80px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
+  justify-content: center;
+  margin-top: 2%; /* Center content horizontally */
 }
 .ForgotwebIcon p {
-    color: white;
-    font-size: 50px;
-    margin: 0; /* Remove default margin */
+  color: white;
+  font-size: 50px;
+  margin: 0; /* Remove default margin */
 }
 
 .ForgotwebIcon .hub {
-    background-color: red;
-    border-radius: 10px;
-    color: white;
-    margin-left: 10px; /* Add some space between "Wallpaper" and "Hub" */
+  background-color: red;
+  border-radius: 10px;
+  color: white;
+  margin-left: 10px; /* Add some space between "Wallpaper" and "Hub" */
 }
 
-
-.LogForm, .RegForm {
-    width: 90%;
-    max-width: 800px;
-    background-color: rgba(255, 255, 255, 0.637);
-    border: 2px solid black;
-    border-radius: 10px;
-    margin-top: 2%;
-    box-sizing: border-box;
-    margin-bottom: 10px;
+.RegForm {
+  width: 60%;
+  background-color: rgba(255, 255, 255, 0.90);
+  border-radius: 24px;
+  position: absolute;
+  border-style: solid;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  align-content: center;
+  z-index: 2;
 }
-
-/* .dividerTop {
-    position: absolute;
-    height: 2px;
-    width: 51.9%;
-    margin-left: 0%;
-    margin-top: 0.5%;
+.RegBG {
+    width: 35%;
     background-color: black;
-    z-index: 3;
-} */
+    position: relative; /* Ensure relative positioning for absolute elements */
+    transform: skewX(-40deg);
+    transform: skewX(40deg);
+}
+.RegText{
+    color: white;
+    transform: skewX(-100deg);
+    transform: skewX(140deg);
+}
+
+
+
+/* width: 30%;
+height: auto;
+background-color: white;
+border-radius: 24px;
+position: absolute;
+border-style: solid;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+align-content: center;
+z-index: 1; */
 
 .userInfoAddress {
-    margin-top: -3%;
-    display: flex;
-    justify-content: space-evenly;
+  margin-top: -3%;
+  display: flex;
+  justify-content: space-evenly;
 }
 
-.userInfoo{
-    border-style: solid;
-    border-width: 3px;
-    border-color: black;
-    border-bottom: 5px;
-    width:100%;
+.userInfoo {
+  border-style: solid;
+  border-width: 3px;
+  border-color: black;
+  border-bottom: 5px;
+  width: 100%;
 }
 
-
-
-.LogInText, .PasswordText, .SubmitButton, .userInfoAddress input {
-    width: 100%;
-    max-width: 250px;
-    height: 30px;
-    border-radius: 10px;
-    margin-top: 10px;
-    text-align: center;
-    font-family: rockwell;
-    font-weight: bold;
+.LogInText,
+.PasswordText,
+.SubmitButton,
+.userInfoAddress input {
+  width: 100%;
+  max-width: 250px;
+  height: 30px;
+  border-radius: 10px;
+  margin-top: 10px;
+  text-align: center;
+  font-family: rockwell;
+  font-weight: bold;
 }
 
 .ShowPass {
-    cursor: pointer;
+  cursor: pointer;
 }
 
-
 .SubmitButton {
-    margin-top: 10px;
-    cursor: pointer;
+  margin-top: 10px;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 600px) {
-    .webIcon, .ForgotwebIcon {
-        margin-top: 5%;
-    }
-    .dividerTop {
-        width: 89.5%;
-    }
-    .LogForm, .RegForm {
-        margin-top: 3vw;
-    }
+  .webIcon,
+  .ForgotwebIcon {
+    margin-top: 5%;
+  }
+  .dividerTop {
+    width: 89.5%;
+  }
+  .RegForm {
+    width: 80%;
+    height: auto;
+  }
+  .RegBG {
+    width: 50%;
+}
+.RegText{
+    font-size:30px;
+}
 }

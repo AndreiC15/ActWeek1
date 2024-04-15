@@ -6,6 +6,17 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
     echo "<script>alert('You are already logged in, redirecting you to homepage now.'); window.location = 'homepage.php';</script>";
     exit();
 }
+
+$imageUrls = array(); // Initialize an empty array
+$sql = "SELECT WallpaperLocation FROM wallpaper"; // Adjust the SQL query according to your database schema
+$result = $databaseConnection->getConnection()->query($sql);
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        // $imageUrls[] = $row['imageUrl'];
+        $imageUrls[] = 'accountProcess/' . $row['WallpaperLocation'];
+    }
+}
 ?>
 <html>
 <title>Registration</title>
@@ -13,18 +24,81 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
 <head>
     <link rel="stylesheet" href="pagesCSS/register.css">
     <link rel="stylesheet" href="pagesCSS/removeArrowinput.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #slideshow {
+            position: relative;
+            flex: 1;
+            height: 100vh; /* Cover entire viewport height */
+            z-index: 1; /* Ensure slideshow is behind other elements */
+        }
+
+        #slideshow img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+
+        #slideshow img.active {
+            opacity: 1;
+        }
+
+        .Angle1 {
+            width: 0;
+            height: 0;
+            border-top: calc(40vh - 100px) solid transparent;
+            /* Adjust the height as needed */
+            border-left: calc(40vw - 100px) solid white;
+            /* Adjust the color and width as needed */
+            opacity: 0.85;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .Angle2 {
+            width: 0;
+            height: 0;
+            border-bottom: calc(40vh - 100px) solid transparent;
+            /* Adjust the height as needed */
+            border-right: calc(40vw - 100px) solid white;
+            /* Adjust the color and width as needed */
+            opacity: 0.85;
+            position: fixed;
+            top: 0;
+            right: 0;
+            z-index: 1;
+        }
+    </style>
 </head>
 
 <body>
+
+<div id="slideshow">
+        <?php foreach ($imageUrls as $index => $imageUrl) : ?>
+            <img src="<?php echo $imageUrl; ?>" alt="Slideshow Image" class="<?php echo $index === 0 ? 'active' : ''; ?>">
+        <?php endforeach; ?>
+    </div>
+   
     <center>
-        <div class="ForgotwebIcon">
-            <p class="webtitle">Wallpaper</p>
-            <div class="hub">
-                <p class="webtitle" style="padding: 0 10px 0 10px;">Station</p>
-            </div>
-        </div>
         <div class="RegForm">
+            <div class="RegBG">
             <h1 class="RegText">Registration</h1>
+            </div>
+            
             <table class="userInfoo">
                 <form method="POST" action="./accountProcess/process.php">
                     <tr>
@@ -52,13 +126,13 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
                     <br></br>
                     <center>
                         <div class="ShowPassDiv">
-                        <input class="ShowPass" type="checkbox" onclick="togglePasswordVisibility()">Show Password
+                            <input class="ShowPass" type="checkbox" onclick="togglePasswordVisibility()">Show Password
                         </div></br>
                     </center>
             </table>
 
             <div class="dividerTop"></div>
-            
+
             <h1>Address</h1>
             <div class="userInfoAddress">
                 <table class="userInfo">
@@ -101,6 +175,8 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
             </form>
         </div>
     </center>
+    <div class="Angle1"></div>
+    <div class="Angle2"></div>
     <script>
         function togglePasswordVisibility() {
             var password = document.getElementById("password");
@@ -157,6 +233,19 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
             // Truncate to a maximum length of 11 characters
             event.target.value = numericValue.substring(0, 11);
         }
+        var slideshowIndex = 0;
+        var slideshowImages = <?php echo json_encode($imageUrls); ?>;
+        var images = document.querySelectorAll('#slideshow img');
+
+        function showSlides() {
+            images[slideshowIndex].classList.remove('active');
+            slideshowIndex = (slideshowIndex + 1) % images.length;
+            images[slideshowIndex].classList.add('active');
+            setTimeout(showSlides, 5000); // Change image every 5 seconds
+        }
+
+        // Start the slideshow when the page loads
+        showSlides();
     </script>
 </body>
 

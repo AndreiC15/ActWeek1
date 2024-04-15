@@ -1,5 +1,9 @@
 <?php
 require_once 'accountProcess/connect.php';
+if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
+    echo "<script>alert('You are already logged in, redirecting you to homepage now.'); window.location = 'homepage.php';</script>";
+    exit();
+}
 // Fetch image URLs from the database
 $imageUrls = array(); // Initialize an empty array
 $sql = "SELECT WallpaperLocation FROM wallpaper"; // Adjust the SQL query according to your database schema
@@ -69,6 +73,27 @@ if ($result->num_rows > 0) {
         .footer p {
             margin: 0;
         }
+        .Angle1 {
+            width: 0;
+            height: 0;
+            border-top: calc(60vh - 100px) solid transparent; /* Adjust the height as needed */
+            border-left: calc(60vw - 100px) solid white; /* Adjust the color and width as needed */
+            opacity: 0.85;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+        }
+
+        .Angle2 {
+            width: 0;
+            height: 0;
+            border-bottom: calc(60vh - 100px) solid transparent; /* Adjust the height as needed */
+            border-right: calc(60vw - 100px) solid white; /* Adjust the color and width as needed */
+            opacity: 0.85;
+            position: fixed;
+            top: 0;
+            right: 0;
+        }
     </style>
 </head>
 <body>
@@ -102,6 +127,9 @@ if ($result->num_rows > 0) {
             </a>
         </div>
     </center>
+
+    <div class="Angle1"></div>
+    <div class="Angle2"></div>
 
     <div class="footer">
         <p>The images used in this website are for project purposes only, no copyright infringement to its rightful owners</p>
