@@ -1,7 +1,6 @@
 /* Original layout for desktop */
-
 .LeftBG {
-  width: 30%;
+  width: 25%;
   height: auto;
   background-color: white;
   border-radius: 24px;
@@ -13,20 +12,18 @@
   align-content: center;
 }
 
-
 .quote {
-  width:80%;
+  width: 80%;
   position: relative;
   font-family: rockwell;
   text-transform: capitalize;
-  font-size: 15px;
   font-weight: bold;
   text-align: center;
 }
 
 .LogoFigma {
   margin-top: 5%;
-  width: 70%;
+  width: 90%;
 }
 
 .SessionOption {
@@ -41,10 +38,10 @@
   padding: 20px;
   position: absolute;
 }
+
 .LogInButton,
 .SignUpButton {
   background-color: blue;
-  font-size: x-large;
   width: 100%; /* Adjusted to fill the container */
   max-width: 250px; /* Set a maximum width */
   height: 40px;
@@ -80,9 +77,9 @@
   font-weight: bold;
   cursor: pointer;
 }
+
 .SignUpButton {
   background-color: blue;
-  font-size: large;
   width: 30%; /* Adjusted to fill the container */
   max-width: 250px; /* Set a maximum width */
   height: 30px;
@@ -96,7 +93,6 @@
   margin-bottom: 20px; /* Add margin-bottom to create space */
 }
 
-
 .ShowPass {
   cursor: pointer;
 }
@@ -105,11 +101,40 @@ a {
   text-decoration: none;
 }
 
-@media screen and (max-width: 768px) {
-  .LeftBG{
-    width:70%;
+/* Media query for mobile devices */
+@media screen and (min-width: 1080px) and (max-width: 2340px) and (orientation: portrait) {
+  .LeftBG {
+    width: 70%;
     height: auto;
   }
+  .LogInText,
+  .PasswordText {
+    width: 100%; /* Adjusted to fill the container */
+    max-width: 250px; /* Set a maximum width */
+    font-size:x-large;
+  }
+  .quote{
+    font-size:x-large;
+  }
+  .ShowPass{
+    font-size:x-large;
+  }
+  .SubmitButton{
+    font-size:x-large;
+  }
+  p{
+    font-size:x-large;
+  }
+  .SignUpButton{
+    padding:10px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .LeftBG {
+    width: 70%;
+    height: auto;
+  }
+
   .LogInText,
   .PasswordText {
     width: 100%; /* Adjusted to fill the container */
