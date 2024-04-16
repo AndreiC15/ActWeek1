@@ -6,6 +6,17 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
     echo "<script>alert('You are already logged in, redirecting you to homepage now.'); window.location = 'homepage.php';</script>";
     exit();
 }
+
+$imageUrls = array(); // Initialize an empty array
+$sql = "SELECT WallpaperLocation FROM wallpaper"; // Adjust the SQL query according to your database schema
+$result = $databaseConnection->getConnection()->query($sql);
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        // $imageUrls[] = $row['imageUrl'];
+        $imageUrls[] = 'accountProcess/' . $row['WallpaperLocation'];
+    }
+}
 ?>
 
 <html>
@@ -13,26 +24,90 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
 
 <head>
     <link rel="stylesheet" href="pagesCSS/reset.css">
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #slideshow {
+            position: relative;
+            flex: 1;
+            height: 100vh;
+            /* Cover entire viewport height */
+            z-index: 1;
+            /* Ensure slideshow is behind other elements */
+        }
+
+        #slideshow img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+
+        #slideshow img.active {
+            opacity: 1;
+        }
+
+        .Angle1 {
+            width: 0;
+            height: 0;
+            border-top: calc(60vh - 100px) solid transparent;
+            /* Adjust the height as needed */
+            border-left: calc(60vw - 100px) solid white;
+            /* Adjust the color and width as needed */
+            opacity: 0.85;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .Angle2 {
+            width: 0;
+            height: 0;
+            border-bottom: calc(60vh - 100px) solid transparent;
+            /* Adjust the height as needed */
+            border-right: calc(60vw - 100px) solid white;
+            /* Adjust the color and width as needed */
+            opacity: 0.85;
+            position: fixed;
+            top: 0;
+            right: 0;
+            z-index: 1;
+        }
+    </style>
 </head>
 
 <body>
+    <div id="slideshow">
+        <?php foreach ($imageUrls as $index => $imageUrl) : ?>
+            <img src="<?php echo $imageUrl; ?>" alt="Slideshow Image" class="<?php echo $index === 0 ? 'active' : ''; ?>">
+        <?php endforeach; ?>
+    </div>
+    <div class="Angle1"></div>
+    <div class="Angle2"></div>
     <center>
-        <div class="webIcon">
-            <p class="webtitle">Wallpaper</p>
-            <div class="hub">
-                <p class="webtitle" style="padding: 0 10px 0 10px;">Station</p>
-            </div>
-        </div>
         <div class="LogForm">
             <form method="POST" action="./accountProcess/process.php">
-                <h1>Reset Password</h1>
-                <div class="resetInfo">
-                <input class="LogInText" type="email" id="email" name="email" placeholder="Email" required>
-                <input class="PasswordText" type="password" id="password" name="password" placeholder="Password" minlength="8" required>
-                <input class="PasswordText" type="password" id="confirmPassword" name="confirmPassword" placeholder="Retype password" minlength="8" required></br></br>
-                <input class="ShowPass" type="checkbox" onclick="togglePasswordVisibility()">Show Password
+                <div class="ResBG">
+                    <h1 class="ResText">Reset Password</h1>
                 </div>
-                <br>
+                <div class="resetInfo">
+                    <input class="LogInText" type="email" id="email" name="email" placeholder="Email" required>
+                    <input class="PasswordText" type="password" id="password" name="password" placeholder="Password" minlength="8" required>
+                    <input class="PasswordText" type="password" id="confirmPassword" name="confirmPassword" placeholder="Retype password" minlength="8" required></br></br>
+                    <input class="ShowPass" type="checkbox" onclick="togglePasswordVisibility()">Show Password
+                </div>
                 <input class="SubmitButton" type="submit" id="reset_password" name="reset_password" value="Reset Password" required>
             </form>
         </div>

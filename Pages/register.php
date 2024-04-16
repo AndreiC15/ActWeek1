@@ -122,8 +122,7 @@ if ($result->num_rows > 0) {
                     <tr>
                         <input class="LogInText" type="text" id="phone_number" name="phone_number" placeholder="Phone Number" oninput="sanitizeNumericInput(event);" maxlength="11" required>
                     </tr>
-
-                    <br></br>
+                </br></br>
                     <center>
                         <div class="ShowPassDiv">
                             <input class="ShowPass" type="checkbox" onclick="togglePasswordVisibility()">Show Password
@@ -133,7 +132,9 @@ if ($result->num_rows > 0) {
 
             <div class="dividerTop"></div>
 
-            <h1>Address</h1>
+            <div class="AddBG">
+            <h1 class="AddText">Address</h1>
+            </div>
             <div class="userInfoAddress">
                 <table class="userInfo">
                     <tr>
@@ -169,7 +170,6 @@ if ($result->num_rows > 0) {
                     </tr>
                 </table>
             </div>
-            </br>
             <input class="SubmitButton" type="submit" id="register" name="register" value="Register">
             <p>Already registered? <a href="index.php">Log in Here</a></p>
             </form>

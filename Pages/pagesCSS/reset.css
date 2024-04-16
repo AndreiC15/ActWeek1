@@ -1,13 +1,3 @@
-body {
-    background-image: url('../testImages/wallpaper.jpg');
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-    background-position: center center; /* Center the background image */
-    margin: 0;
-    padding: 0;
-}
-
 .webIcon {
     background-color: blue;
     width: 450px;
@@ -33,28 +23,45 @@ body {
 }
 
 .LogForm {
-    width: 300px;
-    background-color: rgba(255, 255, 255, 0.637);
-    border-color: black;
+    width: 25%;
+    height: auto;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 24px;
+    position: absolute;
     border-style: solid;
-    border-width: 2px;
-    border-radius: 10px;
-    margin-top: 50px;
-    margin-left: auto;
-    margin-right: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    align-content: center;
+    z-index: 1;
 }
+.ResBG {
+    width: 70%;
+    background-color: black;
+    position: relative; /* Ensure relative positioning for absolute elements */
+    transform: skewX(-40deg);
+    transform: skewX(40deg);
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+  .ResText {
+    color: white;
+    transform: skewX(-100deg);
+    transform: skewX(140deg);
+  }
 .resetInfo{
     margin-top:-10px;
 }
 .LogInText, .PasswordText {
     height: 30px;
-    width: 250px;
+    width: 60%;
     border-radius: 10px;
     margin-top: 20px;
     font-weight: bold;
     font-family: rockwell;
     margin-left: auto;
     margin-right: auto;
+    text-align: center;
 }
 
 ::placeholder {
@@ -69,6 +76,12 @@ body {
     margin-top: 10px;
     font-weight: bold;
     cursor: pointer;
+    height: 30px;
+  border-radius: 10px;
+  margin-top: 10px;
+  text-align: center;
+  font-family: rockwell;
+  font-weight: bold;
 }
 
 .divider {
@@ -78,7 +91,14 @@ body {
     opacity: 50%;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (min-width: 1080px) and (max-width: 2340px) and (orientation: portrait) {
+    .ResBG {
+        font-size: 13px;
+      }
+  }
+  
+
+@media screen and (max-width: 768px) {
     .webIcon, .ForgotwebIcon {
         margin-top: 5%;
     }
@@ -87,6 +107,5 @@ body {
     }
     .LogForm, .RegForm {
         width: 80%;
-        margin-top: 10vw;
     }
 }
