@@ -1,6 +1,14 @@
 <?php
 require_once 'connect.php';
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require 'C:\xampp\htdocs\PHPMailer\PHPMailer\src\Exception.php';
+require 'C:\xampp\htdocs\PHPMailer\PHPMailer\src\PHPMailer.php';
+require 'C:\xampp\htdocs\PHPMailer\PHPMailer\src\SMTP.php';
+
 class UserAuth
 {
     private $db;
@@ -62,8 +70,10 @@ class UserAuth
         }
     }
 
-    public function register($FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode)
+    public function register($FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode, $VerificationCode, $email_verified_at
+    )
     {
+
         $con = $this->db->getConnection();
 
         if (strlen($PhoneNumber) < 11) {
@@ -86,22 +96,65 @@ class UserAuth
             exit;
         }
 
-        $sql = "INSERT INTO user_acct (FirstName, MiddleName, LastName, Email, Password, PhoneNumber, Country, Province, CityCity, District, HouseNoStreet, ZipCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $query = $this->db->prepare($sql);
+        $mail = new PHPMailer(true);
+        //Server settings
+        try {
+            $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+            $mail->isSMTP();
+            $mail->Host       = 'smtp.gmail.com';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'calderon.optical.clinic@gmail.com';
+            $mail->Password   = 'avuoeowvxfwgnjix';
+            $mail->SMTPSecure = 'ssl';
+            $mail->Port       = 465;
+            //Recipients
+            $mail->setFrom('calderon.optical.clinic@gmail.com', 'Calderon Optical Clinic');
+            $mail->addAddress($Email, $FirstName);
+            //Content
+            $mail->isHTML(true);
+            $VerificationCode = substr(number_format(time() * rand(), 0, '', ''), 0, 6);
+            $mail->Subject = 'Verify your email.';
+            $mail->Body    = '<p>Good day! Your verification code is: <b style="font-size: 30px;">' . $VerificationCode . '</b> Thank you!</p>';
+            $mail->send();
 
-        $insertParams = [&$FirstName, &$MiddleName, &$LastName, &$Email, &$Password, &$PhoneNumber, &$Country, &$Province, &$CityCity, &$District, &$HouseNoStreet, &$ZipCode];
+            $sql = "INSERT INTO user_acct (FirstName, MiddleName, LastName, Email, Password, PhoneNumber, Country, Province, CityCity, District, HouseNoStreet, ZipCode, VerificationCode, email_verified_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $query = $this->db->prepare($sql);
 
-        $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
-        $query->bind_param($paramTypes, ...$insertParams);
+            $insertParams = [&$FirstName, &$MiddleName, &$LastName, &$Email, &$Password, &$PhoneNumber, &$Country, &$Province, &$CityCity, &$District, &$HouseNoStreet, &$ZipCode, &$VerificationCode, &$email_verified_at];
+            $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
+            $query->bind_param($paramTypes, ...$insertParams);
 
-        $result = $query->execute();
+            $result = $query->execute();
 
-        if ($result) {
-            echo "<script>alert('Registered Successfully, please proceed to the login page'); window.location = '../index.php';</script>";
-        } else {
-            echo "<script>alert('Error in registration'); window.location = '../register.php';</script>";
+            if ($result) {
+                echo "<script>alert('Registered Successfully, please proceed to the verification page'); </script>";
+                // window.location = '../Verify.php';
+                $query->close();
+                // After sending verification code, redirect to verification form
+                header('Location: ../Verify.php');
+                exit();
+            } else {
+                echo "<script>alert('Error in registration'); window.location = '../register.php';</script>";
+            }
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }
-        $query->close();
+
+        // $sql = "INSERT INTO user_acct (FirstName, MiddleName, LastName, Email, Password, PhoneNumber, Country, Province, CityCity, District, HouseNoStreet, ZipCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        // $query = $this->db->prepare($sql);
+        // $insertParams = [&$FirstName, &$MiddleName, &$LastName, &$Email, &$Password, &$PhoneNumber, &$Country, &$Province, &$CityCity, &$District, &$HouseNoStreet, &$ZipCode];
+
+        // $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
+        // $query->bind_param($paramTypes, ...$insertParams);
+
+        // $result = $query->execute();
+
+        // if ($result) {
+        //     echo "<script>alert('Registered Successfully, please proceed to the login page'); window.location = '../index.php';</script>";
+        // } else {
+        //     echo "<script>alert('Error in registration'); window.location = '../register.php';</script>";
+        // }
+        // $query->close();
     }
 
     public function resetPassword($Email, $password)
@@ -429,8 +482,24 @@ if ($databaseConnection->getConnection()) {
     }
 
     if (isset($_POST['register'])) {
-        $userAuth->register($_POST['first_name'], $_POST['middle_name'], $_POST['last_name'], $_POST['email'], $_POST['password'], $_POST['phone_number'], $_POST['country'], $_POST['province'], $_POST['citycity'], $_POST['district'], $_POST['house_no_street'], $_POST['zipcode']);
+        $userAuth->register(
+            $_POST['first_name'],
+            $_POST['middle_name'],
+            $_POST['last_name'],
+            $_POST['email'],
+            $_POST['password'],
+            $_POST['phone_number'],
+            $_POST['country'],
+            $_POST['province'],
+            $_POST['citycity'],
+            $_POST['district'],
+            $_POST['house_no_street'],
+            $_POST['zipcode'],
+            NULL,
+            NULL // Or provide the correct key for the last parameter if applicable
+        );
     }
+
     if (isset($_POST['reset_password'])) {
         $userAuth->resetPassword(
             $_POST['email'],
