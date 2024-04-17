@@ -115,6 +115,8 @@ if ($databaseConnection->getConnection()) {
 </head>
 
 <body>
+
+
     <center>
         <div class="webIcon">
             <p class="webtitle">Wallpaper</p>
@@ -122,9 +124,25 @@ if ($databaseConnection->getConnection()) {
                 <p class="webtitle" style="padding: 0 10px 0 10px;">Station</p>
             </div>
         </div>
-        
+
         <fieldset>
-        <h2>Popular HD Wallpaper</h2>
+            <h2>Popular HD Wallpaper</h2>
+
+            <!-- Dropdown menu for sorting -->
+            <form id="sortForm" method="GET" action="homepage.php">
+                <select name="sort" onchange="document.getElementById('sortForm').submit()">
+                    <option value="latest" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'latest') echo 'selected'; ?>>Sort by Latest</option>
+                    <option value="oldest" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'oldest') echo 'selected'; ?>>Sort by Oldest</option>
+                    <option value="title" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'title') echo 'selected'; ?>>Sort by Title</option>
+                </select>
+            </form>
+
+            <!-- Search form -->
+            <form id="searchForm" method="GET" action="homepage.php">
+                <input type="text" name="search" placeholder="Search by title" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                <button type="submit">Search</button>
+            </form>
+
             <?php
             $limit = 6; // Number of wallpapers to display per page
 
@@ -137,7 +155,24 @@ if ($databaseConnection->getConnection()) {
             $totalResult = $databaseConnection->getConnection()->query($countQuery);
             $totalWallpapers = $totalResult->fetch_assoc()['total'];
 
-            $sql = "SELECT WallpaperID, Title, WallpaperLocation FROM wallpaper ORDER BY WallpaperID DESC LIMIT $offset, $limit";
+            $sort = isset($_GET['sort']) ? $_GET['sort'] : 'latest';
+            $order = ($sort === 'oldest') ? 'ASC' : 'DESC';
+
+            // Adjust order for sorting by ID
+            if ($sort === 'latest') {
+                $orderBy = 'WallpaperID DESC'; // Biggest ID number first
+            } elseif ($sort === 'oldest') {
+                $orderBy = 'WallpaperID ASC'; // Smallest ID number first
+            } elseif ($sort === 'title') {
+                $orderBy = 'Title ASC'; // Sort titles alphabetically from A to Z
+            }
+
+            // Search query
+            $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
+            $searchCondition = !empty($searchQuery) ? "WHERE Title LIKE '%$searchQuery%'" : '';
+
+            // SQL query with search condition
+            $sql = "SELECT WallpaperID, Title, WallpaperLocation FROM wallpaper $searchCondition ORDER BY $orderBy LIMIT $offset, $limit";
             $result = $databaseConnection->getConnection()->query($sql);
 
             // Check if there are no wallpapers
@@ -154,7 +189,7 @@ if ($databaseConnection->getConnection()) {
                         echo '</div>';
                         echo '<div class="dl_Btn">';
                         echo '<a style="display:flex;padding-left:5px;padding-right:5px; font-family:arial;" href="' . $imagePath . '" download="' . htmlspecialchars($row['Title']) . '">
-                <img style="padding-right:5px" src="testImages/download.png" width="20" height="20"> Download</a>';
+    <img style="padding-right:5px" src="testImages/download.png" width="20" height="20"> Download</a>';
                         echo '</div>';
                         echo '</li>';
                     } else {
@@ -167,16 +202,19 @@ if ($databaseConnection->getConnection()) {
                 }
                 echo '</ul>';
 
-                // Pagination links
-                echo '<center>';
-                $totalPages = ceil($totalWallpapers / $limit);
+                // Show pagination only if there are more than 6 search results
+                if ($totalWallpapers > $limit) {
+                    echo '<center>';
+                    $totalPages = ceil($totalWallpapers / $limit);
 
-                for ($page = 1; $page <= $totalPages; $page++) {
-                    $isActive = ($page == $currentPage) ? 'active' : '';
-                    echo '<a href="?page=' . $page . '" class="pagination ' . $isActive . '">' . $page . '</a>';
+                    for ($page = 1; $page <= $totalPages; $page++) {
+                        $isActive = ($page == $currentPage) ? 'active' : '';
+                        $paginationLink = "?page=$page&sort=$sort&search=$searchQuery"; // Include sort and search parameters in pagination link
+                        echo "<a href=\"$paginationLink\" class=\"pagination $isActive\">$page</a>";
+                    }
+
+                    echo '</center>';
                 }
-
-                echo '</center>';
             } else {
                 echo '<div style="text-align: center; padding: 5px; background-color: #f0f0f0; border: 1px solid #ccc; width:50%">';
                 echo '<p style="font-size: 18px; color: #333;margin-left:-1%">No uploaded wallpapers&#128531</p>';
@@ -185,6 +223,10 @@ if ($databaseConnection->getConnection()) {
 
             ?>
         </fieldset>
+
+
+
+
         <nav class="main-menu">
             <ul>
                 <li>
