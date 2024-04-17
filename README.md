@@ -46,4 +46,8 @@
 <b>29/02/24</b><br>
 -Webcam picture<br>
 
+<b>17/04/24</b><br>
+-Send verification code via email for account activation<br>
+-Inactive & Active account status(Inactive account cant login)<br>
+
 # Import the logintest.sql to your PhpMyAdmin localhost<br>

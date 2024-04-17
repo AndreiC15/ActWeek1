@@ -43,36 +43,62 @@ class UserAuth
     }
 
     public function login($Email, $password)
-    {
-        $con = $this->db->getConnection();
+{
+    $con = $this->db->getConnection();
 
-        if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
-            echo "<script>alert('You are already logged in.'); window.location = '../homepage.php';</script>";
-            exit;
-        }
+    if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
+        echo "<script>alert('You are already logged in.'); window.location = '../homepage.php';</script>";
+        exit;
+    }
 
-        $result = mysqli_query($con, "SELECT * FROM user_acct WHERE email = '$Email'");
-        $row = mysqli_fetch_assoc($result);
+    // Check if user account exists
+    $result = mysqli_query($con, "SELECT * FROM user_acct WHERE email = '$Email'");
+    $row = mysqli_fetch_assoc($result);
 
-        if (mysqli_num_rows($result) > 0) {
+    if (mysqli_num_rows($result) > 0) {
+        // Check if account is active
+        if ($row['AccountStatus'] === 'active') {
+            // Verify password
             if ($password == $row['Password']) {
+                // Set session variables
                 $_SESSION['login'] = true;
                 $_SESSION['id'] = $row['ID'];
                 echo "<script>alert('Log In Successfully'); window.location = '../homepage.php';</script>";
                 exit;
             } else {
+                // Incorrect password
                 echo "<script>alert('Wrong Email or Password'); window.location = '../index.php';</script>";
                 exit;
             }
         } else {
-            echo "<script>alert('User not found'); window.location = '../index.php';</script>";
+            // Account is inactive
+            echo "<script>alert('Your account is not verified. You will be redirected now to verify your account.'); window.location = '../Verify.php?Email=" . urlencode($Email) . "';</script>";
             exit;
         }
+    } else {
+        // User not found
+        echo "<script>alert('User not found'); window.location = '../index.php';</script>";
+        exit;
     }
+}
 
-    public function register($FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode, $VerificationCode, $email_verified_at
-    )
-    {
+
+    public function register(
+        $FirstName,
+        $MiddleName,
+        $LastName,
+        $Email,
+        $Password,
+        $PhoneNumber,
+        $Country,
+        $Province,
+        $CityCity,
+        $District,
+        $HouseNoStreet,
+        $ZipCode,
+        $VerificationCode,
+        $email_verified_at
+    ) {
 
         $con = $this->db->getConnection();
 
@@ -108,30 +134,33 @@ class UserAuth
             $mail->SMTPSecure = 'ssl';
             $mail->Port       = 465;
             //Recipients
-            $mail->setFrom('calderon.optical.clinic@gmail.com', 'Calderon Optical Clinic');
+            $mail->setFrom('calderon.optical.clinic@gmail.com', 'WallpaperStation');
             $mail->addAddress($Email, $FirstName);
             //Content
             $mail->isHTML(true);
             $VerificationCode = substr(number_format(time() * rand(), 0, '', ''), 0, 6);
             $mail->Subject = 'Verify your email.';
-            $mail->Body    = '<p>Good day! Your verification code is: <b style="font-size: 30px;">' . $VerificationCode . '</b> Thank you!</p>';
+            $mail->Body = '<p style="font-size: 20px;">Good day! Your verification code is: <b style="font-size: 30px;">&nbsp;' . $VerificationCode . '&nbsp;</b> Thank you!</p>';
             $mail->send();
 
-            $sql = "INSERT INTO user_acct (FirstName, MiddleName, LastName, Email, Password, PhoneNumber, Country, Province, CityCity, District, HouseNoStreet, ZipCode, VerificationCode, email_verified_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO user_acct (FirstName, MiddleName, LastName, Email, Password, PhoneNumber, Country, Province, CityCity, District, HouseNoStreet, ZipCode, VerificationCode, email_verified_at, AccountStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $query = $this->db->prepare($sql);
 
-            $insertParams = [&$FirstName, &$MiddleName, &$LastName, &$Email, &$Password, &$PhoneNumber, &$Country, &$Province, &$CityCity, &$District, &$HouseNoStreet, &$ZipCode, &$VerificationCode, &$email_verified_at];
+            $AccountStatus = "inactive"; // Set the AccountStatus to "inactive"
+            $insertParams = [&$FirstName, &$MiddleName, &$LastName, &$Email, &$Password, &$PhoneNumber, &$Country, &$Province, &$CityCity, &$District, &$HouseNoStreet, &$ZipCode, &$VerificationCode, &$email_verified_at, &$AccountStatus];
             $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
             $query->bind_param($paramTypes, ...$insertParams);
 
             $result = $query->execute();
 
+
+            // After successfully inserting the user's data into the database
             if ($result) {
-                echo "<script>alert('Registered Successfully, please proceed to the verification page'); </script>";
-                // window.location = '../Verify.php';
-                $query->close();
-                // After sending verification code, redirect to verification form
-                header('Location: ../Verify.php');
+                echo "<script>alert('Registered Successfully, please proceed to the verification page');</script>";
+                $email = $_POST['email'];
+                // Make sure $Email contains the user's email address
+                echo "Redirecting to verify.php with email: $email"; // Debug statement
+                header("Location: ../Verify.php?Email=" . $email);
                 exit();
             } else {
                 echo "<script>alert('Error in registration'); window.location = '../register.php';</script>";
@@ -139,22 +168,6 @@ class UserAuth
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }
-
-        // $sql = "INSERT INTO user_acct (FirstName, MiddleName, LastName, Email, Password, PhoneNumber, Country, Province, CityCity, District, HouseNoStreet, ZipCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        // $query = $this->db->prepare($sql);
-        // $insertParams = [&$FirstName, &$MiddleName, &$LastName, &$Email, &$Password, &$PhoneNumber, &$Country, &$Province, &$CityCity, &$District, &$HouseNoStreet, &$ZipCode];
-
-        // $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
-        // $query->bind_param($paramTypes, ...$insertParams);
-
-        // $result = $query->execute();
-
-        // if ($result) {
-        //     echo "<script>alert('Registered Successfully, please proceed to the login page'); window.location = '../index.php';</script>";
-        // } else {
-        //     echo "<script>alert('Error in registration'); window.location = '../register.php';</script>";
-        // }
-        // $query->close();
     }
 
     public function resetPassword($Email, $password)
