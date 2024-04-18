@@ -23,7 +23,7 @@ if ($result->num_rows > 0) {
 <title>Log in</title>
 
 <head>
-    <link rel="stylesheet" href="pagesCSS/reset.css">
+    <link rel="stylesheet" href="pagesCSS/ResetPassword.css">
     <style>
         body,
         html {
@@ -102,10 +102,20 @@ if ($result->num_rows > 0) {
                 <div class="ResBG">
                     <h1 class="ResText">Reset Password</h1>
                 </div>
-                <div class="resetInfo">
-                    <input class="LogInText" type="email" id="email" name="email" placeholder="Email" required>
-                </div>
-                <input class="SubmitButton" type="submit" id="send_code_reset" name="send_code_reset" value="Reset Password" required>
+                <input type="hidden" id="email" name="email" value="<?php echo isset($_GET['Email']) ? htmlspecialchars($_GET['Email']) : ''; ?>" required>
+                    <input class="PasswordText" type="password" id="password" name="password" placeholder="Password" minlength="8" required>
+                    <input class="PasswordText" type="password" id="confirmPassword" name="confirmPassword" placeholder="Retype password" minlength="8" required>
+                    <table  class="checkbox">
+                    <tr>
+                        <td>
+                            <label class="checkbox-label">
+                                <input class="ShowPass" type="checkbox" onclick="togglePasswordVisibility()">
+                                Show Password
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+                <input class="SubmitButton" type="submit" id="reset_password" name="reset_password" value="Reset Password" required>
             </form>
         </div>
     </center>

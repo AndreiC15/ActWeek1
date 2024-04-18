@@ -129,7 +129,7 @@ if ($result->num_rows > 0) {
                     <tr>
                     <center>
                         <label class="checkbox-label">
-                            <input class="ShowPass" type="checkbox" onclick="myFunction()">
+                            <input class="ShowPass" type="checkbox" onclick="togglePasswordVisibility()">
                             Show Password
                             </center>
                         </label>

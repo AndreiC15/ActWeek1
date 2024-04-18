@@ -53,5 +53,6 @@
 <b>18/04/24</b><br>
 -Responsive design fixes for register, login, and verify<br>
 -Implemented slideshwo background in verify page<br>
+-Reset password with verification code and responsive design on reset password pages.<br>
 
 # Import the logintest.sql to your PhpMyAdmin localhost<br>
