@@ -19,10 +19,12 @@ if ($result->num_rows > 0) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link rel="stylesheet" href="pagesCSS/StartupScreen.css">
     <style>
-        body, html {
+        body,
+        html {
             margin: 0;
             padding: 0;
             height: 100%;
@@ -40,16 +42,20 @@ if ($result->num_rows > 0) {
         #slideshow img {
             width: 100%;
             height: 100%;
-            opacity: 0; /* Set initial opacity to 0 */
+            opacity: 0;
+            /* Set initial opacity to 0 */
             position: absolute;
-            object-fit: cover; /* Ensure proper sizing without stretching */
+            object-fit: cover;
+            /* Ensure proper sizing without stretching */
             top: 0;
             left: 0;
-            transition: opacity 2s ease-in-out; /* Apply ease-in-out transition */
+            transition: opacity 2s ease-in-out;
+            /* Apply ease-in-out transition */
         }
 
         #slideshow img.active {
-            opacity: 1; /* Set opacity to 1 for active image */
+            opacity: 1;
+            /* Set opacity to 1 for active image */
         }
 
         .LeftBG {
@@ -60,7 +66,8 @@ if ($result->num_rows > 0) {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: rgba(0, 0, 0, 0.75); /* Black color with 50% opacity */
+            background-color: rgba(0, 0, 0, 0.75);
+            /* Black color with 50% opacity */
             color: white;
             padding: 5px;
             position: fixed;
@@ -73,11 +80,14 @@ if ($result->num_rows > 0) {
         .footer p {
             margin: 0;
         }
+
         .Angle1 {
             width: 0;
             height: 0;
-            border-top: calc(60vh - 100px) solid transparent; /* Adjust the height as needed */
-            border-left: calc(60vw - 100px) solid white; /* Adjust the color and width as needed */
+            border-top: calc(60vh - 100px) solid transparent;
+            /* Adjust the height as needed */
+            border-left: calc(60vw - 100px) solid white;
+            /* Adjust the color and width as needed */
             opacity: 0.85;
             position: fixed;
             bottom: 0;
@@ -87,8 +97,10 @@ if ($result->num_rows > 0) {
         .Angle2 {
             width: 0;
             height: 0;
-            border-bottom: calc(60vh - 100px) solid transparent; /* Adjust the height as needed */
-            border-right: calc(60vw - 100px) solid white; /* Adjust the color and width as needed */
+            border-bottom: calc(60vh - 100px) solid transparent;
+            /* Adjust the height as needed */
+            border-right: calc(60vw - 100px) solid white;
+            /* Adjust the color and width as needed */
             opacity: 0.85;
             position: fixed;
             top: 0;
@@ -96,10 +108,11 @@ if ($result->num_rows > 0) {
         }
     </style>
 </head>
+
 <body>
     <!-- Your HTML body content here -->
     <div id="slideshow">
-        <?php foreach ($imageUrls as $index => $imageUrl): ?>
+        <?php foreach ($imageUrls as $index => $imageUrl) : ?>
             <img src="<?php echo $imageUrl; ?>" alt="Slideshow Image" class="<?php echo $index === 0 ? 'active' : ''; ?>">
         <?php endforeach; ?>
     </div>
@@ -115,11 +128,21 @@ if ($result->num_rows > 0) {
                     <tr><input class="LogInText" type="email" id="email" name="email" placeholder="Email" required></tr></br>
                     <tr><input class="PasswordText" type="password" id="password" name="password" placeholder="Password" minlength="8" required></tr>
                 </table>
-                <input class="ShowPass" type="checkbox" onclick="myFunction()">Show Password
+                <table  class="checkbox">
+                    <tr>
+                        <td>
+                            <label class="checkbox-label">
+                                <input class="ShowPass" type="checkbox" onclick="myFunction()">
+                                Show Password
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+
                 <br>
                 <input class="SubmitButton" type="submit" id="login" name="login" value="Log In" required>
             </form>
-            <p>Forgot password? <a href="reset.php">Click here</a></br></br>Not registered yet? Sign up below</p>
+            <p class="ForgReg">Forgot password? <a href="reset.php">Click here</a></br></br>Not registered yet? Sign up below</p>
             <a href="register.php">
                 <div class="SignUpButton">
                     <p>Sign Up</p>
@@ -132,8 +155,8 @@ if ($result->num_rows > 0) {
     <div class="Angle2"></div>
 
     <div class="footer">
-        <p>The images used in this website are for project purposes only, no copyright infringement to its rightful owners</p>
-        <p style="margin-right:1%"><?php echo date("F j, Y"); ?></p>
+        <p class="footerText">The images used in this website are for project purposes only, no copyright infringement to its rightful owners</p>
+        <p  class="footerText" style="margin-right:1%"><?php echo date("F j, Y"); ?></p>
     </div>
 
     <script>
@@ -162,4 +185,5 @@ if ($result->num_rows > 0) {
         showSlides();
     </script>
 </body>
+
 </html>

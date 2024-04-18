@@ -1,0 +1,66 @@
+.verifyContainer {
+  width: 30%;
+  height: auto;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 24px;
+  position: absolute;
+  border-style: solid;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  align-content: center;
+  z-index: 1;
+  font-family: rockwell;
+  text-align: center;
+}
+.verificationInput {
+  text-align: center;
+  font-family: rockwell;
+  border-width: 2px;
+}
+.verificationSubmit {
+  border-radius: 10px;
+  text-align: center;
+  font-family: rockwell;
+  font-weight: bold;
+}
+@media screen and (max-width: 1080px) and (max-width: 2340px) and (orientation: portrait) {
+  .verifyContainer {
+    width: 50%;
+    font-size: 30px;
+  }
+  .verificationInput {
+    font-size: 30px;
+  }
+  .verificationSubmit {
+    width: 30%;
+    font-size: 30px;
+  }
+  .verificationInput {
+    width: 70%;
+  }
+  p {
+    width: 90%;
+  }
+}
+@media screen and (max-width: 768px) {
+  .verifyContainer {
+    width: 80%;
+    font-size: 30px;
+  }
+  .verificationInput {
+    font-size: 20px;
+  }
+  .verificationSubmit {
+    margin-top: -5%;
+    margin-bottom: -5%;
+    width: 30%;
+    font-size: 20px;
+  }
+  .verificationInput {
+    width: 70%;
+  }
+  P {
+    font-size: 20px;
+  }
+}

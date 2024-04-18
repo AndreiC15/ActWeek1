@@ -65,13 +65,16 @@
   font-family: rockwell;
   font-weight: bold;
 }
+.checkbox{
+  margin-top:2%;
+}
 
 .SubmitButton {
   width: 20%; /* Adjusted to fill the container */
   max-width: 250px; /* Set a maximum width */
   height: 30px;
   border-radius: 10px;
-  margin-top: 10px;
+  margin-top: -10%;
   text-align: center;
   font-family: rockwell;
   font-weight: bold;
@@ -100,9 +103,17 @@
 a {
   text-decoration: none;
 }
+.checkbox-label {
+  display: flex; /* Use flexbox for horizontal alignment */
+  align-items: center; /* Align items vertically center */
+}
+
+.ShowPass {
+  margin-right: 5px; /* Add some space between the checkbox and the text */
+}
 
 /* Media query for mobile devices */
-@media screen and (min-width: 1080px) and (max-width: 2340px) and (orientation: portrait) {
+@media screen and (max-width: 1080px) and (max-width: 2340px) and (orientation: portrait) {
   .LeftBG {
     width: 70%;
     height: auto;
@@ -110,23 +121,28 @@ a {
   .LogInText,
   .PasswordText {
     width: 100%; /* Adjusted to fill the container */
-    max-width: 250px; /* Set a maximum width */
-    font-size:x-large;
+    font-size:large;
   }
   .quote{
     font-size:x-large;
+  }
+  .checkbox-label {
+    font-size:large;
   }
   .ShowPass{
     font-size:x-large;
   }
   .SubmitButton{
-    font-size:x-large;
+    font-size:large;
+  }
+  .ForgReg{
+    font-size:larger;
   }
   p{
-    font-size:x-large;
+    font-size:large;
   }
-  .SignUpButton{
-    padding:10px;
+  .SignUpButton {
+    width: 20%;
   }
   .Angle1 {
     border-top: calc(60vh - 100px) solid transparent; /* Adjust the height as needed */
@@ -143,6 +159,27 @@ a {
   .LeftBG {
     width: 70%;
     height: auto;
+  }
+  .quote{
+    font-size:large;
+  }
+  .checkbox-label {
+    font-size:medium;
+  }
+  .ShowPass{
+    font-size:large;
+  }
+  .SubmitButton{
+    font-size:medium;
+  }
+  .ForgReg{
+    font-size:medium;
+  }
+  .footerText{
+    font-size:small;
+  }
+  .SignUpButton {
+    width: 30%;
   }
   .Angle1 {
     border-top: calc(80vh - 100px) solid transparent; /* Adjust the height as needed */

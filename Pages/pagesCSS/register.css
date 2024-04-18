@@ -84,18 +84,6 @@
   transform: skewX(140deg);
 }
 
-/* width: 30%;
-height: auto;
-background-color: white;
-border-radius: 24px;
-position: absolute;
-border-style: solid;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-align-content: center;
-z-index: 1; */
-
 .userInfoAddress {
   margin-top: -1%;
   display: flex;
@@ -122,31 +110,64 @@ z-index: 1; */
   font-family: rockwell;
   font-weight: bold;
 }
-.SubmitButton{
-  width:10%;
+.SubmitButton {
+  width: 10%;
   height: 30px;
   border-radius: 10px;
   margin-top: 10px;
   text-align: center;
   font-family: rockwell;
   font-weight: bold;
+  margin-top: 10px;
+  cursor: pointer;
 }
 
 .ShowPass {
   cursor: pointer;
 }
 
-.SubmitButton {
-  margin-top: 10px;
-  cursor: pointer;
+.checkbox-label {
+  display: flex;
+  align-items: center; /* Align items vertically center */
+  justify-content: center; /* Align items horizontally center */
+  margin-bottom: 1%;
+  font-size:large;
 }
 
-@media screen and (min-width: 1080px) and (max-width: 2340px) and (orientation: portrait) {
+.ShowPass {
+  margin-right: 5px; /* Add some space between the checkbox and the text */
+}
+
+@media screen and (max-width: 1080px) and (max-width: 2340px) and (orientation: portrait) {
+  .RegForm {
+    width: 80%;
+    height: 650px;
+  }
+  .LogInText,
+  .PasswordText,
+  .userInfoAddress input {
+    font-size: x-large;
+    height: 40px;
+  }
   .RegBG {
-    width:30%;
+    width: 40%;
+  }
+  .checkbox-label {
+    margin-bottom: 2%;
+    font-size:larger;
   }
   .AddBG {
-    width:25%;
+    width: 30%;
+  }
+  .SubmitButton {
+    margin-top: 3%;
+    width: 18%;
+    font-size: 20px;
+  }
+  p{
+    font-size:large;
+    margin-top:3%;
+    font-weight: bold;
   }
 }
 
@@ -158,12 +179,22 @@ z-index: 1; */
   .dividerTop {
     width: 89.5%;
   }
+  .LogInText,
+  .PasswordText,
+  .userInfoAddress input {
+    font-size: 14px;
+    height: 30px;
+  }
   .RegForm {
     width: 80%;
     height: auto;
   }
+  .checkbox-label {
+    margin-bottom:3%;
+    font-size:large;
+  }
   .RegBG {
-    width:50%;
+    width: 50%;
     padding-right: 10px;
     padding-left: 10px;
   }
@@ -174,5 +205,15 @@ z-index: 1; */
     width: 30%;
     padding-right: 10px;
     padding-left: 10px;
+  }
+  .SubmitButton {
+    width: 25%;
+    margin-top: 5%;
+    font-size: medium;
+  }
+  p{
+    font-size:medium;
+    margin-top:3%;
+    font-weight:normal;
   }
 }

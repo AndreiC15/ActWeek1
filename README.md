@@ -50,4 +50,8 @@
 -Send verification code via email for account activation<br>
 -Inactive & Active account status(Inactive account cant login)<br>
 
+<b>18/04/24</b><br>
+-Responsive design fixes for register, login, and verify<br>
+-Implemented slideshwo background in verify page<br>
+
 # Import the logintest.sql to your PhpMyAdmin localhost<br>

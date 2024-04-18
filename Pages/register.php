@@ -25,7 +25,8 @@ if ($result->num_rows > 0) {
     <link rel="stylesheet" href="pagesCSS/register.css">
     <link rel="stylesheet" href="pagesCSS/removeArrowinput.css">
     <style>
-        body, html {
+        body,
+        html {
             margin: 0;
             padding: 0;
             height: 100%;
@@ -36,8 +37,10 @@ if ($result->num_rows > 0) {
         #slideshow {
             position: relative;
             flex: 1;
-            height: 100vh; /* Cover entire viewport height */
-            z-index: 1; /* Ensure slideshow is behind other elements */
+            height: 100vh;
+            /* Cover entire viewport height */
+            z-index: 1;
+            /* Ensure slideshow is behind other elements */
         }
 
         #slideshow img {
@@ -87,18 +90,18 @@ if ($result->num_rows > 0) {
 
 <body>
 
-<div id="slideshow">
+    <div id="slideshow">
         <?php foreach ($imageUrls as $index => $imageUrl) : ?>
             <img src="<?php echo $imageUrl; ?>" alt="Slideshow Image" class="<?php echo $index === 0 ? 'active' : ''; ?>">
         <?php endforeach; ?>
     </div>
-   
+
     <center>
         <div class="RegForm">
             <div class="RegBG">
-            <h1 class="RegText">Registration</h1>
+                <h1 class="RegText">Registration</h1>
             </div>
-            
+
             <table class="userInfoo">
                 <form method="POST" action="./accountProcess/process.php">
                     <tr>
@@ -122,18 +125,19 @@ if ($result->num_rows > 0) {
                     <tr>
                         <input class="LogInText" type="text" id="phone_number" name="phone_number" placeholder="Phone Number" oninput="sanitizeNumericInput(event);" maxlength="11" required>
                     </tr>
-                </br></br>
+                    </br></br>
+                    <tr>
                     <center>
-                        <div class="ShowPassDiv">
-                            <input class="ShowPass" type="checkbox" onclick="togglePasswordVisibility()">Show Password
-                        </div></br>
-                    </center>
+                        <label class="checkbox-label">
+                            <input class="ShowPass" type="checkbox" onclick="myFunction()">
+                            Show Password
+                            </center>
+                        </label>
+                    </tr>
             </table>
 
-            <div class="dividerTop"></div>
-
             <div class="AddBG">
-            <h1 class="AddText">Address</h1>
+                <h1 class="AddText">Address</h1>
             </div>
             <div class="userInfoAddress">
                 <table class="userInfo">
