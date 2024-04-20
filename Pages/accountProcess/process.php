@@ -73,7 +73,41 @@ class UserAuth
             } else {
                 // Account is inactive
                 echo "<script>alert('Your account is not verified. You will be redirected now to verify your account.'); window.location = '../Verify.php?Email=" . urlencode($Email) . "';</script>";
-                exit;
+                
+                $mail = new PHPMailer(true);
+                //Server settings
+                try {
+                    $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+                    $mail->isSMTP();
+                    $mail->Host       = 'smtp.gmail.com';
+                    $mail->SMTPAuth   = true;
+                    $mail->Username   = 'calderon.optical.clinic@gmail.com';
+                    $mail->Password   = 'avuoeowvxfwgnjix';
+                    $mail->SMTPSecure = 'ssl';
+                    $mail->Port       = 465;
+                    //Recipients
+                    $mail->setFrom('calderon.optical.clinic@gmail.com', 'WallpaperStation');
+                    $mail->addAddress($Email);
+                    //Content
+                    $mail->isHTML(true);
+                    $VerificationCode = substr(number_format(time() * rand(), 0, '', ''), 0, 6);
+                    $mail->Subject = 'Verify your email.';
+                    $mail->Body = '<p style="font-size: 20px;">Good day! Your verification code is: <b style="font-size: 30px;">&nbsp;' . $VerificationCode . '&nbsp;</b> Thank you!</p>';
+                    $mail->send();
+    
+                    $sql = "UPDATE user_acct SET VerificationCode = ? WHERE Email = ?";
+                    $query = $this->db->prepare($sql);
+    
+                    $insertParams = [&$VerificationCode, &$Email];
+                    $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
+                    $query->bind_param($paramTypes, ...$insertParams);
+    
+                    $result = $query->execute();
+                    exit;
+                }catch (Exception $e) {
+                    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                }
+                
             }
         } else {
             // User not found

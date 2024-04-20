@@ -115,8 +115,6 @@ if ($databaseConnection->getConnection()) {
 </head>
 
 <body>
-
-
     <center>
         <div class="webIcon">
             <p class="webtitle">Wallpaper</p>
@@ -223,10 +221,6 @@ if ($databaseConnection->getConnection()) {
 
             ?>
         </fieldset>
-
-
-
-
         <nav class="main-menu">
             <ul>
                 <li>
@@ -250,12 +244,6 @@ if ($databaseConnection->getConnection()) {
                     <a href="settings.php">
                         <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/setting.png"></i>
                         <span class="nav-text">Account Settings</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="videocall.php">
-                        <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/webcamera.png"></i>
-                        <span class="nav-text">Video Call</span>
                     </a>
                 </li>
             </ul>

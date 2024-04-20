@@ -1,9 +1,11 @@
 <?php
 require_once 'accountProcess/connect.php';
+
 if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
     echo "<script>alert('You are already logged in, redirecting you to homepage now.'); window.location = 'homepage.php';</script>";
     exit();
 }
+
 // Fetch image URLs from the database
 $imageUrls = array(); // Initialize an empty array
 $sql = "SELECT WallpaperLocation FROM wallpaper"; // Adjust the SQL query according to your database schema
@@ -11,10 +13,12 @@ $result = $databaseConnection->getConnection()->query($sql);
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        // $imageUrls[] = $row['imageUrl'];
         $imageUrls[] = 'accountProcess/' . $row['WallpaperLocation'];
     }
 }
+
+// Shuffle the array to randomize the images
+shuffle($imageUrls);
 ?>
 
 <!DOCTYPE html>
@@ -49,13 +53,17 @@ if ($result->num_rows > 0) {
             /* Ensure proper sizing without stretching */
             top: 0;
             left: 0;
-            transition: opacity 2s ease-in-out;
-            /* Apply ease-in-out transition */
+            transform: scale(1);
+            /* Set initial scale */
+            transition: transform 2s ease-in-out, opacity 2s ease-in-out;
+            /* Apply ease-in-out transition for transform and opacity */
         }
 
         #slideshow img.active {
             opacity: 1;
             /* Set opacity to 1 for active image */
+            transform: scale(1.2);
+            /* Increase scale for active image */
         }
 
         .LeftBG {
@@ -117,6 +125,7 @@ if ($result->num_rows > 0) {
         <?php endforeach; ?>
     </div>
 
+
     <center>
         <div class="LeftBG">
             <center>
@@ -128,7 +137,7 @@ if ($result->num_rows > 0) {
                     <tr><input class="LogInText" type="email" id="email" name="email" placeholder="Email" required></tr></br>
                     <tr><input class="PasswordText" type="password" id="password" name="password" placeholder="Password" minlength="8" required></tr>
                 </table>
-                <table  class="checkbox">
+                <table class="checkbox">
                     <tr>
                         <td>
                             <label class="checkbox-label">
@@ -156,7 +165,7 @@ if ($result->num_rows > 0) {
 
     <div class="footer">
         <p class="footerText">The images used in this website are for project purposes only, no copyright infringement to its rightful owners</p>
-        <p  class="footerText" style="margin-right:1%"><?php echo date("F j, Y"); ?></p>
+        <p class="footerText" style="margin-right:1%"><?php echo date("F j, Y"); ?></p>
     </div>
 
     <script>

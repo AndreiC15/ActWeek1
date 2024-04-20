@@ -119,11 +119,10 @@ if ($databaseConnection->getConnection()) {
     <div class="navBarTop">
         <h1>Dashboard</h1>
     </div>
-
+    <center>
     <div class="area"></div>
     <nav class="main-menu">
-        <ul>
-            <center>
+            <ul>
                 <li>
                     <i class="fa fa-info fa-2x"><img class="navSideIconLogo" src="testImages/icon.png"></i>
                     <span class="nav-text">WallpaperStation</span>
@@ -147,30 +146,22 @@ if ($databaseConnection->getConnection()) {
                         <span class="nav-text">Account Settings</span>
                     </a>
                 </li>
+            </ul>
+            <ul class="logout">
                 <li>
-                    <a href="videocall.php">
-                        <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/webcamera.png"></i>
-                        <span class="nav-text">Video Call</span>
+                    <a href="#">
+                        <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/shutdown.png"></i>
+                        <span class="nav-text">
+                            <div class="LogoutButton">
+                                <form method="POST" action="./accountProcess/process.php">
+                                    <input style="width: 100%; max-width: 100px; height: 30px; background-color: red; border-radius: 50px; color: white;cursor: pointer;" type="submit" id="logout" name="logout" value="Logout">
+                                </form>
+                            </div>
+                        </span>
                     </a>
                 </li>
-            </center>
-        </ul>
-        <ul class="logout">
-            <li>
-                <center>
-                    <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/shutdown.png"></i>
-                    <span class="nav-text">
-                        <div class="LogoutButton">
-                            <form method="POST" action="./accountProcess/process.php">
-                                <input style="width: 100%; max-width: 100px; height: 30px; background-color: red; border-radius: 50px; color: white;cursor: pointer;" type="submit" id="logout" name="logout" value="Logout">
-                            </form>
-                        </div>
-                    </span>
-                </center>
-                </a>
-            </li>
-        </ul>
-    </nav>
+            </ul>
+        </nav>
     <center>
         <a href="uploadWallpaper.php">
             <input style="font-size:15px" class="uploadContainer" type="button" value="Upload Wallpaper">

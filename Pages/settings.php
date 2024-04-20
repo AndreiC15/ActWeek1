@@ -70,26 +70,20 @@ if ($databaseConnection->getConnection()) {
                 <li>
                     <i class="fa fa-info fa-2x"><img class="navSideIconLogo" src="testImages/icon.png"></i>
                     <span class="nav-text">WallpaperStation</span>
-                    </a>
                 </li>
-            </ul>
-            <ul>
+                <!-- Add your other menu items here -->
                 <li>
                     <a href="homepage.php">
                         <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/home.png"></i>
                         <span class="nav-text">Home</span>
                     </a>
                 </li>
-            </ul>
-            <ul>
                 <li>
                     <a href="dashboard.php">
                         <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/dashboard.png"></i>
                         <span class="nav-text">Dashboard</span>
                     </a>
                 </li>
-            </ul>
-            <ul>
                 <li>
                     <a href="settings.php">
                         <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/setting.png"></i>
@@ -97,15 +91,6 @@ if ($databaseConnection->getConnection()) {
                     </a>
                 </li>
             </ul>
-            <ul>
-                <li>
-                    <a href="videocall.php">
-                        <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/webcamera.png"></i>
-                        <span class="nav-text">Video Call</span>
-                    </a>
-                </li>
-            </ul>
-
             <ul class="logout">
                 <li>
                     <a href="#">
@@ -282,7 +267,6 @@ if ($databaseConnection->getConnection()) {
                 </table>
                 <input class="editBtn" type="submit" id="update_profile" name="update_profile" value="Save Changes">
                 </form>
-                <button id="redirectToWebcamBtn" onclick="redirectToWebcam()">Go to Webcam</button>  
             </div>
         </center>
     </div>

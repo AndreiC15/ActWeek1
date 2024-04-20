@@ -13,10 +13,12 @@ $result = $databaseConnection->getConnection()->query($sql);
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        // $imageUrls[] = $row['imageUrl'];
         $imageUrls[] = 'accountProcess/' . $row['WallpaperLocation'];
     }
 }
+
+// Shuffle the array to randomize the images
+shuffle($imageUrls);
 ?>
 
 <html>
@@ -30,32 +32,61 @@ if ($result->num_rows > 0) {
             margin: 0;
             padding: 0;
             height: 100%;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
         }
 
         #slideshow {
-            position: relative;
             flex: 1;
-            height: 100vh;
-            /* Cover entire viewport height */
-            z-index: 1;
-            /* Ensure slideshow is behind other elements */
+            height: 100%;
+            position: relative;
         }
 
         #slideshow img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            opacity: 0;
+            /* Set initial opacity to 0 */
             position: absolute;
+            object-fit: cover;
+            /* Ensure proper sizing without stretching */
             top: 0;
             left: 0;
-            opacity: 0;
-            transition: opacity 2s ease-in-out;
+            transform: scale(1);
+            /* Set initial scale */
+            transition: transform 2s ease-in-out, opacity 2s ease-in-out;
+            /* Apply ease-in-out transition for transform and opacity */
         }
 
         #slideshow img.active {
             opacity: 1;
+            /* Set opacity to 1 for active image */
+            transform: scale(1.2);
+            /* Increase scale for active image */
+        }
+
+        .LeftBG {
+            flex-grow: 1;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.75);
+            /* Black color with 50% opacity */
+            color: white;
+            padding: 5px;
+            position: fixed;
+            bottom: 0;
+            font-size: 12px;
+            left: 0;
+            width: 100%;
+        }
+
+        .footer p {
+            margin: 0;
         }
 
         .Angle1 {
@@ -128,6 +159,19 @@ if ($result->num_rows > 0) {
                 confirmPassword.type = "password";
             }
         }
+        var slideshowIndex = 0;
+        var slideshowImages = <?php echo json_encode($imageUrls); ?>;
+        var images = document.querySelectorAll('#slideshow img');
+
+        function showSlides() {
+            images[slideshowIndex].classList.remove('active');
+            slideshowIndex = (slideshowIndex + 1) % images.length;
+            images[slideshowIndex].classList.add('active');
+            setTimeout(showSlides, 5000); // Change image every 5 seconds
+        }
+
+        // Start the slideshow when the page loads
+        showSlides();
     </script>
 </body>
 
