@@ -51,6 +51,8 @@ if ($databaseConnection->getConnection()) {
 } else {
     echo "Error: Database connection not established.";
 }
+
+
 ?>
 
 <head>
@@ -135,6 +137,7 @@ if ($databaseConnection->getConnection()) {
             <table>
                 <form method="POST" action="./accountProcess/process.php" enctype="multipart/form-data">
                     <center>
+                        <input type="hidden" id="email" name="email" value="<?php echo $userData['Email']; ?> ">
                         <tr>
                             </br>
                             <td>Title:</td>

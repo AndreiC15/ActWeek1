@@ -73,7 +73,7 @@ class UserAuth
             } else {
                 // Account is inactive
                 echo "<script>alert('Your account is not verified. You will be redirected now to verify your account.'); window.location = '../Verify.php?Email=" . urlencode($Email) . "';</script>";
-                
+
                 $mail = new PHPMailer(true);
                 //Server settings
                 try {
@@ -94,20 +94,19 @@ class UserAuth
                     $mail->Subject = 'Verify your email.';
                     $mail->Body = '<p style="font-size: 20px;">Good day! Your verification code is: <b style="font-size: 30px;">&nbsp;' . $VerificationCode . '&nbsp;</b> Thank you!</p>';
                     $mail->send();
-    
+
                     $sql = "UPDATE user_acct SET VerificationCode = ? WHERE Email = ?";
                     $query = $this->db->prepare($sql);
-    
+
                     $insertParams = [&$VerificationCode, &$Email];
                     $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
                     $query->bind_param($paramTypes, ...$insertParams);
-    
+
                     $result = $query->execute();
                     exit;
-                }catch (Exception $e) {
+                } catch (Exception $e) {
                     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
                 }
-                
             }
         } else {
             // User not found
@@ -440,7 +439,7 @@ class UserAuth
 
     // Inside the addWallpaper method in the UserAuth class
 
-    public function addWallpaper($WallpaperID, $Title, $WallpaperLocation)
+    public function addWallpaper($WallpaperID, $Uploader, $Title, $WallpaperLocation)
     {
         $allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
 
@@ -458,10 +457,10 @@ class UserAuth
         $WallpaperLocation = "upload/" . $wallpaper['name'];
         move_uploaded_file($wallpaper_temp, $WallpaperLocation);
 
-        $sql = "INSERT INTO wallpaper (WallpaperID, Title, WallpaperLocation) VALUES ('', ?, ?)";
+        $sql = "INSERT INTO wallpaper (WallpaperID, Uploader, Title, WallpaperLocation) VALUES ('',?, ?, ?)";
         $query = $this->db->prepare($sql);
 
-        $insertParams = [&$Title, &$WallpaperLocation]; // Removed &$WallpaperID
+        $insertParams = [&$Uploader, &$Title, &$WallpaperLocation]; // Include UploaderEmail as the first parameter
 
         // Bind parameters using foreach loop
         $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
@@ -644,14 +643,20 @@ if ($databaseConnection->getConnection()) {
         $userAuth->removeProfilePicture($id);
     }
 
-    if (isset($_POST['add_wallpaper'])) {
-        $id = $_SESSION['id'];
-        $userAuth->addWallpaper(
-            $id,
-            $_POST['title'],
-            $_FILES['new_wallpaper']
-        );
-    }
+    
+
+// Check if the add_wallpaper form was submitted
+if (isset($_POST['add_wallpaper'])) {
+    $email = $_POST['email'];
+    $id = $_SESSION['id'];
+    $userAuth->addWallpaper(
+        $id,
+        $email,
+        $_POST['title'],
+        $_FILES['new_wallpaper'],
+         // Pass the email to the addWallpaper method
+    );
+}
 
     if (isset($_POST['edit_wallpaper'])) {
         $id = $_SESSION['id'];

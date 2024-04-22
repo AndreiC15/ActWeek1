@@ -127,19 +127,25 @@ if ($databaseConnection->getConnection()) {
             <h2>Popular HD Wallpaper</h2>
 
             <!-- Dropdown menu for sorting -->
-            <form id="sortForm" method="GET" action="homepage.php">
-                <select name="sort" onchange="document.getElementById('sortForm').submit()">
-                    <option value="latest" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'latest') echo 'selected'; ?>>Sort by Latest</option>
-                    <option value="oldest" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'oldest') echo 'selected'; ?>>Sort by Oldest</option>
-                    <option value="title" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'title') echo 'selected'; ?>>Sort by Title</option>
-                </select>
-            </form>
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 95%; margin-top: 2%;">
 
-            <!-- Search form -->
-            <form id="searchForm" method="GET" action="homepage.php">
-                <input type="text" name="search" placeholder="Search by title" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-                <button type="submit">Search</button>
-            </form>
+                <!-- Search form -->
+                <form id="searchForm" method="GET" action="" style="background-color: #f0f0f0; padding: 8px; border-radius: 5px;">
+                    <input type="text" name="search" placeholder="Search by title" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" style="border: none; outline: none; background-color: #f0f0f0; font-size: 14px;">
+                    <button type="submit" style="background-color: #4CAF50; color: white; border: none; outline: none; padding: 6px 12px; border-radius: 5px; cursor: pointer;">Search</button>
+                </form>
+
+                <!-- Sort options -->
+                <form id="sortForm" method="GET" action="homepage.php" style="background-color: #f0f0f0; padding: 8px; border-radius: 5px;">
+                    <select name="sort" onchange="document.getElementById('sortForm').submit()" style="border: none; outline: none; background-color: #f0f0f0; font-size: 14px;">
+                        <option value="latest" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'latest') echo 'selected'; ?>>Sort by Latest</option>
+                        <option value="oldest" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'oldest') echo 'selected'; ?>>Sort by Oldest</option>
+                        <option value="title" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'title') echo 'selected'; ?>>Sort by Title</option>
+                    </select>
+                </form>
+            </div>
+
+
 
             <?php
             $limit = 6; // Number of wallpapers to display per page
@@ -214,7 +220,7 @@ if ($databaseConnection->getConnection()) {
                     echo '</center>';
                 }
             } else {
-                echo '<div style="text-align: center; padding: 5px; background-color: #f0f0f0; border: 1px solid #ccc; width:50%">';
+                echo '<div style="text-align: center; padding: 5px; background-color: #f0f0f0; border: 1px solid #ccc; width:50%; margin-top: 10vh;">';
                 echo '<p style="font-size: 18px; color: #333;margin-left:-1%">No uploaded wallpapers&#128531</p>';
                 echo '</div>';
             }
