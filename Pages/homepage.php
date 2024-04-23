@@ -163,7 +163,7 @@ if ($databaseConnection->getConnection()) {
 
 
             <?php
-            $limit = 6; // Number of wallpapers to display per page
+            $limit = 9; // Number of wallpapers to display per page
 
             // Calculate the offset based on the current page
             $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
