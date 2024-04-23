@@ -64,7 +64,10 @@ if ($databaseConnection->getConnection()) {
         $order = ($sort === 'oldest') ? 'ASC' : 'DESC';
 
         // Adjust order for sorting by ID
-        if ($sort === 'latest') {
+        // Adjust order for sorting by download count
+        if ($sort === 'downloads') {
+            $orderBy = 'DownloadCount DESC'; // Sort by download count, highest to lowest
+        } elseif ($sort === 'latest') {
             $orderBy = 'WallpaperID DESC'; // Biggest ID number first
         } elseif ($sort === 'oldest') {
             $orderBy = 'WallpaperID ASC'; // Smallest ID number first
@@ -72,12 +75,15 @@ if ($databaseConnection->getConnection()) {
             $orderBy = 'Title ASC'; // Sort titles alphabetically from A to Z
         }
 
+
         // Search query
         $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
         $searchCondition = !empty($searchQuery) ? "AND Title LIKE '%$searchQuery%'" : '';
 
         // SQL query with search condition and pagination
-        $sql = "SELECT WallpaperID, Title, WallpaperLocation FROM wallpaper WHERE Uploader = ? $searchCondition ORDER BY $orderBy LIMIT $offset, $limit";
+        $sql = "SELECT WallpaperID, Title, WallpaperLocation, DownloadCount FROM wallpaper WHERE Uploader = ? $searchCondition ORDER BY $orderBy LIMIT $offset, $limit";
+        // SQL query with search condition
+
         $query = $databaseConnection->getConnection()->prepare($sql);
         $query->bind_param('s', $userData['Email']);
         $query->execute();
@@ -176,7 +182,7 @@ if ($databaseConnection->getConnection()) {
 <body>
 
     <div class="navBarTop">
-    <h1 class="userName"><?php echo $userData['FirstName']; ?>'s</h1>
+        <h1 class="userName"><?php echo $userData['FirstName']; ?>'s</h1>
         <h1>&nbsp;&nbsp;Dashboard</h1>
     </div>
     <center>
@@ -198,13 +204,16 @@ if ($databaseConnection->getConnection()) {
                     </form>
 
                     <!-- Sort options -->
-                    <form id="sortForm" method="GET" action="homepage.php" style="background-color: #f0f0f0; padding: 8px; border-radius: 5px;">
+                    <!-- Sort options -->
+                    <form id="sortForm" method="GET" action="dashboard.php" style="background-color: #f0f0f0; padding: 8px; border-radius: 5px;">
                         <select name="sort" onchange="document.getElementById('sortForm').submit()" style="border: none; outline: none; background-color: #f0f0f0; font-size: 14px;">
                             <option value="latest" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'latest') echo 'selected'; ?>>Sort by Latest</option>
                             <option value="oldest" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'oldest') echo 'selected'; ?>>Sort by Oldest</option>
                             <option value="title" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'title') echo 'selected'; ?>>Sort by Title</option>
+                            <option value="downloads" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'downloads') echo 'selected'; ?>>Sort by Downloads</option>
                         </select>
                     </form>
+
                 </div>
                 <?php
                 if ($result->num_rows >= 1) {
@@ -216,11 +225,11 @@ if ($databaseConnection->getConnection()) {
                             echo '<li class="image-item">';
                             echo '<div class="image-container">';
                             echo '<img style="width:400px;height:230px;object-fit:cover " src="' . $imagePath . '" alt="' . htmlspecialchars($row['Title']) . '">';
-
                             // Updated form to include an anchor tag for "Edit" functionality
                             echo '<form method="post" action="./accountProcess/process.php">';
                             echo '<input type="hidden" name="WallpaperID" value="' . $row['WallpaperID'] . '">';
                             echo '<p style="color: white;">' . $row['Title'] . '</p>';
+                            echo '<p style="color: white;font-size:12px;margin-top:-1%" id="downloadCount_' . $row['WallpaperID'] . '">Downloaded: ' . (int)$row['DownloadCount'] . ' times</p>';
                             echo '<table>';
                             echo '<tr>';
                             echo '<td><a class="editBtn" href="editWallpaper.php?WallpaperID=' . $row['WallpaperID'] . '">Edit</a><td>';

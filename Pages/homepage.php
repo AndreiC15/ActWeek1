@@ -31,6 +31,18 @@ class UserProfile
             die();
         }
     }
+
+    public function incrementDownloadCount($wallpaperID)
+    {
+        try {
+            $stmt = $this->db->getConnection()->prepare("UPDATE wallpaper SET DownloadCount = DownloadCount + 1 WHERE WallpaperID = ?");
+            $stmt->bind_param('i', $wallpaperID);
+            $stmt->execute();
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            die();
+        }
+    }
 }
 
 // Check if the database connection is established
@@ -136,13 +148,16 @@ if ($databaseConnection->getConnection()) {
                 </form>
 
                 <!-- Sort options -->
+                <!-- Sort options -->
                 <form id="sortForm" method="GET" action="homepage.php" style="background-color: #f0f0f0; padding: 8px; border-radius: 5px;">
                     <select name="sort" onchange="document.getElementById('sortForm').submit()" style="border: none; outline: none; background-color: #f0f0f0; font-size: 14px;">
                         <option value="latest" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'latest') echo 'selected'; ?>>Sort by Latest</option>
                         <option value="oldest" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'oldest') echo 'selected'; ?>>Sort by Oldest</option>
                         <option value="title" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'title') echo 'selected'; ?>>Sort by Title</option>
+                        <option value="downloads" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'downloads') echo 'selected'; ?>>Sort by Downloads</option>
                     </select>
                 </form>
+
             </div>
 
 
@@ -163,7 +178,10 @@ if ($databaseConnection->getConnection()) {
             $order = ($sort === 'oldest') ? 'ASC' : 'DESC';
 
             // Adjust order for sorting by ID
-            if ($sort === 'latest') {
+            // Adjust order for sorting by download count
+            if ($sort === 'downloads') {
+                $orderBy = 'DownloadCount DESC'; // Sort by download count, highest to lowest
+            } elseif ($sort === 'latest') {
                 $orderBy = 'WallpaperID DESC'; // Biggest ID number first
             } elseif ($sort === 'oldest') {
                 $orderBy = 'WallpaperID ASC'; // Smallest ID number first
@@ -176,7 +194,8 @@ if ($databaseConnection->getConnection()) {
             $searchCondition = !empty($searchQuery) ? "WHERE Title LIKE '%$searchQuery%'" : '';
 
             // SQL query with search condition
-            $sql = "SELECT WallpaperID, Title, WallpaperLocation FROM wallpaper $searchCondition ORDER BY $orderBy LIMIT $offset, $limit";
+            // SQL query with search condition
+            $sql = "SELECT WallpaperID, Uploader, Title, WallpaperLocation, DownloadCount FROM wallpaper $searchCondition ORDER BY $orderBy LIMIT $offset, $limit";
             $result = $databaseConnection->getConnection()->query($sql);
 
             // Check if there are no wallpapers
@@ -191,9 +210,13 @@ if ($databaseConnection->getConnection()) {
                         echo '<img style="width:400px;height:230px;object-fit:cover " src="' . $imagePath . '" alt="' . htmlspecialchars($row['Title']) . '">';
                         echo '<p style="color: white;text-transform: capitalize;">' . $row['Title'] . '</p>';
                         echo '</div>';
+                        // Assuming $row['Uploader'] contains the email address
+                        $Uploader = explode('@', $row['Uploader'])[0];
+                        echo '<p style="color: white;font-size:12px;margin-top:-3%">Uploaded by: ' . $Uploader . '</p>';
+                        echo '<p style="color: white;font-size:12px;margin-top:-1%" id="downloadCount_' . $row['WallpaperID'] . '">Downloaded: ' . (int)$row['DownloadCount'] . ' times</p>';
                         echo '<div class="dl_Btn">';
-                        echo '<a style="display:flex;padding-left:5px;padding-right:5px; font-family:arial;" href="' . $imagePath . '" download="' . htmlspecialchars($row['Title']) . '">
-    <img style="padding-right:5px" src="testImages/download.png" width="20" height="20"> Download</a>';
+                        echo '<a style="display:flex;padding-left:5px;padding-right:5px; font-family:arial;" href="download.php?WallpaperID=' . $row['WallpaperID'] . '" onclick="downloadImage(' . $row['WallpaperID'] . ')">';
+                        echo '<img style="padding-right:5px" src="testImages/download.png" width="20" height="20"> Download</a>';
                         echo '</div>';
                         echo '</li>';
                     } else {
@@ -269,26 +292,8 @@ if ($databaseConnection->getConnection()) {
             </ul>
         </nav>
 
-
         <script>
-            var offset = <?php echo $currentPage * $limit; ?>;
 
-            function showMore() {
-                var xhr = new XMLHttpRequest();
-                var spinner = document.getElementById("loadingSpinner");
-
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        document.getElementById("wallpaperList").innerHTML += xhr.responseText;
-                        offset += <?php echo $limit; ?>;
-                        spinner.style.display = "none";
-                    }
-                };
-
-                spinner.style.display = "block";
-                xhr.open("GET", "load_more.php?page=<?php echo $currentPage + 1; ?>", true);
-                xhr.send();
-            }
         </script>
 </body>
 
