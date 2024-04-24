@@ -150,12 +150,14 @@ if ($databaseConnection->getConnection()) {
                 <!-- Sort options -->
                 <!-- Sort options -->
                 <form id="sortForm" method="GET" action="homepage.php" style="background-color: #f0f0f0; padding: 8px; border-radius: 5px;">
-                    <select name="sort" onchange="document.getElementById('sortForm').submit()" style="border: none; outline: none; background-color: #f0f0f0; font-size: 14px;">
-                        <option value="latest" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'latest') echo 'selected'; ?>>Sort by Latest</option>
-                        <option value="oldest" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'oldest') echo 'selected'; ?>>Sort by Oldest</option>
-                        <option value="title" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'title') echo 'selected'; ?>>Sort by Title</option>
-                        <option value="downloads" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'downloads') echo 'selected'; ?>>Sort by Downloads</option>
-                    </select>
+                <select name="sort" onchange="document.getElementById('sortForm').submit()" style="border: none; outline: none; background-color: #f0f0f0; font-size: 14px;">
+                            <option value="latest" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'latest') echo 'selected'; ?>>Latest</option>
+                            <option value="oldest" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'oldest') echo 'selected'; ?>>Oldest</option>
+                            <option value="title" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'title') echo 'selected'; ?>>Title (A-Z)</option>
+                            <option value="title_desc" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'title_desc') echo 'selected'; ?>>Title (Z-A)</option>
+                            <option value="downloads" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'downloads') echo 'selected'; ?>>Most Downloaded</option>
+                            <option value="least_downloaded" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'least_downloaded') echo 'selected'; ?>>Least Downloaded</option>
+                        </select>
                 </form>
 
             </div>
@@ -174,20 +176,17 @@ if ($databaseConnection->getConnection()) {
             $totalResult = $databaseConnection->getConnection()->query($countQuery);
             $totalWallpapers = $totalResult->fetch_assoc()['total'];
 
-            $sort = isset($_GET['sort']) ? $_GET['sort'] : 'latest';
-            $order = ($sort === 'oldest') ? 'ASC' : 'DESC';
-
-            // Adjust order for sorting by ID
-            // Adjust order for sorting by download count
-            if ($sort === 'downloads') {
-                $orderBy = 'DownloadCount DESC'; // Sort by download count, highest to lowest
-            } elseif ($sort === 'latest') {
-                $orderBy = 'WallpaperID DESC'; // Biggest ID number first
-            } elseif ($sort === 'oldest') {
-                $orderBy = 'WallpaperID ASC'; // Smallest ID number first
-            } elseif ($sort === 'title') {
-                $orderBy = 'Title ASC'; // Sort titles alphabetically from A to Z
-            }
+            $sortOptions = [
+                'latest' => 'WallpaperID DESC',
+                'oldest' => 'WallpaperID ASC',
+                'title' => 'Title ASC',
+                'title_desc' => 'Title DESC',
+                'downloads' => 'DownloadCount DESC',
+                'least_downloaded' => 'DownloadCount ASC'
+            ];
+        
+            $sort = isset($_GET['sort']) && isset($sortOptions[$_GET['sort']]) ? $_GET['sort'] : 'latest';
+            $orderBy = $sortOptions[$sort];
 
             // Search query
             $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';

@@ -55,4 +55,7 @@
 -Implemented slideshwo background in verify page<br>
 -Reset password with verification code and responsive design on reset password pages.<br>
 
+<b>24/04/24</b><br>
+-Total uploaded images count, delete all user-uploaded images, sort images by title (Z-A), and sort by least downloads.<br>
+
 # Import the logintest.sql to your PhpMyAdmin localhost<br>

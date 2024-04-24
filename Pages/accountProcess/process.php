@@ -566,6 +566,26 @@ class UserAuth
         }
     }
 
+    public function deleteAllWallpapers($Uploader)
+{
+    // Delete wallpapers uploaded by the current user (based on their email)
+    $sql = "DELETE FROM wallpaper WHERE Uploader = ?";
+
+    $query = $this->db->prepare($sql);
+    $query->bind_param('s', $Uploader);
+    $result = $query->execute();
+
+    if ($result) {
+        echo "<script>alert('Wallpapers deleted successfully.'); window.location = '../dashboard.php';</script>";
+        exit();
+    } else {
+        echo "<script>alert('Failed to delete wallpapers.'); window.location = 'dashboard.php';</script>";
+        exit();
+    }
+}
+
+
+
     public function logout()
     {
         echo "<script>alert('Logout Successful'); window.location = '../index.php';</script>";
@@ -643,20 +663,20 @@ if ($databaseConnection->getConnection()) {
         $userAuth->removeProfilePicture($id);
     }
 
-    
 
-// Check if the add_wallpaper form was submitted
-if (isset($_POST['add_wallpaper'])) {
-    $email = $_POST['email'];
-    $id = $_SESSION['id'];
-    $userAuth->addWallpaper(
-        $id,
-        $email,
-        $_POST['title'],
-        $_FILES['new_wallpaper'],
-         // Pass the email to the addWallpaper method
-    );
-}
+
+    // Check if the add_wallpaper form was submitted
+    if (isset($_POST['add_wallpaper'])) {
+        $email = $_POST['email'];
+        $id = $_SESSION['id'];
+        $userAuth->addWallpaper(
+            $id,
+            $email,
+            $_POST['title'],
+            $_FILES['new_wallpaper'],
+            // Pass the email to the addWallpaper method
+        );
+    }
 
     if (isset($_POST['edit_wallpaper'])) {
         $id = $_SESSION['id'];
@@ -667,7 +687,12 @@ if (isset($_POST['add_wallpaper'])) {
         );
     }
 
-
+    if (isset($_POST['delete_all_wallpaper'])) {
+        // Assuming the email is stored in the session
+        $Uploader = $_SESSION['Email']; // Assuming email is stored in the 'Email' session key
+        $userAuth->deleteAllWallpapers($Uploader);
+    }
+    
     if (isset($_POST['delete_wallpaper'])) {
         $WallpaperIdToDelete = $_POST['WallpaperID'];
         $userAuth->deleteWallpaper($WallpaperIdToDelete);
