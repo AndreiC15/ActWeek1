@@ -94,11 +94,16 @@ if ($databaseConnection->getConnection()) {
         }
 
         .dl_Btn {
+            position: absolute;
+            bottom: 2%;
+            right: 2%;
             width: fit-content;
-            height: 20px;
+            height: fit-content;
             padding: 5px;
             background-color: white;
-            border-radius: 50px;
+            border-radius: 5px;
+            border-style: solid;
+            border-width: 2px;
             color: black;
             cursor: pointer;
             text-decoration: none;
@@ -123,6 +128,44 @@ if ($databaseConnection->getConnection()) {
             background-color: #4CAF50;
             color: white;
         }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            /* Ensure modal appears above other content */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            /* Semi-transparent black background */
+        }
+
+        .modal-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .modal-img {
+            max-width: 85%;
+            max-height: 85%;
+            object-fit: contain;
+            margin-top:-2%;
+            /* Ensure the image fits within the modal */
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -139,7 +182,7 @@ if ($databaseConnection->getConnection()) {
             <h2>Popular HD Wallpaper</h2>
 
             <!-- Dropdown menu for sorting -->
-            <div style="display: flex; justify-content: space-between; align-items: center; width: 95%; margin-top: 2%;">
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 2%;">
 
                 <!-- Search form -->
                 <form id="searchForm" method="GET" action="" style="background-color: #f0f0f0; padding: 8px; border-radius: 5px;">
@@ -150,14 +193,14 @@ if ($databaseConnection->getConnection()) {
                 <!-- Sort options -->
                 <!-- Sort options -->
                 <form id="sortForm" method="GET" action="homepage.php" style="background-color: #f0f0f0; padding: 8px; border-radius: 5px;">
-                <select name="sort" onchange="document.getElementById('sortForm').submit()" style="border: none; outline: none; background-color: #f0f0f0; font-size: 14px;">
-                            <option value="latest" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'latest') echo 'selected'; ?>>Latest</option>
-                            <option value="oldest" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'oldest') echo 'selected'; ?>>Oldest</option>
-                            <option value="title" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'title') echo 'selected'; ?>>Title (A-Z)</option>
-                            <option value="title_desc" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'title_desc') echo 'selected'; ?>>Title (Z-A)</option>
-                            <option value="downloads" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'downloads') echo 'selected'; ?>>Most Downloaded</option>
-                            <option value="least_downloaded" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'least_downloaded') echo 'selected'; ?>>Least Downloaded</option>
-                        </select>
+                    <select name="sort" onchange="document.getElementById('sortForm').submit()" style="border: none; outline: none; background-color: #f0f0f0; font-size: 14px;">
+                        <option value="latest" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'latest') echo 'selected'; ?>>Latest</option>
+                        <option value="oldest" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'oldest') echo 'selected'; ?>>Oldest</option>
+                        <option value="title" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'title') echo 'selected'; ?>>Title (A-Z)</option>
+                        <option value="title_desc" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'title_desc') echo 'selected'; ?>>Title (Z-A)</option>
+                        <option value="downloads" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'downloads') echo 'selected'; ?>>Most Downloaded</option>
+                        <option value="least_downloaded" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'least_downloaded') echo 'selected'; ?>>Least Downloaded</option>
+                    </select>
                 </form>
 
             </div>
@@ -184,7 +227,7 @@ if ($databaseConnection->getConnection()) {
                 'downloads' => 'DownloadCount DESC',
                 'least_downloaded' => 'DownloadCount ASC'
             ];
-        
+
             $sort = isset($_GET['sort']) && isset($sortOptions[$_GET['sort']]) ? $_GET['sort'] : 'latest';
             $orderBy = $sortOptions[$sort];
 
@@ -206,17 +249,19 @@ if ($databaseConnection->getConnection()) {
                     if (file_exists($imagePath)) {
                         echo '<li class="image-item">';
                         echo '<div class="image-container">';
-                        echo '<img style="width:400px;height:230px;object-fit:cover " src="' . $imagePath . '" alt="' . htmlspecialchars($row['Title']) . '">';
-                        echo '<p style="color: white;text-transform: capitalize;">' . $row['Title'] . '</p>';
-                        echo '</div>';
-                        // Assuming $row['Uploader'] contains the email address
-                        $Uploader = explode('@', $row['Uploader'])[0];
-                        echo '<p style="color: white;font-size:12px;margin-top:-3%">Uploaded by: ' . $Uploader . '</p>';
-                        echo '<p style="color: white;font-size:12px;margin-top:-1%" id="downloadCount_' . $row['WallpaperID'] . '">Downloaded: ' . (int)$row['DownloadCount'] . ' times</p>';
                         echo '<div class="dl_Btn">';
                         echo '<a style="display:flex;padding-left:5px;padding-right:5px; font-family:arial;" href="download.php?WallpaperID=' . $row['WallpaperID'] . '" onclick="downloadImage(' . $row['WallpaperID'] . ')">';
-                        echo '<img style="padding-right:5px" src="testImages/download.png" width="20" height="20"> Download</a>';
+                        echo '<img style="width:20px; height:20px" src="testImages/download.png" ></a>';
                         echo '</div>';
+                        // Pass the image path and title to the openModal function
+                        echo '<img style="width:400px;height:230px;object-fit:cover " src="' . $imagePath . '" alt="' . htmlspecialchars($row['Title']) . '" onclick="openModal(\'' . $imagePath . '\', \'' . htmlspecialchars($row['Title']) . '\')">';
+                        echo '</div>';
+                        echo '<div style="max-width: 400px;">'; // Adjust max-width to match the width of the image
+                        echo '<p style="color: white;text-transform: capitalize;font-weight:bold;margin-top:5%;text-align:center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">' . $row['Title'] . '</p>';
+                        echo '</div>';
+                        $Uploader = explode('@', $row['Uploader'])[0];
+                        echo '<p style="color: white;font-size:12px;margin-top:-3%">Uploaded by: ' . $Uploader . '</p>';
+                        echo '<p style="color: white;font-size:12px;margin-top:-2%" id="downloadCount_' . $row['WallpaperID'] . '">Downloaded: ' . (int)$row['DownloadCount'] . ' times</p>';
                         echo '</li>';
                     } else {
                         echo '<li class="image-item">';
@@ -290,9 +335,39 @@ if ($databaseConnection->getConnection()) {
                 </li>
             </ul>
         </nav>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+                <img id="modalImg" class="modal-img" src="" alt="Full Image">
+            </div>
+            <p id="modalTitle" style="color: white; text-align: center; margin-top: -3%;font-size:20px"></p>
+        </div>
 
         <script>
+            function openModal(imagePath, title) {
+                var modal = document.getElementById('myModal');
+                var modalImg = document.getElementById('modalImg');
+                var modalTitle = document.getElementById('modalTitle');
 
+                modal.style.display = "block";
+                modalImg.src = imagePath;
+                modalTitle.textContent = title;
+            }
+
+
+            // Function to close the modal
+            function closeModal() {
+                var modal = document.getElementById('myModal');
+                modal.style.display = "none";
+            }
+
+            // Close modal when user clicks outside the modal content
+            window.onclick = function(event) {
+                var modal = document.getElementById('myModal');
+                if (event.target == modal) {
+                    closeModal();
+                }
+            }
         </script>
 </body>
 
