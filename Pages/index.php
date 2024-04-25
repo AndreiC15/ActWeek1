@@ -25,6 +25,7 @@ shuffle($imageUrls);
 <html lang="en">
 
 <head>
+    <title>Index</title>
     <link rel="stylesheet" href="pagesCSS/StartupScreen.css">
     <style>
         body,
@@ -164,7 +165,7 @@ shuffle($imageUrls);
     <div class="Angle2"></div>
 
     <div class="footer">
-        <p class="footerText">The images used in this website are for project purposes only, no copyright infringement to its rightful owners</p>
+        <p class="footerText">The images used on this website are for project purposes only, with no copyright infringement intended against their rightful owners.</p>
         <p class="footerText" style="margin-right:1%"><?php echo date("F j, Y"); ?></p>
     </div>
 

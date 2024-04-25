@@ -160,10 +160,10 @@ if ($databaseConnection->getConnection()) {
 
         .close-btn {
             position: absolute;
-            top: 20px;
+            top: 1px;
             right: 20px;
             color: #fff;
-            font-size: 24px;
+            font-size: 64px;
             cursor: pointer;
         }
     </style>
@@ -250,14 +250,14 @@ if ($databaseConnection->getConnection()) {
                         echo '<li class="image-item">';
                         echo '<div class="image-container">';
                         echo '<div class="dl_Btn">';
-                        echo '<a style="display:flex;padding-left:5px;padding-right:5px; font-family:arial;" href="download.php?WallpaperID=' . $row['WallpaperID'] . '" onclick="downloadImage(' . $row['WallpaperID'] . ')">';
+                        echo '<a style="display:flex;padding-left:5px;padding-right:5px; font-family:arial;" href="download.php?WallpaperID=' . $row['WallpaperID'] . '" >';
                         echo '<img style="width:20px; height:20px" src="testImages/download.png" ></a>';
                         echo '</div>';
                         // Pass the image path and title to the openModal function
                         echo '<img style="width:400px;height:230px;object-fit:cover " src="' . $imagePath . '" alt="' . htmlspecialchars($row['Title']) . '" onclick="openModal(\'' . $imagePath . '\', \'' . htmlspecialchars($row['Title']) . '\')">';
                         echo '</div>';
                         echo '<div style="max-width: 400px;">'; // Adjust max-width to match the width of the image
-                        echo '<p style="color: white;text-transform: capitalize;font-weight:bold;margin-top:5%;text-align:center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">' . $row['Title'] . '</p>';
+                        echo '<p style="color: white;font-weight:bold;margin-top:5%;text-align:center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">' . $row['Title'] . '</p>';
                         echo '</div>';
                         $Uploader = explode('@', $row['Uploader'])[0];
                         echo '<p style="color: white;font-size:12px;margin-top:-3%">Uploaded by: ' . $Uploader . '</p>';

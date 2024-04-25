@@ -13,7 +13,7 @@ if(isset($_GET['WallpaperID'])) {
     // Check if the increment was successful
     if($stmt->affected_rows > 0) {
         // Fetch the image path from the database
-        $selectQuery = "SELECT WallpaperLocation FROM wallpaper WHERE WallpaperID = ?";
+        $selectQuery = "SELECT WallpaperLocation, Title FROM wallpaper WHERE WallpaperID = ?";
         $stmt = $databaseConnection->getConnection()->prepare($selectQuery);
         $stmt->bind_param('i', $wallpaperID);
         $stmt->execute();
@@ -23,13 +23,14 @@ if(isset($_GET['WallpaperID'])) {
         if($result->num_rows == 1) {
             $row = $result->fetch_assoc();
             $imagePath = 'accountProcess/' . $row['WallpaperLocation'];
+            $title = $row['Title'];
 
             // Check if the file exists
             if(file_exists($imagePath)) {
                 // Set headers to initiate download
                 header('Content-Description: File Transfer');
                 header('Content-Type: application/octet-stream');
-                header('Content-Disposition: attachment; filename="'.basename($imagePath).'"');
+                header('Content-Disposition: attachment; filename="'.sanitizeFilename($title).'.'.pathinfo($imagePath, PATHINFO_EXTENSION).'"');
                 header('Expires: 0');
                 header('Cache-Control: must-revalidate');
                 header('Pragma: public');
@@ -44,4 +45,11 @@ if(isset($_GET['WallpaperID'])) {
 // Redirect to homepage if download fails
 header("Location: homepage.php");
 exit;
+
+// Function to sanitize the filename
+function sanitizeFilename($filename) {
+    // Remove any non-alphabetic characters
+    $filename = preg_replace("/[^a-zA-Z]/", '', $filename);
+    return $filename;
+}
 ?>

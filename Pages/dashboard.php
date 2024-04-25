@@ -279,7 +279,7 @@ if (!empty($_SESSION['id'])) {
                         echo '<form method="post" action="./accountProcess/process.php">';
                         echo '<input type="hidden" name="WallpaperID" value="' . $row['WallpaperID'] . '">';
                         echo '<div style="max-width: 400px;">'; // Adjust max-width to match the width of the image
-                        echo '<p style="color: white;text-transform: capitalize;font-weight:bold;margin-top:5%;text-align:center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">' . $row['Title'] . '</p>';
+                        echo '<p style="color: white;font-weight:bold;margin-top:5%;text-align:center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">' . $row['Title'] . '</p>';
                         echo '</div>';
                         echo '<p style="color: white;font-size:12px;margin-top:-1%" id="downloadCount_' . $row['WallpaperID'] . '">Downloaded: ' . (int)$row['DownloadCount'] . ' times</p>';
                         echo '<table style="margin-left:3%;">';

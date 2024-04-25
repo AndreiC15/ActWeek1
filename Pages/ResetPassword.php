@@ -22,7 +22,7 @@ shuffle($imageUrls);
 ?>
 
 <html>
-<title>Log in</title>
+<title>Reset Password</title>
 
 <head>
     <link rel="stylesheet" href="pagesCSS/ResetPassword.css">
