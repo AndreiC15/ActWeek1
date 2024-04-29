@@ -46,10 +46,9 @@ if(isset($_GET['WallpaperID'])) {
 header("Location: homepage.php");
 exit;
 
-// Function to sanitize the filename
 function sanitizeFilename($filename) {
-    // Remove any non-alphabetic characters
-    $filename = preg_replace("/[^a-zA-Z]/", '', $filename);
+    $filename = preg_replace("/[^a-zA-Z0-9]/", '', $filename);
     return $filename;
 }
+
 ?>

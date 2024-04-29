@@ -26,97 +26,12 @@ shuffle($imageUrls);
 
 <head>
     <link rel="stylesheet" href="pagesCSS/reset.css">
-    <style>
-        body,
-        html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        #slideshow {
-            flex: 1;
-            height: 100%;
-            position: relative;
-        }
-
-        #slideshow img {
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            /* Set initial opacity to 0 */
-            position: absolute;
-            object-fit: cover;
-            /* Ensure proper sizing without stretching */
-            top: 0;
-            left: 0;
-            transform: scale(1);
-            /* Set initial scale */
-            transition: transform 2s ease-in-out, opacity 2s ease-in-out;
-            /* Apply ease-in-out transition for transform and opacity */
-        }
-
-        #slideshow img.active {
-            opacity: 1;
-            /* Set opacity to 1 for active image */
-            transform: scale(1.2);
-            /* Increase scale for active image */
-        }
-
-        .LeftBG {
-            flex-grow: 1;
-        }
-
-        .footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: rgba(0, 0, 0, 0.75);
-            /* Black color with 50% opacity */
-            color: white;
-            padding: 5px;
-            position: fixed;
-            bottom: 0;
-            font-size: 12px;
-            left: 0;
-            width: 100%;
-        }
-
-        .footer p {
-            margin: 0;
-        }
-
-        .Angle1 {
-            width: 0;
-            height: 0;
-            border-top: calc(60vh - 100px) solid transparent;
-            /* Adjust the height as needed */
-            border-left: calc(60vw - 100px) solid white;
-            /* Adjust the color and width as needed */
-            opacity: 0.85;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            z-index: 1;
-        }
-
-        .Angle2 {
-            width: 0;
-            height: 0;
-            border-bottom: calc(60vh - 100px) solid transparent;
-            /* Adjust the height as needed */
-            border-right: calc(60vw - 100px) solid white;
-            /* Adjust the color and width as needed */
-            opacity: 0.85;
-            position: fixed;
-            top: 0;
-            right: 0;
-            z-index: 1;
-        }
-    </style>
+    <link rel="stylesheet" href="pagesCSS/reset2.css">
+    <script>
+        window.onload = function() {
+            alert("Please enter the email you want to reset the password for. ");
+        };
+    </script>
 </head>
 
 <body>
@@ -129,7 +44,7 @@ shuffle($imageUrls);
     <div class="Angle2"></div>
     <center>
         <div class="LogForm">
-            <form method="POST" action="./accountProcess/process.php">
+            <form method="POST" action="./accountProcess/process.php" onsubmit="showProcessingAlert()">
                 <div class="ResBG">
                     <h1 class="ResText">Reset Password</h1>
                 </div>
@@ -172,6 +87,11 @@ shuffle($imageUrls);
 
         // Start the slideshow when the page loads
         showSlides();
+
+    // Display an alert when the page loads
+    function showProcessingAlert () {
+        alert("Please wait while we send the verification code to your email to verify your reset password request");
+    };
     </script>
 </body>
 

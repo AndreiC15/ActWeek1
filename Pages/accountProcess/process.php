@@ -439,103 +439,107 @@ class UserAuth
 
     // Inside the addWallpaper method in the UserAuth class
 
-    public function addWallpaper($WallpaperID, $Uploader, $Title, $WallpaperLocation)
-    {
-        $allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+    public function addWallpaper($WallpaperID, $Uploader, $Title, $WallpaperLocation,  $Tags1,$Tags2, $Tags3,$Tags4, $Tags5)
+{
+    $allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
 
-        $con = $this->db->getConnection();
+    $con = $this->db->getConnection();
 
-        $wallpaper = $_FILES['new_wallpaper'];
-        $wallpaper_temp = $wallpaper['tmp_name'];
+    $wallpaper = $_FILES['new_wallpaper'];
+    $wallpaper_temp = $wallpaper['tmp_name'];
+
+    // Check if the uploaded file is of an allowed type
+    if (!in_array($wallpaper['type'], $allowedFileTypes)) {
+        echo "<script>alert('Invalid file type. Only JPG, PNG, and GIF files are allowed.'); window.location = '../dashboard.php';</script>";
+        exit;
+    }
+
+    $WallpaperLocation = "upload/" . $wallpaper['name'];
+    move_uploaded_file($wallpaper_temp, $WallpaperLocation);
+
+    // Prepare the statement to insert into the database
+    $sql = "INSERT INTO wallpaper (WallpaperID, Uploader, Title, WallpaperLocation, Tags1, Tags2, Tags3, Tags4, Tags5) VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = $this->db->prepare($sql);
+
+    $insertParams = [&$Uploader, &$Title, &$WallpaperLocation, $Tags1,$Tags2, $Tags3,$Tags4, $Tags5]; 
+    $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
+    $query->bind_param($paramTypes, ...$insertParams);
+    
+    $result = $query->execute();
+
+    if ($result) {
+        echo "<script>alert('Wallpaper Added!'); window.location = '../dashboard.php';</script>";
+    } else {
+        echo "<script>alert('Upload Error'); window.location = '../register.php';</script>";
+    }
+    $query->close();
+}
+
+    
+
+public function updateWallpaper($WallpaperID, $Title, $NewWallpaper, $Tags1, $Tags2, $Tags3, $Tags4, $Tags5)
+{
+    $allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+
+    $con = $this->db->getConnection();
+    $WallpaperLocation = null; // Initialize the variable for WallpaperLocation
+
+    // Check if a new wallpaper is being uploaded
+    if (!empty($NewWallpaper['name'])) {
+        $newWallpaper_temp = $NewWallpaper['tmp_name'];
 
         // Check if the uploaded file is of an allowed type
-        if (!in_array($wallpaper['type'], $allowedFileTypes)) {
+        if (!in_array($NewWallpaper['type'], $allowedFileTypes)) {
             echo "<script>alert('Invalid file type. Only JPG, PNG, and GIF files are allowed.'); window.location = '../dashboard.php';</script>";
             exit;
         }
 
-        $WallpaperLocation = "upload/" . $wallpaper['name'];
-        move_uploaded_file($wallpaper_temp, $WallpaperLocation);
-
-        $sql = "INSERT INTO wallpaper (WallpaperID, Uploader, Title, WallpaperLocation) VALUES ('',?, ?, ?)";
-        $query = $this->db->prepare($sql);
-
-        $insertParams = [&$Uploader, &$Title, &$WallpaperLocation]; // Include UploaderEmail as the first parameter
-
-        // Bind parameters using foreach loop
-        $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
-        $query->bind_param($paramTypes, ...$insertParams);
-
-        $result = $query->execute();
-
-        if ($result) {
-            echo "<script>alert('Wallpaper Added!'); window.location = '../dashboard.php';</script>";
-        } else {
-            echo "<script>alert('Upload Error'); window.location = '../register.php';</script>";
-        }
-        $query->close();
+        $WallpaperLocation = "upload/" . $NewWallpaper['name'];
+        move_uploaded_file($newWallpaper_temp, $WallpaperLocation);
     }
 
-    public function updateWallpaper($WallpaperID, $Title, $NewWallpaper)
-    {
-        $allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
-
-        $con = $this->db->getConnection();
-
-        // Check if a new wallpaper is being uploaded
-        if (!empty($NewWallpaper['name'])) {
-            $newWallpaper_temp = $NewWallpaper['tmp_name'];
-
-            // Check if the uploaded file is of an allowed type
-            if (!in_array($NewWallpaper['type'], $allowedFileTypes)) {
-                echo "<script>alert('Invalid file type. Only JPG, PNG, and GIF files are allowed.'); window.location = '../dashboard.php';</script>";
-                exit;
-            }
-
-            $WallpaperLocation = "upload/" . $NewWallpaper['name'];
-            move_uploaded_file($newWallpaper_temp, $WallpaperLocation);
-
-            // Use UPDATE query to modify existing wallpaper information
-            $sql = "UPDATE wallpaper SET Title = ?, WallpaperLocation = ? WHERE WallpaperID = ?";
-            $query = $this->db->prepare($sql);
-
-            $insertParams = [&$Title, &$WallpaperLocation, &$WallpaperID];
-            $paramTypes = "ssi"; // 's' for string, 'i' for integer
-            $query->bind_param($paramTypes, ...$insertParams);
-
-            $result = $query->execute();
-
-            if ($result) {
-                echo "<script>alert('Wallpaper Updated!'); window.location = '../dashboard.php';</script>";
-            } else {
-                echo "<script>alert('Update Error'); window.location = '../register.php';</script>";
-            }
-        } else {
-            // If no new image is uploaded, only update the title
-            $sql = "UPDATE wallpaper SET Title = ? WHERE WallpaperID = ?";
-            $query = $this->db->prepare($sql);
-
-            $insertParams = [&$Title, &$WallpaperID];
-            $paramTypes = "si"; // 's' for string, 'i' for integer
-            $query->bind_param($paramTypes, ...$insertParams);
-
-            $result = $query->execute();
-
-            if ($result) {
-                // Check if any changes were made
-                $changesMade = $query->affected_rows > 0;
-
-                if ($changesMade) {
-                    echo "<script>alert('Wallpaper Title Updated!'); window.location = '../dashboard.php';</script>";
-                } else {
-                    echo "<script>alert('No changes made.'); window.location = '../editWallpaper.php?WallpaperID=$WallpaperID';</script>";
-                }
-            } else {
-                echo "<script>alert('Update Error'); window.location = '../register.php';</script>";
-            }
-        }
-        $query->close();
+    // Prepare the UPDATE query to modify existing wallpaper information
+    $sql = "UPDATE wallpaper SET Title = ?, ";
+    if (!empty($WallpaperLocation)) {
+        $sql .= "WallpaperLocation = ?, ";
     }
+    $sql .= "Tags1 = ?, Tags2 = ?, Tags3 = ?, Tags4 = ?, Tags5 = ? WHERE WallpaperID = ?";
+    $query = $this->db->prepare($sql);
+
+    // Bind parameters to the query
+    if (!empty($WallpaperLocation)) {
+        $insertParams = [&$Title, &$WallpaperLocation, &$Tags1, &$Tags2, &$Tags3, &$Tags4, &$Tags5, &$WallpaperID];
+    } else {
+        $insertParams = [&$Title, &$Tags1, &$Tags2, &$Tags3, &$Tags4, &$Tags5, &$WallpaperID];
+    }
+
+    $paramTypes = "s"; // 's' for string
+    if (!empty($WallpaperLocation)) {
+        $paramTypes .= "s"; // Add another 's' for WallpaperLocation
+    }
+    $paramTypes .= "sssssi"; // Add 's' for each tag parameter and 'i' for WallpaperID
+    $query->bind_param($paramTypes, ...$insertParams);
+
+    // Execute the query
+    $result = $query->execute();
+
+    // Check if the update was successful
+    if ($result) {
+        if ($query->affected_rows == 0) { // No changes were made
+            echo "<script>alert('No changes were made.'); window.location = '../editWallpaper.php?WallpaperID=$WallpaperID';</script>";
+        } else {
+            echo "<script>alert('Wallpaper Updated!'); window.location = '../dashboard.php';</script>";
+        }
+    } else {
+        echo "<script>alert('Update Error'); window.location = '../edit_form.php?WallpaperID=$WallpaperID';</script>";
+    }
+
+    $query->close();
+}
+
+
+
+
 
 
 
@@ -674,6 +678,11 @@ if ($databaseConnection->getConnection()) {
             $email,
             $_POST['title'],
             $_FILES['new_wallpaper'],
+            $_POST['tags1'],
+            $_POST['tags2'],
+            $_POST['tags3'],
+            $_POST['tags4'],
+            $_POST['tags5']
             // Pass the email to the addWallpaper method
         );
     }
@@ -683,7 +692,12 @@ if ($databaseConnection->getConnection()) {
         $userAuth->updateWallpaper(
             $_POST['WallpaperID'],  // Assuming WallpaperID is available in the form
             $_POST['title'],
-            $_FILES['new_wallpaper']
+            $_FILES['new_wallpaper'],
+            $_POST['tags1'],
+            $_POST['tags2'],
+            $_POST['tags3'],
+            $_POST['tags4'],
+            $_POST['tags5']
         );
     }
 

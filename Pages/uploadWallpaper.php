@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<!DOCTYPE html>
-<html lang="en">
 <?php
 require_once 'accountProcess/connect.php';
 
@@ -147,6 +145,15 @@ if ($databaseConnection->getConnection()) {
                             <td>Upload image:</td>
                             <td><input class="titleText" id="new_wallpaper" type="file" name="new_wallpaper" accept=".jpg, .jpeg, .png, .gif" onchange="PreviewImage();" required /></td>
                         </tr>
+                        <tr>
+                            <td>Tags:</td>
+                            <td><input class="titleText" type="text" name="tags1" id="tags1" placeholder="1st tag" required >
+                                <input class="titleText" type="text" name="tags2" id="tags2" placeholder="2nd Tag ">
+                                <input class="titleText" type="text" name="tags3" id="tags3" placeholder="3rd Tag ">
+                                <input class="titleText" type="text" name="tags4" id="tags4" placeholder="4th Tag ">
+                                <input class="titleText" type="text" name="tags5" id="tags5" placeholder="5th Tag ">
+                            </td>
+                        </tr>
                     </center>
             </table>
 
@@ -155,7 +162,7 @@ if ($databaseConnection->getConnection()) {
                 <img id="uploadPreview" style="width: 550px;"></br></br>
             </div>
 
-            <input type="submit" name="add_wallpaper" id="add_wallpaper">
+            <input type="submit" name="add_wallpaper" id="add_wallpaper" onclick="tagAlert()">
         </center>
         </form>
     </fieldset>
@@ -173,6 +180,13 @@ if ($databaseConnection->getConnection()) {
                 previewContainer.style.display = "block"; // Show the preview container
             };
         };
+        function tagAlert() {
+            var tags1 = document.getElementById("tags1").value;
+
+            if (tags1 === "") {
+                alert("Please enter at least one tag.");
+            }
+        }
     </script>
 
 

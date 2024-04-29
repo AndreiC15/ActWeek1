@@ -55,7 +55,7 @@ if ($databaseConnection->getConnection()) {
 if (isset($_GET['WallpaperID'])) {
     $wallpaperID = $_GET['WallpaperID'];
 
-    $stmt = $databaseConnection->getConnection()->prepare("SELECT Title, WallpaperLocation FROM wallpaper WHERE WallpaperID = ?");
+    $stmt = $databaseConnection->getConnection()->prepare("SELECT Title, WallpaperLocation, Tags1, Tags2, Tags3, Tags4, Tags5 FROM wallpaper WHERE WallpaperID = ?");
     $stmt->bind_param('i', $wallpaperID);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -70,6 +70,11 @@ if (isset($_GET['WallpaperID'])) {
 
     $title = $wallpaperData['Title'];
     $imagePath = 'accountProcess/' . $wallpaperData['WallpaperLocation'];
+    $Tags1 = $wallpaperData['Tags1'];
+    $Tags2 = $wallpaperData['Tags2'];
+    $Tags3 = $wallpaperData['Tags3'];
+    $Tags4 = $wallpaperData['Tags4'];
+    $Tags5 = $wallpaperData['Tags5'];
 } else {
     echo "<script>alert('Invalid request'); window.location = 'dashboard.php';</script>";
     exit();
@@ -159,7 +164,7 @@ if (isset($_GET['WallpaperID'])) {
     <table>
         <tr>
             <td>Title:</td>
-            <td><input class="titleText" type="text" name="title" id="title" value="<?php echo htmlspecialchars($title); ?>" required></td>
+            <td><input class="titleText" type="text" name="title" id="title" value="<?php echo htmlspecialchars($title); ?>" ></td>
         </tr>
         <tr>
             <td>Current Image:</td>
@@ -167,6 +172,15 @@ if (isset($_GET['WallpaperID'])) {
                 <img class="currentImage"style="width: 550px;" src="<?php echo $imagePath; ?>" alt="Current Image">
             </td>
         </tr>
+        <tr>
+                            <td>Tags:</td>
+                            <td><input class="titleText" type="text" name="tags1" id="tags1" value="<?php echo htmlspecialchars($Tags1); ?>">
+                                <input class="titleText" type="text" name="tags2" id="tags2" value="<?php echo htmlspecialchars($Tags2); ?>">
+                                <input class="titleText" type="text" name="tags3" id="tags3" value="<?php echo htmlspecialchars($Tags3); ?>">
+                                <input class="titleText" type="text" name="tags4" id="tags4" value="<?php echo htmlspecialchars($Tags4); ?>">
+                                <input class="titleText" type="text" name="tags5" id="tags5" value="<?php echo htmlspecialchars($Tags5); ?>">
+                            </td>
+                        </tr>
         <tr>
             <td>New Image:</td>
             <td><input class="titleText" id="new_wallpaper" type="file" name="new_wallpaper" accept=".jpg, .jpeg, .png, .gif" onchange="PreviewImage();" /></td>
