@@ -200,7 +200,7 @@ if ($databaseConnection->getConnection()) {
                         echo '<img style="width:20px; height:20px" src="testImages/download.png" ></a>';
                         echo '</div>';
                         // Pass the image path and title to the openModal function
-                        echo '<img style="width:400px;height:230px;object-fit:cover " src="' . $imagePath . '" alt="' . htmlspecialchars($row['Title']) . '" onclick="openModal(\'' . $imagePath . '\', \'' . htmlspecialchars($row['Title']) . '\')">';
+                        echo '<img style="width:400px;height:230px;object-fit:cover" src="' . $imagePath . '" alt="' . htmlspecialchars($row['Title']) . '" onclick="openModal(\'' . addslashes($imagePath) . '\', \'' . addslashes($row['Title']) . '\')">';
                         echo '</div>';
                         echo '<div style="max-width: 400px;">'; // Adjust max-width to match the width of the image
                         echo '<p style="color: white;font-weight:bold;margin-top:5%;text-align:center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">' . $row['Title'] . '</p>';
