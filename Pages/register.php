@@ -6,6 +6,19 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
     echo "<script>alert('You are already logged in, redirecting you to homepage now.'); window.location = 'homepage.php';</script>";
     exit();
 }
+
+$imageUrls = array(); // Initialize an empty array
+$sql = "SELECT WallpaperLocation FROM wallpaper"; // Adjust the SQL query according to your database schema
+$result = $databaseConnection->getConnection()->query($sql);
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $imageUrls[] = 'accountProcess/' . $row['WallpaperLocation'];
+    }
+}
+
+// Shuffle the array to randomize the images
+shuffle($imageUrls);
 ?>
 <html>
 <title>Registration</title>
@@ -13,25 +26,31 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
 <head>
     <link rel="stylesheet" href="pagesCSS/register.css">
     <link rel="stylesheet" href="pagesCSS/removeArrowinput.css">
+    <link rel="stylesheet" href="pagesCSS/register2.css">
+    <script  src="pagesJS/register.js"></script>
 </head>
 
 <body>
+
+    <div id="slideshow">
+        <?php foreach ($imageUrls as $index => $imageUrl) : ?>
+            <img src="<?php echo $imageUrl; ?>" alt="Slideshow Image" class="<?php echo $index === 0 ? 'active' : ''; ?>">
+        <?php endforeach; ?>
+    </div>
+
     <center>
-        <div class="ForgotwebIcon">
-            <p class="webtitle">Wallpaper</p>
-            <div class="hub">
-                <p class="webtitle" style="padding: 0 10px 0 10px;">Station</p>
-            </div>
-        </div>
         <div class="RegForm">
-            <h1 class="RegText">Registration</h1>
+            <div class="RegBG">
+                <h1 class="RegText">Registration</h1>
+            </div>
+
             <table class="userInfoo">
-                <form method="POST" action="./accountProcess/process.php">
+            <form method="POST" action="./accountProcess/process.php" onsubmit="showProcessingAlert()">
                     <tr>
                         <input class="LogInText" type="text" id="first_name" name="first_name" placeholder="First Name" oninput="sanitizeInput(this); applySentenceCase(this);" required>
                     </tr>
                     <tr>
-                        <input class="LogInText" type="text" id="middle_name" name="middle_name" placeholder="Middle Name" oninput="sanitizeInput(this); applySentenceCase(this);" required>
+                        <input class="LogInText" type="text" id="middle_name" name="middle_name" placeholder="Middle Name" oninput="sanitizeInput(this); applySentenceCase(this);">
                     </tr>
                     <tr>
                         <input class="LogInText" type="text" id="last_name" name="last_name" placeholder="Last Name" oninput="sanitizeInput(this); applySentenceCase(this);" required>
@@ -48,18 +67,20 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
                     <tr>
                         <input class="LogInText" type="text" id="phone_number" name="phone_number" placeholder="Phone Number" oninput="sanitizeNumericInput(event);" maxlength="11" required>
                     </tr>
-
-                    <br></br>
-                    <center>
-                        <div class="ShowPassDiv">
-                        <input class="ShowPass" type="checkbox" onclick="togglePasswordVisibility()">Show Password
-                        </div></br>
-                    </center>
+                    </br></br>
+                    <tr>
+                        <center>
+                            <label class="checkbox-label">
+                                <input class="ShowPass" type="checkbox" onclick="togglePasswordVisibility()">
+                                Show Password
+                        </center>
+                        </label>
+                    </tr>
             </table>
 
-            <div class="dividerTop"></div>
-            
-            <h1>Address</h1>
+            <div class="AddBG">
+                <h1 class="AddText">Address</h1>
+            </div>
             <div class="userInfoAddress">
                 <table class="userInfo">
                     <tr>
@@ -91,72 +112,31 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
                         </td>
                     </tr>
                     <tr>
-                        <td><input class="LogInText" type="text" id="zipcode" name="zipcode" placeholder="Zip Code" oninput="convertToUppercase(this);"></td>
+                        <td><input class="LogInText" type="text" id="zipcode" name="zipcode" placeholder="Zip Code" oninput="convertToUppercase(this);" required></td>
                     </tr>
                 </table>
             </div>
-            </br>
             <input class="SubmitButton" type="submit" id="register" name="register" value="Register">
             <p>Already registered? <a href="index.php">Log in Here</a></p>
             </form>
         </div>
     </center>
+    <div class="Angle1"></div>
+    <div class="Angle2"></div>
     <script>
-        function togglePasswordVisibility() {
-            var password = document.getElementById("password");
-            var confirmPassword = document.getElementById("confirmPassword");
+        var slideshowIndex = 0;
+        var slideshowImages = <?php echo json_encode($imageUrls); ?>;
+        var images = document.querySelectorAll('#slideshow img');
 
-            // Toggle visibility for the "Password" field
-            toggleInputType(password);
-
-            // Toggle visibility for the "Confirm Password" field
-            toggleInputType(confirmPassword);
+        function showSlides() {
+            images[slideshowIndex].classList.remove('active');
+            slideshowIndex = (slideshowIndex + 1) % images.length;
+            images[slideshowIndex].classList.add('active');
+            setTimeout(showSlides, 5000); // Change image every 5 seconds
         }
 
-        function toggleInputType(inputElement) {
-            inputElement.type = (inputElement.type === "password") ? "text" : "password";
-        }
-
-        function sanitizeInput(inputElement) {
-            // Remove special characters
-            inputElement.value = inputElement.value.replace(/[^A-Za-z\s]/g, '');
-        }
-
-        function capitalizeEachWord(str) {
-            return str.replace(/\b\w/g, function(char) {
-                return char.toUpperCase();
-            });
-        }
-
-        function applySentenceCase(inputElement) {
-            var inputValue = inputElement.value;
-
-            // Special case for "House No. & Street"
-            if (inputElement.id === "house_no_street") {
-                inputValue = capitalizeEachWord(inputValue);
-            } else {
-                // Regular sentence case for other fields
-                var words = inputValue.split(/\s+/); // Split by whitespace
-                words = words.map(function(word) {
-                    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-                });
-                inputValue = words.join(' ');
-            }
-            inputElement.value = inputValue;
-        }
-
-        function convertToUppercase(inputElement) {
-            inputElement.value = inputElement.value.toUpperCase();
-        }
-
-        function sanitizeNumericInput(event) {
-            var inputValue = event.target.value;
-            // Replace any non-numeric characters with an empty string
-            var numericValue = inputValue.replace(/[^0-9]/g, '');
-
-            // Truncate to a maximum length of 11 characters
-            event.target.value = numericValue.substring(0, 11);
-        }
+        // Start the slideshow when the page loads
+        showSlides();
     </script>
 </body>
 

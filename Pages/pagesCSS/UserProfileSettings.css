@@ -37,7 +37,6 @@
 }
 .removeImage {
   position: absolute;
-  margin-top: 2.5%;
   margin-left: -27.5%;
 }
 #redirectToWebcamBtn {
@@ -63,7 +62,7 @@ input {
 }
 .userProfile {
   position: absolute;
-  margin-top: 4%;
+  margin-top: 2%;
 }
 .userInfo1 {
   text-align: center;

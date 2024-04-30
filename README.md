@@ -46,4 +46,16 @@
 <b>29/02/24</b><br>
 -Webcam picture<br>
 
+<b>17/04/24</b><br>
+-Send verification code via email for account activation<br>
+-Inactive & Active account status(Inactive account cant login)<br>
+
+<b>18/04/24</b><br>
+-Responsive design fixes for register, login, and verify<br>
+-Implemented slideshwo background in verify page<br>
+-Reset password with verification code and responsive design on reset password pages.<br>
+
+<b>24/04/24</b><br>
+-Total uploaded images count, delete all user-uploaded images, sort images by title (Z-A), and sort by least downloads.<br>
+
 # Import the logintest.sql to your PhpMyAdmin localhost<br>

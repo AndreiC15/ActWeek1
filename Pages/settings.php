@@ -59,9 +59,8 @@ if ($databaseConnection->getConnection()) {
     <link rel="stylesheet" href="pagesCSS/Settings.css">
     <link rel="stylesheet" href="pagesCSS/UserProfileSettings.css">
     <link rel="stylesheet" href="pagesCSS/removeArrowinput.css">
+    <script  src="pagesJS/settings.js"></script>
 </head>
-
-
 <body>
     <center>
         <div class="area"></div>
@@ -70,26 +69,20 @@ if ($databaseConnection->getConnection()) {
                 <li>
                     <i class="fa fa-info fa-2x"><img class="navSideIconLogo" src="testImages/icon.png"></i>
                     <span class="nav-text">WallpaperStation</span>
-                    </a>
                 </li>
-            </ul>
-            <ul>
+                <!-- Add your other menu items here -->
                 <li>
                     <a href="homepage.php">
                         <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/home.png"></i>
                         <span class="nav-text">Home</span>
                     </a>
                 </li>
-            </ul>
-            <ul>
                 <li>
                     <a href="dashboard.php">
                         <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/dashboard.png"></i>
                         <span class="nav-text">Dashboard</span>
                     </a>
                 </li>
-            </ul>
-            <ul>
                 <li>
                     <a href="settings.php">
                         <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/setting.png"></i>
@@ -97,15 +90,6 @@ if ($databaseConnection->getConnection()) {
                     </a>
                 </li>
             </ul>
-            <ul>
-                <li>
-                    <a href="videocall.php">
-                        <i class="fa fa-info fa-2x"><img class="navSideIcon" src="testImages/webcamera.png"></i>
-                        <span class="nav-text">Video Call</span>
-                    </a>
-                </li>
-            </ul>
-
             <ul class="logout">
                 <li>
                     <a href="#">
@@ -282,81 +266,9 @@ if ($databaseConnection->getConnection()) {
                 </table>
                 <input class="editBtn" type="submit" id="update_profile" name="update_profile" value="Save Changes">
                 </form>
-                <button id="redirectToWebcamBtn" onclick="redirectToWebcam()">Go to Webcam</button>  
             </div>
         </center>
     </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var inputFields = document.querySelectorAll('input');
-
-            inputFields.forEach(function(inputField, index) {
-                inputField.addEventListener('keypress', function(event) {
-                    if (event.key === 'Enter') {
-                        event.preventDefault();
-                        var nextIndex = (index + 1) % inputFields.length;
-                        inputFields[nextIndex].focus();
-                    }
-                });
-            });
-        });
-
-        function myFunction() {
-            var x = document.getElementById("password");
-            if (x.type === "password") {
-                x.type = "text";
-            } else {
-                x.type = "password";
-            }
-        }
-
-        function capitalizeEachWord(str) {
-            return str.replace(/\b\w/g, function(char) {
-                return char.toUpperCase();
-            });
-        }
-
-        function sanitizeInput(inputElement) {
-            // Remove special characters
-            inputElement.value = inputElement.value.replace(/[^A-Za-z\s]/g, '');
-        }
-
-        function applySentenceCase(inputElement) {
-            var inputValue = inputElement.value;
-
-            // Special case for "House No. & Street"
-            if (inputElement.id === "house_no_street") {
-                inputValue = capitalizeEachWord(inputValue);
-            } else {
-                // Regular sentence case for other fields
-                var words = inputValue.split(/\s+/); // Split by whitespace
-                words = words.map(function(word) {
-                    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-                });
-                inputValue = words.join(' ');
-            }
-
-            inputElement.value = inputValue;
-        }
-
-        function convertToUppercase(inputElement) {
-            inputElement.value = inputElement.value.toUpperCase();
-        }
-
-        function sanitizeNumericInput(event) {
-            var inputValue = event.target.value;
-            // Replace any non-numeric characters with an empty string
-            var numericValue = inputValue.replace(/[^0-9]/g, '');
-
-            // Truncate to a maximum length of 11 characters
-            event.target.value = numericValue.substring(0, 11);
-        }
-        function redirectToWebcam() {
-            window.location.href = 'webcam.php';
-        }
-
-    </script>
 </body>
 
 </html>

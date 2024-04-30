@@ -182,7 +182,7 @@ h1{
     margin-top: 5%;
   }
   .navBarTop {
-    width: 200vh;
+    width: 100%;
   }
 
   .image-container {
@@ -215,10 +215,10 @@ h1{
 @media screen and (max-width: 1024px) {
   h1 {
     font-size: 32px;
-    margin-left: 3%;
+    margin-left: 15%;
   }
   .navBarTop {
-    width: 400vh;
+    width: 103%;
   }
 
   .uploadContainer {

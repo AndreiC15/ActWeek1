@@ -25,13 +25,8 @@ shuffle($imageUrls);
 <title>Reset Password</title>
 
 <head>
-    <link rel="stylesheet" href="pagesCSS/reset.css">
-    <link rel="stylesheet" href="pagesCSS/reset2.css">
-    <script>
-        window.onload = function() {
-            alert("Please enter the email you want to reset the password for. ");
-        };
-    </script>
+    <link rel="stylesheet" href="pagesCSS/ResetPassword.css">
+    <link rel="stylesheet" href="pagesCSS/ResetPassword2.css">
 </head>
 
 <body>
@@ -44,18 +39,42 @@ shuffle($imageUrls);
     <div class="Angle2"></div>
     <center>
         <div class="LogForm">
-            <form method="POST" action="./accountProcess/process.php" onsubmit="showProcessingAlert()">
+            <form method="POST" action="./accountProcess/process.php">
                 <div class="ResBG">
                     <h1 class="ResText">Reset Password</h1>
                 </div>
-                <div class="resetInfo">
-                    <input class="LogInText" type="email" id="email" name="email" placeholder="Email" required>
-                </div>
-                <input class="SubmitButton" type="submit" id="send_code_reset" name="send_code_reset" value="Reset Password" required>
+                <input type="hidden" id="email" name="email" value="<?php echo isset($_GET['Email']) ? htmlspecialchars($_GET['Email']) : ''; ?>" required>
+                <input class="PasswordText" type="password" id="password" name="password" placeholder="New Password" minlength="8" required>
+                <input class="PasswordText" type="password" id="confirmPassword" name="confirmPassword" placeholder="Retype password" minlength="8" required>
+                <table class="checkbox">
+                    <tr>
+                        <td>
+                            <label class="checkbox-label">
+                                <input class="ShowPass" type="checkbox" onclick="togglePasswordVisibility()">
+                                Show Password
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+                <input class="SubmitButton" type="submit" id="reset_password" name="reset_password" value="Reset Password" required>
             </form>
         </div>
     </center>
     <script>
+         var slideshowIndex = 0;
+        var slideshowImages = <?php echo json_encode($imageUrls); ?>;
+        var images = document.querySelectorAll('#slideshow img');
+
+        function showSlides() {
+            images[slideshowIndex].classList.remove('active');
+            slideshowIndex = (slideshowIndex + 1) % images.length;
+            images[slideshowIndex].classList.add('active');
+            setTimeout(showSlides, 5000); // Change image every 5 seconds
+        }
+
+        // Start the slideshow when the page loads
+        showSlides();
+
         function togglePasswordVisibility() {
             var password = document.getElementById("password");
             var confirmPassword = document.getElementById("confirmPassword");
@@ -74,24 +93,6 @@ shuffle($imageUrls);
                 confirmPassword.type = "password";
             }
         }
-        var slideshowIndex = 0;
-        var slideshowImages = <?php echo json_encode($imageUrls); ?>;
-        var images = document.querySelectorAll('#slideshow img');
-
-        function showSlides() {
-            images[slideshowIndex].classList.remove('active');
-            slideshowIndex = (slideshowIndex + 1) % images.length;
-            images[slideshowIndex].classList.add('active');
-            setTimeout(showSlides, 5000); // Change image every 5 seconds
-        }
-
-        // Start the slideshow when the page loads
-        showSlides();
-
-    // Display an alert when the page loads
-    function showProcessingAlert () {
-        alert("Please wait while we send the verification code to your email to verify your reset password request");
-    };
     </script>
 </body>
 

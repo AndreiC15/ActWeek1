@@ -1,6 +1,14 @@
 <?php
 require_once 'connect.php';
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require 'C:\xampp\htdocs\PHPMailer\PHPMailer\src\Exception.php';
+require 'C:\xampp\htdocs\PHPMailer\PHPMailer\src\PHPMailer.php';
+require 'C:\xampp\htdocs\PHPMailer\PHPMailer\src\SMTP.php';
+
 class UserAuth
 {
     private $db;
@@ -43,27 +51,88 @@ class UserAuth
             exit;
         }
 
+        // Check if user account exists
         $result = mysqli_query($con, "SELECT * FROM user_acct WHERE email = '$Email'");
         $row = mysqli_fetch_assoc($result);
 
         if (mysqli_num_rows($result) > 0) {
-            if ($password == $row['Password']) {
-                $_SESSION['login'] = true;
-                $_SESSION['id'] = $row['ID'];
-                echo "<script>alert('Log In Successfully'); window.location = '../homepage.php';</script>";
-                exit;
+            // Check if account is active
+            if ($row['AccountStatus'] === 'active') {
+                // Verify password
+                if ($password == $row['Password']) {
+                    // Set session variables
+                    $_SESSION['login'] = true;
+                    $_SESSION['id'] = $row['ID'];
+                    echo "<script>alert('Log In Successfully'); window.location = '../homepage.php';</script>";
+                    exit;
+                } else {
+                    // Incorrect password
+                    echo "<script>alert('Wrong Email or Password'); window.location = '../index.php';</script>";
+                    exit;
+                }
             } else {
-                echo "<script>alert('Wrong Email or Password'); window.location = '../index.php';</script>";
-                exit;
+                // Account is inactive
+                echo "<script>alert('Your account is not verified. You will be redirected now to verify your account.'); window.location = '../Verify.php?Email=" . urlencode($Email) . "';</script>";
+
+                $mail = new PHPMailer(true);
+                //Server settings
+                try {
+                    $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+                    $mail->isSMTP();
+                    $mail->Host       = 'smtp.gmail.com';
+                    $mail->SMTPAuth   = true;
+                    $mail->Username   = 'calderon.optical.clinic@gmail.com';
+                    $mail->Password   = 'avuoeowvxfwgnjix';
+                    $mail->SMTPSecure = 'ssl';
+                    $mail->Port       = 465;
+                    //Recipients
+                    $mail->setFrom('calderon.optical.clinic@gmail.com', 'WallpaperStation');
+                    $mail->addAddress($Email);
+                    //Content
+                    $mail->isHTML(true);
+                    $VerificationCode = substr(number_format(time() * rand(), 0, '', ''), 0, 6);
+                    $mail->Subject = 'Verify your email.';
+                    $mail->Body = '<p style="font-size: 20px;">Good day! Your verification code is: <b style="font-size: 30px;">&nbsp;' . $VerificationCode . '&nbsp;</b> Thank you!</p>';
+                    $mail->send();
+
+                    $sql = "UPDATE user_acct SET VerificationCode = ? WHERE Email = ?";
+                    $query = $this->db->prepare($sql);
+
+                    $insertParams = [&$VerificationCode, &$Email];
+                    $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
+                    $query->bind_param($paramTypes, ...$insertParams);
+
+                    $result = $query->execute();
+                    exit;
+                } catch (Exception $e) {
+                    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                }
             }
         } else {
+            // User not found
             echo "<script>alert('User not found'); window.location = '../index.php';</script>";
             exit;
         }
     }
 
-    public function register($FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode)
-    {
+
+    public function register(
+        $FirstName,
+        $MiddleName,
+        $LastName,
+        $Email,
+        $Password,
+        $PhoneNumber,
+        $Country,
+        $Province,
+        $CityCity,
+        $District,
+        $HouseNoStreet,
+        $ZipCode,
+        $VerificationCode,
+        $email_verified_at
+    ) {
+
         $con = $this->db->getConnection();
 
         if (strlen($PhoneNumber) < 11) {
@@ -86,22 +155,108 @@ class UserAuth
             exit;
         }
 
-        $sql = "INSERT INTO user_acct (FirstName, MiddleName, LastName, Email, Password, PhoneNumber, Country, Province, CityCity, District, HouseNoStreet, ZipCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $query = $this->db->prepare($sql);
+        $mail = new PHPMailer(true);
+        //Server settings
+        try {
+            $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+            $mail->isSMTP();
+            $mail->Host       = 'smtp.gmail.com';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'calderon.optical.clinic@gmail.com';
+            $mail->Password   = 'avuoeowvxfwgnjix';
+            $mail->SMTPSecure = 'ssl';
+            $mail->Port       = 465;
+            //Recipients
+            $mail->setFrom('calderon.optical.clinic@gmail.com', 'WallpaperStation');
+            $mail->addAddress($Email, $FirstName);
+            //Content
+            $mail->isHTML(true);
+            $VerificationCode = substr(number_format(time() * rand(), 0, '', ''), 0, 6);
+            $mail->Subject = 'Verify your email.';
+            $mail->Body = '<p style="font-size: 20px;">Good day! Your verification code is: <b style="font-size: 30px;">&nbsp;' . $VerificationCode . '&nbsp;</b> Thank you!</p>';
+            $mail->send();
 
-        $insertParams = [&$FirstName, &$MiddleName, &$LastName, &$Email, &$Password, &$PhoneNumber, &$Country, &$Province, &$CityCity, &$District, &$HouseNoStreet, &$ZipCode];
+            $sql = "INSERT INTO user_acct (FirstName, MiddleName, LastName, Email, Password, PhoneNumber, Country, Province, CityCity, District, HouseNoStreet, ZipCode, VerificationCode, email_verified_at, AccountStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $query = $this->db->prepare($sql);
 
-        $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
-        $query->bind_param($paramTypes, ...$insertParams);
+            $AccountStatus = "inactive"; // Set the AccountStatus to "inactive"
+            $insertParams = [&$FirstName, &$MiddleName, &$LastName, &$Email, &$Password, &$PhoneNumber, &$Country, &$Province, &$CityCity, &$District, &$HouseNoStreet, &$ZipCode, &$VerificationCode, &$email_verified_at, &$AccountStatus];
+            $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
+            $query->bind_param($paramTypes, ...$insertParams);
 
-        $result = $query->execute();
+            $result = $query->execute();
 
-        if ($result) {
-            echo "<script>alert('Registered Successfully, please proceed to the login page'); window.location = '../index.php';</script>";
-        } else {
-            echo "<script>alert('Error in registration'); window.location = '../register.php';</script>";
+
+            // After successfully inserting the user's data into the database
+            if ($result) {
+                echo "<script>alert('Registered Successfully, please proceed to the verification page');</script>";
+                $email = $_POST['email'];
+                header("Location: ../Verify.php?Email=" . $email);
+                exit();
+            } else {
+                echo "<script>alert('Error in registration'); window.location = '../register.php';</script>";
+            }
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }
-        $query->close();
+    }
+
+    public function resetSelectEmail($Email)
+    {
+        $con = $this->db->getConnection();
+        // You may want to perform additional validation and sanitation for $password
+        $result = mysqli_query($con, "SELECT * FROM user_acct WHERE email = '$Email'");
+        $row = mysqli_fetch_assoc($result);
+
+        if (mysqli_num_rows($result) > 0) {
+            $mail = new PHPMailer(true);
+            //Server settings
+            try {
+                $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+                $mail->isSMTP();
+                $mail->Host       = 'smtp.gmail.com';
+                $mail->SMTPAuth   = true;
+                $mail->Username   = 'calderon.optical.clinic@gmail.com';
+                $mail->Password   = 'avuoeowvxfwgnjix';
+                $mail->SMTPSecure = 'ssl';
+                $mail->Port       = 465;
+                //Recipients
+                $mail->setFrom('calderon.optical.clinic@gmail.com', 'WallpaperStation');
+                $mail->addAddress($Email);
+                //Content
+                $mail->isHTML(true);
+                $VerificationCode = substr(number_format(time() * rand(), 0, '', ''), 0, 6);
+                $mail->Subject = 'Verify your email.';
+                $mail->Body = '<p style="font-size: 20px;">Good day! Your verification code is: <b style="font-size: 30px;">&nbsp;' . $VerificationCode . '&nbsp;</b> Thank you!</p>';
+                $mail->send();
+
+                $sql = "UPDATE user_acct SET VerificationCode = ? WHERE Email = ?";
+                $query = $this->db->prepare($sql);
+
+                $insertParams = [&$VerificationCode, &$Email];
+                $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
+                $query->bind_param($paramTypes, ...$insertParams);
+
+                $result = $query->execute();
+
+
+
+                // After successfully inserting the user's data into the database
+                if ($result) {
+                    echo "<script>alert('Account Confirmation success, please proceed to the verify email page');</script>";
+                    $email = $_POST['email'];
+                    header("Location: ../VerifyEmailReset.php?Email=" . $email);
+                    exit();
+                } else {
+                    echo "<script>alert('Error in registration'); window.location = '../register.php';</script>";
+                }
+            } catch (Exception $e) {
+                echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            }
+        } else {
+            echo "<script>alert('Email not found'); window.location = '../reset.php';</script>";
+            exit;
+        }
     }
 
     public function resetPassword($Email, $password)
@@ -117,7 +272,7 @@ class UserAuth
             $stmt->bind_param('ss', $password, $Email);
 
             if ($_POST['password'] !== $_POST['confirmPassword']) {
-                echo "<script>alert('Passwords do not match'); window.location = '../reset.php';</script>";
+                echo "<script>alert('Passwords do not match'); window.location = '../ResetPassword.php?Email=" . urlencode($Email) . "';</script>";
                 exit;
             }
 
@@ -133,7 +288,6 @@ class UserAuth
             exit;
         }
     }
-
 
     public function editInformation($id, $FirstName, $MiddleName, $LastName, $Email, $Password, $PhoneNumber, $Country, $Province, $CityCity, $District, $HouseNoStreet, $ZipCode, $ProfilePic)
     {
@@ -285,103 +439,107 @@ class UserAuth
 
     // Inside the addWallpaper method in the UserAuth class
 
-    public function addWallpaper($WallpaperID, $Title, $WallpaperLocation)
-    {
-        $allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+    public function addWallpaper($WallpaperID, $Uploader, $Title, $WallpaperLocation,  $Tags1,$Tags2, $Tags3,$Tags4, $Tags5)
+{
+    $allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
 
-        $con = $this->db->getConnection();
+    $con = $this->db->getConnection();
 
-        $wallpaper = $_FILES['new_wallpaper'];
-        $wallpaper_temp = $wallpaper['tmp_name'];
+    $wallpaper = $_FILES['new_wallpaper'];
+    $wallpaper_temp = $wallpaper['tmp_name'];
+
+    // Check if the uploaded file is of an allowed type
+    if (!in_array($wallpaper['type'], $allowedFileTypes)) {
+        echo "<script>alert('Invalid file type. Only JPG, PNG, and GIF files are allowed.'); window.location = '../dashboard.php';</script>";
+        exit;
+    }
+
+    $WallpaperLocation = "upload/" . $wallpaper['name'];
+    move_uploaded_file($wallpaper_temp, $WallpaperLocation);
+
+    // Prepare the statement to insert into the database
+    $sql = "INSERT INTO wallpaper (WallpaperID, Uploader, Title, WallpaperLocation, Tags1, Tags2, Tags3, Tags4, Tags5) VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = $this->db->prepare($sql);
+
+    $insertParams = [&$Uploader, &$Title, &$WallpaperLocation, $Tags1,$Tags2, $Tags3,$Tags4, $Tags5]; 
+    $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
+    $query->bind_param($paramTypes, ...$insertParams);
+    
+    $result = $query->execute();
+
+    if ($result) {
+        echo "<script>alert('Wallpaper Added!'); window.location = '../dashboard.php';</script>";
+    } else {
+        echo "<script>alert('Upload Error'); window.location = '../register.php';</script>";
+    }
+    $query->close();
+}
+
+    
+
+public function updateWallpaper($WallpaperID, $Title, $NewWallpaper, $Tags1, $Tags2, $Tags3, $Tags4, $Tags5)
+{
+    $allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+
+    $con = $this->db->getConnection();
+    $WallpaperLocation = null; // Initialize the variable for WallpaperLocation
+
+    // Check if a new wallpaper is being uploaded
+    if (!empty($NewWallpaper['name'])) {
+        $newWallpaper_temp = $NewWallpaper['tmp_name'];
 
         // Check if the uploaded file is of an allowed type
-        if (!in_array($wallpaper['type'], $allowedFileTypes)) {
+        if (!in_array($NewWallpaper['type'], $allowedFileTypes)) {
             echo "<script>alert('Invalid file type. Only JPG, PNG, and GIF files are allowed.'); window.location = '../dashboard.php';</script>";
             exit;
         }
 
-        $WallpaperLocation = "upload/" . $wallpaper['name'];
-        move_uploaded_file($wallpaper_temp, $WallpaperLocation);
-
-        $sql = "INSERT INTO wallpaper (WallpaperID, Title, WallpaperLocation) VALUES ('', ?, ?)";
-        $query = $this->db->prepare($sql);
-
-        $insertParams = [&$Title, &$WallpaperLocation]; // Removed &$WallpaperID
-
-        // Bind parameters using foreach loop
-        $paramTypes = str_repeat('s', count($insertParams)); // 's' for string
-        $query->bind_param($paramTypes, ...$insertParams);
-
-        $result = $query->execute();
-
-        if ($result) {
-            echo "<script>alert('Wallpaper Added!'); window.location = '../dashboard.php';</script>";
-        } else {
-            echo "<script>alert('Upload Error'); window.location = '../register.php';</script>";
-        }
-        $query->close();
+        $WallpaperLocation = "upload/" . $NewWallpaper['name'];
+        move_uploaded_file($newWallpaper_temp, $WallpaperLocation);
     }
 
-    public function updateWallpaper($WallpaperID, $Title, $NewWallpaper)
-    {
-        $allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
-
-        $con = $this->db->getConnection();
-
-        // Check if a new wallpaper is being uploaded
-        if (!empty($NewWallpaper['name'])) {
-            $newWallpaper_temp = $NewWallpaper['tmp_name'];
-
-            // Check if the uploaded file is of an allowed type
-            if (!in_array($NewWallpaper['type'], $allowedFileTypes)) {
-                echo "<script>alert('Invalid file type. Only JPG, PNG, and GIF files are allowed.'); window.location = '../dashboard.php';</script>";
-                exit;
-            }
-
-            $WallpaperLocation = "upload/" . $NewWallpaper['name'];
-            move_uploaded_file($newWallpaper_temp, $WallpaperLocation);
-
-            // Use UPDATE query to modify existing wallpaper information
-            $sql = "UPDATE wallpaper SET Title = ?, WallpaperLocation = ? WHERE WallpaperID = ?";
-            $query = $this->db->prepare($sql);
-
-            $insertParams = [&$Title, &$WallpaperLocation, &$WallpaperID];
-            $paramTypes = "ssi"; // 's' for string, 'i' for integer
-            $query->bind_param($paramTypes, ...$insertParams);
-
-            $result = $query->execute();
-
-            if ($result) {
-                echo "<script>alert('Wallpaper Updated!'); window.location = '../dashboard.php';</script>";
-            } else {
-                echo "<script>alert('Update Error'); window.location = '../register.php';</script>";
-            }
-        } else {
-            // If no new image is uploaded, only update the title
-            $sql = "UPDATE wallpaper SET Title = ? WHERE WallpaperID = ?";
-            $query = $this->db->prepare($sql);
-
-            $insertParams = [&$Title, &$WallpaperID];
-            $paramTypes = "si"; // 's' for string, 'i' for integer
-            $query->bind_param($paramTypes, ...$insertParams);
-
-            $result = $query->execute();
-
-            if ($result) {
-                // Check if any changes were made
-                $changesMade = $query->affected_rows > 0;
-
-                if ($changesMade) {
-                    echo "<script>alert('Wallpaper Title Updated!'); window.location = '../dashboard.php';</script>";
-                } else {
-                    echo "<script>alert('No changes made.'); window.location = '../editWallpaper.php?WallpaperID=$WallpaperID';</script>";
-                }
-            } else {
-                echo "<script>alert('Update Error'); window.location = '../register.php';</script>";
-            }
-        }
-        $query->close();
+    // Prepare the UPDATE query to modify existing wallpaper information
+    $sql = "UPDATE wallpaper SET Title = ?, ";
+    if (!empty($WallpaperLocation)) {
+        $sql .= "WallpaperLocation = ?, ";
     }
+    $sql .= "Tags1 = ?, Tags2 = ?, Tags3 = ?, Tags4 = ?, Tags5 = ? WHERE WallpaperID = ?";
+    $query = $this->db->prepare($sql);
+
+    // Bind parameters to the query
+    if (!empty($WallpaperLocation)) {
+        $insertParams = [&$Title, &$WallpaperLocation, &$Tags1, &$Tags2, &$Tags3, &$Tags4, &$Tags5, &$WallpaperID];
+    } else {
+        $insertParams = [&$Title, &$Tags1, &$Tags2, &$Tags3, &$Tags4, &$Tags5, &$WallpaperID];
+    }
+
+    $paramTypes = "s"; // 's' for string
+    if (!empty($WallpaperLocation)) {
+        $paramTypes .= "s"; // Add another 's' for WallpaperLocation
+    }
+    $paramTypes .= "sssssi"; // Add 's' for each tag parameter and 'i' for WallpaperID
+    $query->bind_param($paramTypes, ...$insertParams);
+
+    // Execute the query
+    $result = $query->execute();
+
+    // Check if the update was successful
+    if ($result) {
+        if ($query->affected_rows == 0) { // No changes were made
+            echo "<script>alert('No changes were made.'); window.location = '../editWallpaper.php?WallpaperID=$WallpaperID';</script>";
+        } else {
+            echo "<script>alert('Wallpaper Updated!'); window.location = '../dashboard.php';</script>";
+        }
+    } else {
+        echo "<script>alert('Update Error'); window.location = '../edit_form.php?WallpaperID=$WallpaperID';</script>";
+    }
+
+    $query->close();
+}
+
+
+
+
 
 
 
@@ -412,6 +570,26 @@ class UserAuth
         }
     }
 
+    public function deleteAllWallpapers($Uploader)
+{
+    // Delete wallpapers uploaded by the current user (based on their email)
+    $sql = "DELETE FROM wallpaper WHERE Uploader = ?";
+
+    $query = $this->db->prepare($sql);
+    $query->bind_param('s', $Uploader);
+    $result = $query->execute();
+
+    if ($result) {
+        echo "<script>alert('Wallpapers deleted successfully.'); window.location = '../dashboard.php';</script>";
+        exit();
+    } else {
+        echo "<script>alert('Failed to delete wallpapers.'); window.location = 'dashboard.php';</script>";
+        exit();
+    }
+}
+
+
+
     public function logout()
     {
         echo "<script>alert('Logout Successful'); window.location = '../index.php';</script>";
@@ -429,8 +607,30 @@ if ($databaseConnection->getConnection()) {
     }
 
     if (isset($_POST['register'])) {
-        $userAuth->register($_POST['first_name'], $_POST['middle_name'], $_POST['last_name'], $_POST['email'], $_POST['password'], $_POST['phone_number'], $_POST['country'], $_POST['province'], $_POST['citycity'], $_POST['district'], $_POST['house_no_street'], $_POST['zipcode']);
+        $userAuth->register(
+            $_POST['first_name'],
+            $_POST['middle_name'],
+            $_POST['last_name'],
+            $_POST['email'],
+            $_POST['password'],
+            $_POST['phone_number'],
+            $_POST['country'],
+            $_POST['province'],
+            $_POST['citycity'],
+            $_POST['district'],
+            $_POST['house_no_street'],
+            $_POST['zipcode'],
+            NULL,
+            NULL // Or provide the correct key for the last parameter if applicable
+        );
     }
+
+    if (isset($_POST['send_code_reset'])) {
+        $userAuth->resetSelectEmail(
+            $_POST['email']
+        );
+    }
+
     if (isset($_POST['reset_password'])) {
         $userAuth->resetPassword(
             $_POST['email'],
@@ -467,12 +667,23 @@ if ($databaseConnection->getConnection()) {
         $userAuth->removeProfilePicture($id);
     }
 
+
+
+    // Check if the add_wallpaper form was submitted
     if (isset($_POST['add_wallpaper'])) {
+        $email = $_POST['email'];
         $id = $_SESSION['id'];
         $userAuth->addWallpaper(
             $id,
+            $email,
             $_POST['title'],
-            $_FILES['new_wallpaper']
+            $_FILES['new_wallpaper'],
+            $_POST['tags1'],
+            $_POST['tags2'],
+            $_POST['tags3'],
+            $_POST['tags4'],
+            $_POST['tags5']
+            // Pass the email to the addWallpaper method
         );
     }
 
@@ -481,11 +692,21 @@ if ($databaseConnection->getConnection()) {
         $userAuth->updateWallpaper(
             $_POST['WallpaperID'],  // Assuming WallpaperID is available in the form
             $_POST['title'],
-            $_FILES['new_wallpaper']
+            $_FILES['new_wallpaper'],
+            $_POST['tags1'],
+            $_POST['tags2'],
+            $_POST['tags3'],
+            $_POST['tags4'],
+            $_POST['tags5']
         );
     }
 
-
+    if (isset($_POST['delete_all_wallpaper'])) {
+        // Assuming the email is stored in the session
+        $Uploader = $_SESSION['Email']; // Assuming email is stored in the 'Email' session key
+        $userAuth->deleteAllWallpapers($Uploader);
+    }
+    
     if (isset($_POST['delete_wallpaper'])) {
         $WallpaperIdToDelete = $_POST['WallpaperID'];
         $userAuth->deleteWallpaper($WallpaperIdToDelete);

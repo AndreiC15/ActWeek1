@@ -1,0 +1,200 @@
+.LeftBG {
+  width: 30%;
+  height: auto;
+  background-color: white;
+  border-radius: 10px;
+  position: absolute;
+  border-style: solid;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  align-content: center;
+  z-index: 1;
+}
+
+.quote {
+  width: 70%;
+  position: relative;
+  font-family: rockwell;
+  text-transform: capitalize;
+  font-weight: bold;
+  text-align: center;
+}
+
+.LogoFigma {
+  margin-top: 5%;
+  width: 80%;
+}
+
+.SessionOption {
+  margin-top: 13%;
+  margin-left: 72.5%;
+  background-color: rgba(255, 255, 255, 0.637);
+  border: 2px solid black;
+  border-radius: 10px;
+  width: 20%;
+  max-width: 300px; /* Set a maximum width */
+  height: auto;
+  padding: 20px;
+  position: absolute;
+}
+
+.LogInButton,
+.SignUpButton {
+  background-color: blue;
+  width: 100%; /* Adjusted to fill the container */
+  max-width: 250px; /* Set a maximum width */
+  height: 40px;
+  border-radius: 100px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  margin-top: 10px;
+}
+
+.LogInText,
+.PasswordText {
+  width: 100%; /* Adjusted to fill the container */
+  max-width: 250px; /* Set a maximum width */
+  height: 30px;
+  border-radius: 10px;
+  margin-top: 10px;
+  text-align: center;
+  font-family: rockwell;
+  font-weight: bold;
+}
+.checkbox{
+  margin-top:2%;
+}
+
+.SubmitButton {
+  width: 20%; /* Adjusted to fill the container */
+  max-width: 250px; /* Set a maximum width */
+  height: 30px;
+  border-radius: 10px;
+  margin-top: -10%;
+  text-align: center;
+  font-family: rockwell;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.SignUpButton {
+  background-color: blue;
+  width: 30%; /* Adjusted to fill the container */
+  max-width: 250px; /* Set a maximum width */
+  height: 30px;
+  border-radius: 100px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  margin-top: 10px;
+  margin-bottom: 20px; /* Add margin-bottom to create space */
+}
+
+.ShowPass {
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+}
+.checkbox-label {
+  display: flex; /* Use flexbox for horizontal alignment */
+  align-items: center; /* Align items vertically center */
+}
+
+.ShowPass {
+  margin-right: 5px; /* Add some space between the checkbox and the text */
+}
+
+/* Media query for mobile devices */
+@media screen and (max-width: 1080px) and (max-width: 2340px) and (orientation: portrait) {
+  .LeftBG {
+    width: 70%;
+    height: auto;
+  }
+  .LogInText,
+  .PasswordText {
+    width: 100%; /* Adjusted to fill the container */
+    font-size:large;
+  }
+  .quote{
+    font-size:x-large;
+  }
+  .checkbox-label {
+    font-size:large;
+  }
+  .ShowPass{
+    font-size:x-large;
+  }
+  .SubmitButton{
+    font-size:large;
+  }
+  .ForgReg{
+    font-size:larger;
+  }
+  p{
+    font-size:large;
+  }
+  .SignUpButton {
+    width: 20%;
+  }
+  .Angle1 {
+    border-top: calc(60vh - 100px) solid transparent; /* Adjust the height as needed */
+    border-left: calc(60vw - 100px) solid white; /* Adjust the color and width as needed */
+  }
+  
+  .Angle2 {
+    border-bottom: calc(60vh - 100px) solid transparent; /* Adjust the height as needed */
+    border-right: calc(60vw - 100px) solid white; /* Adjust the color and width as needed */
+    z-index: 0;
+  }
+}
+@media screen and (max-width: 768px) {
+  .LeftBG {
+    width: 70%;
+    height: auto;
+  }
+  .quote{
+    font-size:large;
+  }
+  .checkbox-label {
+    font-size:medium;
+  }
+  .ShowPass{
+    font-size:large;
+  }
+  .SubmitButton{
+    font-size:medium;
+  }
+  .ForgReg{
+    font-size:medium;
+  }
+  .footerText{
+    font-size:small;
+  }
+  .SignUpButton {
+    width: 30%;
+  }
+  .Angle1 {
+    border-top: calc(80vh - 100px) solid transparent; /* Adjust the height as needed */
+    border-left: calc(80vw - 100px) solid white; /* Adjust the color and width as needed */
+  }
+  
+  .Angle2 {
+    border-bottom: calc(80vh - 100px) solid transparent; /* Adjust the height as needed */
+    border-right: calc(80vw - 100px) solid white; /* Adjust the color and width as needed */
+    z-index: 0;
+  }
+
+  .LogInText,
+  .PasswordText {
+    width: 100%; /* Adjusted to fill the container */
+    max-width: 250px; /* Set a maximum width */
+  }
+}
