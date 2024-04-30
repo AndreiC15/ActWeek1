@@ -172,7 +172,7 @@ if (!empty($_SESSION['id'])) {
                     if (file_exists($imagePath)) {
                         echo '<li class="image-item">';
                         echo '<div class="image-container">';
-                        echo '<img style="width:400px;height:230px;object-fit:cover " src="' . $imagePath . '" alt="' . htmlspecialchars($row['Title']) . '" onclick="openModal(\'' . $imagePath . '\', \'' . htmlspecialchars($row['Title']) . '\')">';
+                        echo '<img style="width:400px;height:230px;object-fit:cover" src="' . $imagePath . '" alt="' . htmlspecialchars($row['Title']) . '" onclick="openModal(\'' . addslashes($imagePath) . '\', \'' . addslashes($row['Title']) . '\')">';
                         // Updated form to include an anchor tag for "Edit" functionality
                         echo '<form method="post" action="./accountProcess/process.php">';
                         echo '<input type="hidden" name="WallpaperID" value="' . $row['WallpaperID'] . '">';
